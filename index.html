@@ -15,9 +15,10 @@
             --text-muted: #94a3b8;
             --highlight-color: #3b82f6;
             --success-color: #10b981;
-            --card-color: #1a1f2e;
-            --border-color: #2d3748;
+            --card-color: rgba(26, 31, 46, 0.7);
+            --border-color: rgba(59, 130, 246, 0.3);
             --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+            --glow: 0 0 15px rgba(59, 130, 246, 0.3);
         }
 
         * {
@@ -27,12 +28,17 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background: linear-gradient(135deg, var(--primary-color) 0%, #0f172a 100%);
             color: var(--text-color);
             line-height: 1.6;
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
         }
 
         /* Particles Background */
@@ -47,7 +53,7 @@
 
         /* Header Styles */
         header {
-            background: rgba(18, 24, 38, 0.85);
+            background: rgba(18, 24, 38, 0.9);
             padding: 1.5rem;
             text-align: center;
             box-shadow: var(--shadow);
@@ -55,32 +61,21 @@
             position: relative;
             z-index: 10;
             animation: slideDown 0.8s ease-out;
+            border-bottom: 1px solid var(--border-color);
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 0.5rem;
             color: var(--text-color);
-            background: linear-gradient(90deg, #60a5fa, #3b82f6);
+            background: linear-gradient(90deg, #60a5fa, #3b82f6, #60a5fa);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             display: inline-block;
             position: relative;
-        }
-
-        h1::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, #60a5fa, #3b82f6);
-            border-radius: 2px;
-            transform: scaleX(0);
-            transform-origin: left;
-            animation: expandLine 1s 0.5s forwards;
+            animation: shimmer 3s infinite linear;
         }
 
         .tagline {
@@ -88,6 +83,7 @@
             opacity: 0.8;
             margin-top: 0.5rem;
             color: var(--text-muted);
+            letter-spacing: 1px;
         }
 
         /* Main Content Styles */
@@ -101,15 +97,28 @@
         .intro {
             text-align: center;
             margin-bottom: 3rem;
-            padding: 2rem;
-            background: rgba(26, 31, 46, 0.6);
-            border-radius: 12px;
-            backdrop-filter: blur(5px);
+            padding: 3rem 2rem;
+            background: var(--card-color);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow);
             transform: translateY(20px);
             opacity: 0;
             animation: fadeUp 0.8s 0.3s forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intro::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, transparent 100%);
+            z-index: -1;
         }
 
         .intro p {
@@ -117,11 +126,15 @@
             margin-bottom: 1rem;
         }
 
+        .intro p:last-child {
+            margin-bottom: 0;
+        }
+
         /* Script Container */
         .script-container {
             background: var(--card-color);
-            border-radius: 12px;
-            padding: 2rem;
+            border-radius: 16px;
+            padding: 2.5rem;
             margin-bottom: 2rem;
             box-shadow: var(--shadow);
             border: 1px solid var(--border-color);
@@ -130,6 +143,13 @@
             animation: fadeUp 0.8s 0.5s forwards;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .script-container:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow), var(--glow);
         }
 
         .script-container::before {
@@ -139,7 +159,9 @@
             left: 0;
             width: 100%;
             height: 4px;
-            background: linear-gradient(90deg, #60a5fa, #3b82f6);
+            background: linear-gradient(90deg, #60a5fa, #3b82f6, #60a5fa);
+            background-size: 200% auto;
+            animation: shimmer 3s infinite linear;
         }
 
         .script-title {
@@ -148,6 +170,7 @@
             color: var(--text-color);
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
         }
 
@@ -156,18 +179,19 @@
         }
 
         .code-box {
-            background: #0f141f;
-            border-radius: 8px;
+            background: rgba(15, 20, 31, 0.8);
+            border-radius: 12px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
             position: relative;
             overflow-x: auto;
             border: 1px solid var(--border-color);
             transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
         }
 
         .code-box:hover {
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+            box-shadow: var(--glow);
         }
 
         .code-box code {
@@ -176,20 +200,22 @@
             font-size: 1.1rem;
             display: block;
             white-space: nowrap;
+            text-align: center;
         }
 
         .buttons {
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
+            justify-content: center;
         }
 
         .btn {
             background: linear-gradient(135deg, var(--accent-color), var(--highlight-color));
             color: white;
             border: none;
-            padding: 0.8rem 1.8rem;
-            border-radius: 8px;
+            padding: 1rem 2rem;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 1rem;
             font-weight: 600;
@@ -201,6 +227,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             position: relative;
             overflow: hidden;
+            min-width: 160px;
         }
 
         .btn::before {
@@ -255,56 +282,61 @@
             white-space: nowrap;
         }
 
-        /* Instructions Section */
-        .instructions {
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
             background: var(--card-color);
             border-radius: 12px;
-            padding: 2rem;
-            margin-top: 2rem;
+            padding: 1.5rem;
+            text-align: center;
             box-shadow: var(--shadow);
             border: 1px solid var(--border-color);
             transform: translateY(20px);
             opacity: 0;
             animation: fadeUp 0.8s 0.7s forwards;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(5px);
         }
 
-        .instructions h2 {
-            margin-bottom: 1.5rem;
-            color: var(--text-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .feature-card:nth-child(2) {
+            animation-delay: 0.8s;
         }
 
-        .instructions h2 i {
+        .feature-card:nth-child(3) {
+            animation-delay: 0.9s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow), var(--glow);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
             color: var(--highlight-color);
         }
 
-        .instructions ol {
-            margin-left: 1.5rem;
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
         }
 
-        .instructions li {
-            margin-bottom: 1rem;
-            padding-left: 0.5rem;
-            position: relative;
-        }
-
-        .instructions li::before {
-            content: '';
-            position: absolute;
-            left: -15px;
-            top: 10px;
-            width: 8px;
-            height: 8px;
-            background: var(--highlight-color);
-            border-radius: 50%;
+        .feature-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
         }
 
         /* Footer */
         footer {
-            background: rgba(18, 24, 38, 0.85);
-            padding: 1.5rem;
+            background: rgba(18, 24, 38, 0.9);
+            padding: 2rem;
             text-align: center;
             margin-top: 3rem;
             backdrop-filter: blur(10px);
@@ -328,9 +360,11 @@
         @keyframes fadeIn {
             from {
                 opacity: 0;
+            transform: translateY(10px);
             }
             to {
                 opacity: 1;
+                transform: translateY(0);
             }
         }
 
@@ -345,12 +379,12 @@
             }
         }
 
-        @keyframes expandLine {
-            from {
-                transform: scaleX(0);
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
             }
-            to {
-                transform: scaleX(1);
+            100% {
+                background-position: 200% 0;
             }
         }
 
@@ -396,6 +430,22 @@
             animation-delay: -10s;
         }
 
+        .floating-element:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            left: 85%;
+            animation-delay: -7s;
+        }
+
+        .floating-element:nth-child(5) {
+            width: 70px;
+            height: 70px;
+            top: 80%;
+            left: 15%;
+            animation-delay: -12s;
+        }
+
         @keyframes float {
             0% {
                 transform: translate(0, 0) rotate(0deg);
@@ -414,33 +464,43 @@
         /* Responsive Design */
         @media (max-width: 768px) {
             h1 {
-                font-size: 2.2rem;
+                font-size: 2.5rem;
             }
             
             .buttons {
                 flex-direction: column;
+                align-items: center;
             }
             
             .btn {
                 width: 100%;
+                max-width: 280px;
             }
             
-            .intro, .script-container, .instructions {
+            .intro, .script-container {
                 padding: 1.5rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
             }
         }
 
         @media (max-width: 480px) {
             h1 {
-                font-size: 1.8rem;
+                font-size: 2rem;
             }
             
-            .script-title, .instructions h2 {
+            .script-title {
                 font-size: 1.5rem;
             }
             
             .code-box code {
                 font-size: 0.9rem;
+            }
+            
+            .feature-card {
+                padding: 1rem;
             }
         }
     </style>
@@ -451,6 +511,8 @@
     
     <!-- Floating Elements -->
     <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
         <div class="floating-element"></div>
         <div class="floating-element"></div>
         <div class="floating-element"></div>
@@ -483,24 +545,31 @@
                     <i class="fas fa-external-link-alt"></i>
                     View Raw
                 </a>
-                <button class="btn" id="execute-btn">
-                    <i class="fas fa-play"></i>
-                    Execute
-                </button>
             </div>
         </section>
 
-        <section class="instructions">
-            <h2>
-                <i class="fas fa-info-circle"></i> How to Use
-            </h2>
-            <ol>
-                <li>Copy the script above using the "Copy Script" button</li>
-                <li>Open your preferred game executor</li>
-                <li>Paste the copied script into the executor</li>
-                <li>Run the script and enjoy all ZiaanHub features!</li>
-                <li>Check for regular updates to get the latest features</li>
-            </ol>
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3 class="feature-title">High Performance</h3>
+                <p class="feature-desc">Optimized scripts for maximum performance and minimal lag</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="feature-title">Safe & Secure</h3>
+                <p class="feature-desc">Regularly updated to ensure safety and compatibility</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-sync"></i>
+                </div>
+                <h3 class="feature-title">Auto Updates</h3>
+                <p class="feature-desc">Automatic updates with the latest features and improvements</p>
+            </div>
         </section>
     </main>
 
@@ -514,7 +583,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             particlesJS('particles-js', {
                 particles: {
-                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    number: { value: 100, density: { enable: true, value_area: 800 } },
                     color: { value: "#3b82f6" },
                     shape: { type: "circle" },
                     opacity: { value: 0.5, random: true },
@@ -557,17 +626,6 @@
                         btn.classList.remove('copied');
                     }, 2000);
                 });
-            });
-            
-            // Execute button animation
-            document.getElementById('execute-btn').addEventListener('click', function() {
-                this.innerHTML = '<i class="fas fa-cog fa-spin"></i> Executing...';
-                setTimeout(() => {
-                    this.innerHTML = '<i class="fas fa-check"></i> Executed!';
-                    setTimeout(() => {
-                        this.innerHTML = '<i class="fas fa-play"></i> Execute';
-                    }, 1500);
-                }, 1500);
             });
         });
     </script>
