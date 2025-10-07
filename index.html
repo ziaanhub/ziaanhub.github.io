@@ -4,13 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZiaanHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #0d1b2a;
-            --secondary-color: #1b263b;
-            --accent-color: #415a77;
-            --text-color: #e0e1dd;
-            --highlight-color: #778da9;
+            --primary-color: #0a0e17;
+            --secondary-color: #121826;
+            --accent-color: #1e40af;
+            --accent-hover: #2563eb;
+            --text-color: #e2e8f0;
+            --text-muted: #94a3b8;
+            --highlight-color: #3b82f6;
+            --success-color: #10b981;
+            --card-color: #1a1f2e;
+            --border-color: #2d3748;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
         }
 
         * {
@@ -21,140 +28,256 @@
         }
 
         body {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color) 0%, #0f172a 100%);
             color: var(--text-color);
             line-height: 1.6;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            overflow-x: hidden;
         }
 
+        /* Particles Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Header Styles */
         header {
-            background-color: var(--secondary-color);
+            background: rgba(18, 24, 38, 0.85);
             padding: 1.5rem;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 10;
+            animation: slideDown 0.8s ease-out;
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-bottom: 0.5rem;
             color: var(--text-color);
+            background: linear-gradient(90deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            position: relative;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #60a5fa, #3b82f6);
+            border-radius: 2px;
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: expandLine 1s 0.5s forwards;
         }
 
         .tagline {
             font-size: 1.2rem;
             opacity: 0.8;
+            margin-top: 0.5rem;
+            color: var(--text-muted);
         }
 
+        /* Main Content Styles */
         main {
-            max-width: 800px;
+            max-width: 900px;
             margin: 2rem auto;
             padding: 0 1.5rem;
-            flex: 1;
+            animation: fadeIn 1s ease-out;
         }
 
         .intro {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(26, 31, 46, 0.6);
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeUp 0.8s 0.3s forwards;
         }
 
         .intro p {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             margin-bottom: 1rem;
         }
 
+        /* Script Container */
         .script-container {
-            background-color: var(--secondary-color);
-            border-radius: 8px;
-            padding: 1.5rem;
+            background: var(--card-color);
+            border-radius: 12px;
+            padding: 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeUp 0.8s 0.5s forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .script-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #60a5fa, #3b82f6);
         }
 
         .script-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
             color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .script-title i {
+            color: var(--highlight-color);
         }
 
         .code-box {
-            background-color: #1a1a1a;
-            border-radius: 6px;
-            padding: 1rem;
-            margin-bottom: 1rem;
+            background: #0f141f;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
             position: relative;
             overflow-x: auto;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .code-box:hover {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
         }
 
         .code-box code {
             color: #f8f8f2;
             font-family: 'Courier New', monospace;
-            font-size: 1rem;
+            font-size: 1.1rem;
+            display: block;
+            white-space: nowrap;
         }
 
         .buttons {
             display: flex;
             gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .btn {
-            background-color: var(--accent-color);
-            color: var(--text-color);
+            background: linear-gradient(135deg, var(--accent-color), var(--highlight-color));
+            color: white;
             border: none;
-            padding: 0.7rem 1.5rem;
-            border-radius: 4px;
+            padding: 0.8rem 1.8rem;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
-            transition: background-color 0.3s;
+            font-weight: 600;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
         }
 
         .btn:hover {
-            background-color: var(--highlight-color);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn-copy:hover::after {
-            content: "Salin";
+            content: "Salin Script";
             position: absolute;
-            background-color: #333;
+            background-color: rgba(0, 0, 0, 0.8);
             color: white;
-            padding: 4px 8px;
+            padding: 6px 12px;
             border-radius: 4px;
             font-size: 0.8rem;
-            margin-top: -40px;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+
+        .btn-copy.copied {
+            background: linear-gradient(135deg, var(--success-color), #34d399);
         }
 
         .btn-copy.copied::after {
             content: "Tersalin!";
             position: absolute;
-            background-color: #4CAF50;
+            background-color: var(--success-color);
             color: white;
-            padding: 4px 8px;
+            padding: 6px 12px;
             border-radius: 4px;
             font-size: 0.8rem;
-            margin-top: -40px;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
         }
 
-        footer {
-            background-color: var(--secondary-color);
-            padding: 1.5rem;
-            text-align: center;
-            margin-top: auto;
-        }
-
+        /* Instructions Section */
         .instructions {
-            background-color: var(--secondary-color);
-            border-radius: 8px;
-            padding: 1.5rem;
+            background: var(--card-color);
+            border-radius: 12px;
+            padding: 2rem;
             margin-top: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeUp 0.8s 0.7s forwards;
         }
 
         .instructions h2 {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instructions h2 i {
+            color: var(--highlight-color);
         }
 
         .instructions ol {
@@ -162,12 +285,136 @@
         }
 
         .instructions li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            padding-left: 0.5rem;
+            position: relative;
         }
 
-        @media (max-width: 600px) {
+        .instructions li::before {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 10px;
+            width: 8px;
+            height: 8px;
+            background: var(--highlight-color);
+            border-radius: 50%;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(18, 24, 38, 0.85);
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 3rem;
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border-color);
+            animation: fadeIn 1s 1s forwards;
+            opacity: 0;
+        }
+
+        /* Animations */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes expandLine {
+            from {
+                transform: scaleX(0);
+            }
+            to {
+                transform: scaleX(1);
+            }
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 70%;
+            left: 80%;
+            animation-delay: -5s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 50%;
+            left: 5%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            33% {
+                transform: translate(30px, -50px) rotate(120deg);
+            }
+            66% {
+                transform: translate(-20px, 20px) rotate(240deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
             h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
             
             .buttons {
@@ -177,67 +424,150 @@
             .btn {
                 width: 100%;
             }
+            
+            .intro, .script-container, .instructions {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .script-title, .instructions h2 {
+                font-size: 1.5rem;
+            }
+            
+            .code-box code {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Floating Elements -->
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
     <header>
         <h1>ZiaanHub</h1>
-        <p class="tagline"></p>
+        <p class="tagline">Powerful scripts for enhanced gaming experience</p>
     </header>
 
     <main>
         <section class="intro">
-            <p>Welcome to ZiaanHub! Use the script below to access all ZiaanHub features.</p>
+            <p>Welcome to ZiaanHub! Your ultimate destination for powerful scripts.</p>
+            <p>Use the script below to access all ZiaanHub features and enhance your gaming experience.</p>
         </section>
 
         <section class="script-container">
-            <h2 class="script-title">Script ZiaanHub</h2>
+            <h2 class="script-title">
+                <i class="fas fa-code"></i> ZiaanHub Script
+            </h2>
             <div class="code-box">
                 <code id="script-code">loadstring(game:HttpGet("https://ziaanhub.github.io/ziaanhub.lua"))()</code>
             </div>
             <div class="buttons">
                 <button class="btn btn-copy" id="copy-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
-                        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
-                    </svg>
+                    <i class="far fa-copy"></i>
                     Copy Script
                 </button>
                 <a href="view.lua" class="btn" target="_blank">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                    </svg>
+                    <i class="fas fa-external-link-alt"></i>
                     View Raw
                 </a>
+                <button class="btn" id="execute-btn">
+                    <i class="fas fa-play"></i>
+                    Execute
+                </button>
             </div>
         </section>
 
         <section class="instructions">
-            <h2>How to use</h2>
+            <h2>
+                <i class="fas fa-info-circle"></i> How to Use
+            </h2>
             <ol>
-                <li>Copy the script above</li>
-                <li>Open the game executor you are using</li>
-                <li>Paste the copied script</li>
-                <li>Run the script and enjoy ZiaanHub features!</li>
+                <li>Copy the script above using the "Copy Script" button</li>
+                <li>Open your preferred game executor/exploit</li>
+                <li>Paste the copied script into the executor</li>
+                <li>Run the script and enjoy all ZiaanHub features!</li>
+                <li>Check for regular updates to get the latest features</li>
             </ol>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 ZiaanHub. All rights reserved.</p>
+        <p>&copy; 2025 ZiaanHub. All rights reserved. | Powerful scripts for enhanced gaming</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        document.getElementById('copy-btn').addEventListener('click', function() {
-            const code = document.getElementById('script-code').textContent;
-            navigator.clipboard.writeText(code).then(() => {
-                const btn = document.getElementById('copy-btn');
-                btn.classList.add('copied');
+        // Initialize particles.js
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: "#3b82f6" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#3b82f6",
+                        opacity: 0.2,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 2,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" },
+                        resize: true
+                    }
+                },
+                retina_detect: true
+            });
+            
+            // Copy button functionality
+            document.getElementById('copy-btn').addEventListener('click', function() {
+                const code = document.getElementById('script-code').textContent;
+                navigator.clipboard.writeText(code).then(() => {
+                    const btn = document.getElementById('copy-btn');
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                        btn.classList.remove('copied');
+                    }, 2000);
+                });
+            });
+            
+            // Execute button animation
+            document.getElementById('execute-btn').addEventListener('click', function() {
+                this.innerHTML = '<i class="fas fa-cog fa-spin"></i> Executing...';
                 setTimeout(() => {
-                    btn.classList.remove('copied');
-                }, 2000);
+                    this.innerHTML = '<i class="fas fa-check"></i> Executed!';
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-play"></i> Execute';
+                    }, 1500);
+                }, 1500);
             });
         });
     </script>
