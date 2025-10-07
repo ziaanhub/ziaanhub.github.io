@@ -1,1 +1,1 @@
-loadstring(game:HttpGet("https://ziaanhub.github.io/ziaanhub.lua"))()
+--[[ by ziaandev : www.guns.lol/ziaandev ]] loadstring(game:HttpGet("https://ziaanhub.github.io/ziaanhub.lua"))()
