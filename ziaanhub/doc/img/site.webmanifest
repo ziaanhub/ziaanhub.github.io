@@ -1,7 +1,7 @@
 {
-  "name": "ZiaanHub",
+  "name": "ZiaanHub Loader",
   "short_name": "ZiaanHub",
-  "description": "ZiaanHub Loader",
+  "description": "ZiaanHub Loader — Made By ziaandev",
   "icons": [
     {
       "src": "/ziaanhub/doc/img/favicon-96x96.png",
@@ -18,8 +18,9 @@
       "type": "image/svg+xml"
     }
   ],
-  "theme_color": "#001F3F",
-  "background_color": "#ffffff",
+  "start_url": "/ziaanhub/",
   "display": "standalone",
-  "start_url": "/ziaanhub/"
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#001F3F"
 }
