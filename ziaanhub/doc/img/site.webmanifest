@@ -1,7 +1,7 @@
 {
   "name": "ZiaanHub Loader",
   "short_name": "ZiaanHub",
-  "description": "ZiaanHub Loader — Made By ziaandev",
+  "description": "ZiaanHub Loader — Made By ziaandev, the ultimate Roblox Hub Project for educational and community purposes.",
   "icons": [
     {
       "src": "/ziaanhub/doc/img/favicon-96x96.png",
@@ -22,5 +22,8 @@
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#ffffff",
-  "theme_color": "#001F3F"
+  "theme_color": "#001F3F",
+  "scope": "/ziaanhub/",
+  "lang": "en",
+  "dir": "ltr"
 }
