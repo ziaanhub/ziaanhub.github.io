@@ -1,21 +1,19 @@
 {
   "name": "ZiaanHub Loader",
   "short_name": "ZiaanHub",
-  "description": "ZiaanHub Loader is created solely for educational purposes and learning Roblox scripting. Any use outside of educational purposes is entirely the responsibility of the user. The developer is not responsible for any damages or consequences resulting from the use of this script",
+  "description": "ZiaanHub Loader — Made By ziaandev, the ultimate Roblox Hub Project for education and community.",
   "icons": [
     {
-      "src": "/ziaanhub/doc/img/favicon-96x96.png",
-      "sizes": "96x96",
-      "type": "image/png"
+      "src": "/ziaanhub/doc/img/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
-      "src": "/ziaanhub/doc/img/apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png"
-    },
-    {
-      "src": "/ziaanhub/doc/img/favicon.svg",
-      "type": "image/svg+xml"
+      "src": "/ziaanhub/doc/img/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "start_url": "/ziaanhub/",
