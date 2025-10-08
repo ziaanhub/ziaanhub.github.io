@@ -1,0 +1,25 @@
+{
+  "name": "ZiaanHub",
+  "short_name": "ZiaanHub",
+  "description": "ZiaanHub Loader",
+  "icons": [
+    {
+      "src": "/ziaanhub/doc/img/favicon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/ziaanhub/doc/img/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/ziaanhub/doc/img/favicon.svg",
+      "type": "image/svg+xml"
+    }
+  ],
+  "theme_color": "#001F3F",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/ziaanhub/"
+}
