@@ -70,8 +70,8 @@
             position: relative;
         }
 
-        /* Verification Screen */
-        .verification-screen {
+        /* Cloudflare Verification Screen */
+        .cloudflare-verify {
             position: fixed;
             top: 0;
             left: 0;
@@ -87,40 +87,93 @@
             text-align: center;
         }
 
-        .verification-screen.hidden {
+        .cloudflare-verify.hidden {
             display: none;
         }
 
-        .verification-content {
+        .cloudflare-content {
             background: var(--card-color);
             border-radius: 20px;
             padding: 3rem;
-            max-width: 500px;
+            max-width: 600px;
             width: 100%;
             box-shadow: var(--shadow), var(--card-glow);
             border: 1px solid var(--border-color);
             backdrop-filter: blur(10px);
         }
 
-        .verification-title {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--text-color);
+        .cloudflare-logo {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 10px;
+            margin-bottom: 1.5rem;
         }
 
-        .verification-title i {
-            color: var(--highlight-color);
-            font-size: 2.8rem;
+        .cloudflare-logo i {
+            font-size: 2.5rem;
+            color: #FF6B6B;
         }
 
-        .verification-text {
-            font-size: 1.2rem;
+        .cloudflare-logo span {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .cloudflare-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .cloudflare-text {
+            font-size: 1.1rem;
             margin-bottom: 2rem;
             color: var(--text-muted);
+        }
+
+        .cloudflare-status {
+            background: rgba(26, 11, 11, 0.5);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.8rem;
+        }
+
+        .status-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .status-icon {
+            color: var(--highlight-color);
+        }
+
+        .status-text {
+            color: var(--text-color);
+        }
+
+        .verification-progress {
+            width: 100%;
+            height: 8px;
+            background: rgba(26, 11, 11, 0.5);
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #FF6B6B, #B22222);
+            width: 0%;
+            transition: width 0.5s ease;
         }
 
         .verification-btn {
@@ -145,6 +198,99 @@
         }
 
         .verification-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25), 0 0 15px rgba(139, 0, 0, 0.4);
+        }
+
+        .verification-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .welcome-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .welcome-message.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .welcome-content {
+            background: var(--card-color);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: var(--shadow), var(--card-glow);
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .welcome-message.active .welcome-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .welcome-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .welcome-title i {
+            color: var(--highlight-color);
+            font-size: 2.8rem;
+        }
+
+        .welcome-text {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--text-muted);
+        }
+
+        .welcome-btn {
+            background: linear-gradient(135deg, var(--accent-color), var(--highlight-color));
+            color: white;
+            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+            min-width: 200px;
+        }
+
+        .welcome-btn:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25), 0 0 15px rgba(139, 0, 0, 0.4);
         }
@@ -350,6 +496,75 @@
             transform: translateY(10px);
         }
 
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: var(--card-color);
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transform: translateY(30px);
+            opacity: 0;
+            animation: fadeUp 1s 0.7s forwards;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow), var(--card-glow);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow), var(--glow);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #FF6B6B, #B22222, #FF6B6B);
+            background-size: 200% auto;
+            animation: shimmer 3s infinite linear;
+        }
+
+        .feature-card:nth-child(2) {
+            animation-delay: 0.8s;
+        }
+
+        .feature-card:nth-child(3) {
+            animation-delay: 0.9s;
+        }
+
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--highlight-color);
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            color: var(--text-color);
+        }
+
+        .feature-desc {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
         /* Script Container */
         .script-container {
             background: var(--card-color);
@@ -515,173 +730,6 @@
             animation: fadeIn 0.3s ease-out;
         }
 
-        /* Features Section */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        .feature-card {
-            background: var(--card-color);
-            border-radius: 16px;
-            padding: 2.5rem 2rem;
-            text-align: center;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            transform: translateY(30px);
-            opacity: 0;
-            animation: fadeUp 1s 0.7s forwards;
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
-            backdrop-filter: blur(5px);
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow), var(--card-glow);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: var(--shadow), var(--glow);
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #FF6B6B, #B22222, #FF6B6B);
-            background-size: 200% auto;
-            animation: shimmer 3s infinite linear;
-        }
-
-        .feature-card:nth-child(2) {
-            animation-delay: 0.8s;
-        }
-
-        .feature-card:nth-child(3) {
-            animation-delay: 0.9s;
-        }
-
-        .feature-icon {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--highlight-color);
-            animation: pulse 2s infinite ease-in-out;
-        }
-
-        .feature-title {
-            font-size: 1.5rem;
-            margin-bottom: 1.2rem;
-            color: var(--text-color);
-        }
-
-        .feature-desc {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-            line-height: 1.7;
-        }
-
-        /* How to Use Section */
-        .how-to-use {
-            background: var(--card-color);
-            border-radius: 20px;
-            padding: 3rem;
-            margin-bottom: 3rem;
-            box-shadow: var(--shadow), var(--card-glow);
-            border: 1px solid var(--border-color);
-            transform: translateY(30px);
-            opacity: 0;
-            animation: fadeUp 1s 0.7s forwards;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
-        }
-
-        .how-to-use:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow), var(--glow);
-        }
-
-        .how-to-use::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #FF6B6B, #B22222, #FF6B6B);
-            background-size: 200% auto;
-            animation: shimmer 3s infinite linear;
-        }
-
-        .steps {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .step {
-            display: flex;
-            align-items: flex-start;
-            gap: 1.5rem;
-            padding: 1.5rem;
-            border-radius: 12px;
-            background: rgba(26, 11, 11, 0.3);
-            transition: all 0.4s ease;
-            transform: translateX(-20px);
-            opacity: 0;
-            animation: slideIn 0.8s forwards;
-        }
-
-        .step:hover {
-            background: rgba(26, 11, 11, 0.5);
-            transform: translateX(0) scale(1.02);
-        }
-
-        .step:nth-child(1) {
-            animation-delay: 0.8s;
-        }
-
-        .step:nth-child(2) {
-            animation-delay: 1s;
-        }
-
-        .step:nth-child(3) {
-            animation-delay: 1.2s;
-        }
-
-        .step-number {
-            background: linear-gradient(135deg, var(--accent-color), var(--highlight-color));
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .step-content h4 {
-            margin-bottom: 0.8rem;
-            color: var(--text-color);
-            font-size: 1.3rem;
-        }
-
-        .step-content p {
-            color: var(--text-muted);
-            line-height: 1.7;
-            font-size: 1.05rem;
-        }
-
         /* About Section */
         .social-links {
             display: grid;
@@ -805,6 +853,91 @@
             color: var(--text-muted);
             font-size: 1.05rem;
             line-height: 1.7;
+        }
+
+        /* Confirmation Modal */
+        .confirmation-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .confirmation-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: var(--card-color);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: var(--shadow), var(--card-glow);
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .confirmation-modal.active .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .modal-text {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: var(--text-muted);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .modal-btn-confirm {
+            background: linear-gradient(135deg, var(--accent-color), var(--highlight-color));
+            color: white;
+            border: none;
+        }
+
+        .modal-btn-cancel {
+            background: rgba(26, 11, 11, 0.5);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-3px);
         }
 
         /* Footer */
@@ -995,21 +1128,12 @@
                 max-width: 300px;
             }
             
-            .intro, .script-container, .how-to-use {
+            .intro, .script-container {
                 padding: 2rem 1.5rem;
             }
             
             .features, .social-links, .games-grid {
                 grid-template-columns: 1fr;
-            }
-            
-            .step {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .step-number {
-                align-self: center;
             }
             
             .script-title {
@@ -1029,12 +1153,16 @@
                 gap: 1rem;
             }
             
-            .verification-content {
+            .cloudflare-content {
                 padding: 2rem 1.5rem;
             }
             
-            .verification-title {
-                font-size: 2rem;
+            .cloudflare-title {
+                font-size: 1.5rem;
+            }
+            
+            .modal-buttons {
+                flex-direction: column;
             }
         }
 
@@ -1059,12 +1187,6 @@
                 padding: 2rem 1.5rem;
             }
             
-            .step-number {
-                width: 40px;
-                height: 40px;
-                font-size: 1.1rem;
-            }
-            
             .feature-icon, .social-icon {
                 font-size: 3rem;
             }
@@ -1074,28 +1196,76 @@
                 font-size: 1rem;
             }
             
-            .verification-title {
-                font-size: 1.8rem;
+            .cloudflare-title {
+                font-size: 1.3rem;
             }
             
-            .verification-text {
+            .cloudflare-text {
                 font-size: 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Verification Screen -->
-    <div class="verification-screen" id="verificationScreen">
-        <div class="verification-content">
-            <h2 class="verification-title">
-                <i class="fas fa-shield-alt"></i> Human Verification
-            </h2>
-            <p class="verification-text">Please verify that you are human to access ZiaanHub</p>
-            <button class="verification-btn" id="verifyBtn">
-                <i class="fas fa-check-circle"></i>
-                I'm Human
+    <!-- Cloudflare Verification Screen -->
+    <div class="cloudflare-verify" id="cloudflareVerify">
+        <div class="cloudflare-content">
+            <div class="cloudflare-logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>ZiaanHub Security</span>
+            </div>
+            <h2 class="cloudflare-title">Verifying you are human</h2>
+            <p class="cloudflare-text">Please stand by, while we are checking your browser...</p>
+            
+            <div class="cloudflare-status">
+                <div class="status-item">
+                    <i class="fas fa-check status-icon"></i>
+                    <span class="status-text">Redirecting to ziaanhub.github.io</span>
+                </div>
+                <div class="status-item">
+                    <i class="fas fa-sync-alt status-icon"></i>
+                    <span class="status-text">Checking browser security</span>
+                </div>
+                <div class="status-item">
+                    <i class="fas fa-shield-alt status-icon"></i>
+                    <span class="status-text">DDoS protection by ZiaanHub</span>
+                </div>
+            </div>
+            
+            <div class="verification-progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
+            <button class="verification-btn" id="verifyBtn" disabled>
+                <i class="fas fa-user-shield"></i>
+                Verify to Continue
             </button>
+        </div>
+    </div>
+
+    <!-- Welcome Message -->
+    <div class="welcome-message" id="welcomeMessage">
+        <div class="welcome-content">
+            <h2 class="welcome-title">
+                <i class="fas fa-fire"></i> Welcome to ZiaanHub
+            </h2>
+            <p class="welcome-text">Thank you for verifying! You now have access to all ZiaanHub features and scripts.</p>
+            <button class="welcome-btn" id="welcomeBtn">
+                <i class="fas fa-rocket"></i>
+                Get Started
+            </button>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="confirmation-modal" id="confirmationModal">
+        <div class="modal-content">
+            <h3 class="modal-title" id="modalTitle">Confirm Redirect</h3>
+            <p class="modal-text" id="modalText">You are about to be redirected to an external website. Are you sure you want to continue?</p>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-confirm" id="modalConfirm">Yes, Continue</button>
+                <button class="modal-btn modal-btn-cancel" id="modalCancel">Cancel</button>
+            </div>
         </div>
     </div>
 
@@ -1132,57 +1302,9 @@
 
         <div class="intro">
             <p>Welcome to ZiaanHub! Your ultimate destination for powerful scripts designed to enhance your gaming experience.</p>
-            <p>Use the script below to access all ZiaanHub features and take your gameplay to the next level.</p>
+            <p>ZiaanHub provides high-performance, safe, and regularly updated scripts for popular Roblox games.</p>
             <div class="disclaimer">
                 <p><strong>Disclaimer:</strong> This script is for educational purposes only. Use at your own risk. The developer is not responsible for any damages or consequences resulting from the use of this script.</p>
-            </div>
-        </div>
-
-        <div class="script-container">
-            <h2 class="script-title">
-                <i class="fas fa-code"></i> ZiaanHub Script
-            </h2>
-            <div class="code-box">
-                <code id="script-code">loadstring(game:HttpGet("https://ziaanhub.github.io/ziaanhub.lua"))()</code>
-            </div>
-            <div class="buttons">
-                <button class="btn btn-copy" id="copy-btn">
-                    <i class="far fa-copy"></i>
-                    Copy Script
-                </button>
-                <a href="/ziaanhub/base/view.lua" class="btn" target="_blank">
-                    <i class="fas fa-external-link-alt"></i>
-                    View Raw
-                </a>
-            </div>
-        </div>
-
-        <div class="how-to-use">
-            <h2 class="script-title">
-                <i class="fas fa-info-circle"></i> How to Use
-            </h2>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h4>Copy the Script</h4>
-                        <p>Click the "Copy Script" button above to copy the ZiaanHub script to your clipboard.</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h4>Open Roblox Executor</h4>
-                        <p>Launch your preferred Roblox executor or script executor application.</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h4>Paste and Execute</h4>
-                        <p>Paste the copied script into the executor and run it to load ZiaanHub features in your game.</p>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -1230,10 +1352,10 @@
                 </div>
                 <h3 class="social-title">YouTube</h3>
                 <p class="social-desc">Check out our tutorials and showcase videos on YouTube.</p>
-                <a href="#" class="btn">
+                <button class="btn social-btn" data-url="https://youtube.com/ziaanhub" data-platform="YouTube">
                     <i class="fab fa-youtube"></i>
                     Visit Channel
-                </a>
+                </button>
             </div>
             <div class="social-card">
                 <div class="social-icon">
@@ -1241,10 +1363,10 @@
                 </div>
                 <h3 class="social-title">TikTok</h3>
                 <p class="social-desc">Follow us for short clips and updates on TikTok.</p>
-                <a href="#" class="btn">
+                <button class="btn social-btn" data-url="https://tiktok.com/@ziaanhub" data-platform="TikTok">
                     <i class="fab fa-tiktok"></i>
                     Follow Us
-                </a>
+                </button>
             </div>
             <div class="social-card">
                 <div class="social-icon">
@@ -1252,10 +1374,10 @@
                 </div>
                 <h3 class="social-title">Discord</h3>
                 <p class="social-desc">Join our community for support and discussions.</p>
-                <a href="#" class="btn">
+                <button class="btn social-btn" data-url="https://discord.gg/ziaanhub" data-platform="Discord">
                     <i class="fab fa-discord"></i>
                     Join Server
-                </a>
+                </button>
             </div>
             <div class="social-card">
                 <div class="social-icon">
@@ -1263,10 +1385,10 @@
                 </div>
                 <h3 class="social-title">GitHub</h3>
                 <p class="social-desc">Explore our open-source scripts and contribute.</p>
-                <a href="#" class="btn">
+                <button class="btn social-btn" data-url="https://github.com/ziaanhub" data-platform="GitHub">
                     <i class="fab fa-github"></i>
                     View Repository
-                </a>
+                </button>
             </div>
         </div>
     </section>
@@ -1290,10 +1412,10 @@
                 <i class="fas fa-code"></i> Main ZiaanHub Script
             </h2>
             <div class="code-box">
-                <code id="script-code-2">loadstring(game:HttpGet("https://ziaanhub.github.io/ziaanhub.lua"))()</code>
+                <code id="script-code">loadstring(game:HttpGet("https://ziaanhub.github.io/ziaanhub.lua"))()</code>
             </div>
             <div class="buttons">
-                <button class="btn btn-copy" id="copy-btn-2">
+                <button class="btn btn-copy" id="copy-btn">
                     <i class="far fa-copy"></i>
                     Copy Script
                 </button>
@@ -1340,42 +1462,8 @@
             <p>ZiaanHub is compatible with a variety of popular Roblox games. Our scripts are specifically optimized for these titles to provide the best experience.</p>
         </div>
 
-        <div class="games-grid">
-            <div class="game-card">
-                <img src="https://tr.rbxcdn.com/4d3d2d7c6f8e9b1d7e8f9a0b1c2d3e4f/512/512/Image/Png" alt="Evade" class="game-image">
-                <div class="game-content">
-                    <h3 class="game-title">Evade</h3>
-                    <p class="game-desc">Survival horror game where players must evade various entities while completing objectives.</p>
-                </div>
-            </div>
-            <div class="game-card">
-                <img src="https://tr.rbxcdn.com/1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a/512/512/Image/Png" alt="Blox Fruits" class="game-image">
-                <div class="game-content">
-                    <h3 class="game-title">Blox Fruits</h3>
-                    <p class="game-desc">Adventure game inspired by the popular anime One Piece, featuring fruits that grant special powers.</p>
-                </div>
-            </div>
-            <div class="game-card">
-                <img src="https://tr.rbxcdn.com/2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b/512/512/Image/Png" alt="Guts and Blackpowder" class="game-image">
-                <div class="game-content">
-                    <h3 class="game-title">Guts and Blackpowder</h3>
-                    <p class="game-desc">Historical zombie survival game set during the Napoleonic Wars.</p>
-                </div>
-            </div>
-            <div class="game-card">
-                <img src="https://tr.rbxcdn.com/3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c/512/512/Image/Png" alt="Build a Beehive" class="game-image">
-                <div class="game-content">
-                    <h3 class="game-title">Build a Beehive</h3>
-                    <p class="game-desc">Simulation game where players build and manage their own beehive.</p>
-                </div>
-            </div>
-            <div class="game-card">
-                <img src="https://tr.rbxcdn.com/4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d/512/512/Image/Png" alt="Poop A Brainrot" class="game-image">
-                <div class="game-content">
-                    <h3 class="game-title">Poop A Brainrot</h3>
-                    <p class="game-desc">Comedy game with absurd mechanics and humorous gameplay.</p>
-                </div>
-            </div>
+        <div class="games-grid" id="gamesGrid">
+            <!-- Games will be loaded dynamically via JavaScript -->
         </div>
     </section>
 
@@ -1385,86 +1473,198 @@
     </footer>
 
     <script>
-        // Verification functionality
-        document.getElementById('verifyBtn').addEventListener('click', function() {
-            document.getElementById('verificationScreen').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        });
+        // Game data with Roblox place IDs
+        const games = [
+            { id: 9872472334, name: "Evade", description: "Survival horror game where players must evade various entities while completing objectives." },
+            { id: 2753915549, name: "Blox Fruits", description: "Adventure game inspired by the popular anime One Piece, featuring fruits that grant special powers." },
+            { id: 7240102173, name: "Guts and Blackpowder", description: "Historical zombie survival game set during the Napoleonic Wars." },
+            { id: 537413788, name: "Build a Beehive", description: "Simulation game where players build and manage their own beehive." },
+            { id: 12674290606, name: "Poop A Brainrot", description: "Comedy game with absurd mechanics and humorous gameplay." }
+        ];
 
-        // Navigation functionality
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Update active nav link
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Show selected page
-                const pageId = this.getAttribute('data-page');
-                document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-                document.getElementById(pageId).classList.add('active');
-                
-                // Scroll to top
-                window.scrollTo(0, 0);
+        // Cloudflare verification functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const cloudflareVerify = document.getElementById('cloudflareVerify');
+            const progressBar = document.getElementById('progressBar');
+            const verifyBtn = document.getElementById('verifyBtn');
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            const welcomeBtn = document.getElementById('welcomeBtn');
+            const confirmationModal = document.getElementById('confirmationModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalText = document.getElementById('modalText');
+            const modalConfirm = document.getElementById('modalConfirm');
+            const modalCancel = document.getElementById('modalCancel');
+            
+            let currentRedirectUrl = '';
+            let currentPlatform = '';
+
+            // Simulate Cloudflare verification process
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(progressInterval);
+                    verifyBtn.disabled = false;
+                    verifyBtn.innerHTML = '<i class="fas fa-check"></i> Verification Complete';
+                }
+                progressBar.style.width = `${progress}%`;
+            }, 300);
+
+            // Handle verification completion
+            verifyBtn.addEventListener('click', function() {
+                cloudflareVerify.classList.add('hidden');
+                welcomeMessage.classList.add('active');
+                document.body.style.overflow = 'auto';
             });
-        });
 
-        // Copy button functionality
-        function setupCopyButton(buttonId, codeId) {
-            document.getElementById(buttonId).addEventListener('click', function() {
-                const code = document.getElementById(codeId).textContent;
-                navigator.clipboard.writeText(code).then(() => {
-                    const btn = document.getElementById(buttonId);
-                    btn.classList.add('copied');
-                    setTimeout(() => {
-                        btn.classList.remove('copied');
-                    }, 2000);
-                }).catch(err => {
-                    console.error('Failed to copy: ', err);
-                    // Fallback for older browsers
-                    const textArea = document.createElement('textarea');
-                    textArea.value = code;
-                    document.body.appendChild(textArea);
-                    textArea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textArea);
+            // Handle welcome message
+            welcomeBtn.addEventListener('click', function() {
+                welcomeMessage.classList.remove('active');
+            });
+
+            // Setup copy buttons
+            function setupCopyButton(buttonId, codeId) {
+                document.getElementById(buttonId).addEventListener('click', function() {
+                    const code = document.getElementById(codeId).textContent;
+                    navigator.clipboard.writeText(code).then(() => {
+                        const btn = document.getElementById(buttonId);
+                        btn.classList.add('copied');
+                        setTimeout(() => {
+                            btn.classList.remove('copied');
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Failed to copy: ', err);
+                        // Fallback for older browsers
+                        const textArea = document.createElement('textarea');
+                        textArea.value = code;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        
+                        const btn = document.getElementById(buttonId);
+                        btn.classList.add('copied');
+                        setTimeout(() => {
+                            btn.classList.remove('copied');
+                        }, 2000);
+                    });
+                });
+            }
+
+            // Setup copy buttons
+            setupCopyButton('copy-btn', 'script-code');
+
+            // Navigation functionality
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
                     
-                    const btn = document.getElementById(buttonId);
-                    btn.classList.add('copied');
-                    setTimeout(() => {
-                        btn.classList.remove('copied');
-                    }, 2000);
+                    // Update active nav link
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show selected page
+                    const pageId = this.getAttribute('data-page');
+                    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+                    document.getElementById(pageId).classList.add('active');
+                    
+                    // Scroll to top
+                    window.scrollTo(0, 0);
                 });
             });
-        }
 
-        // Setup copy buttons
-        setupCopyButton('copy-btn', 'script-code');
-        setupCopyButton('copy-btn-2', 'script-code-2');
-
-        // Add scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animationPlayState = 'running';
-                    observer.unobserve(entry.target);
-                }
+            // Social media buttons with confirmation
+            document.querySelectorAll('.social-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const url = this.getAttribute('data-url');
+                    const platform = this.getAttribute('data-platform');
+                    
+                    currentRedirectUrl = url;
+                    currentPlatform = platform;
+                    
+                    modalTitle.textContent = `Redirect to ${platform}`;
+                    modalText.textContent = `You are about to be redirected to ${platform}. Are you sure you want to continue?`;
+                    confirmationModal.classList.add('active');
+                });
             });
-        }, observerOptions);
 
-        // Observe all animated elements
-        document.querySelectorAll('.page-header, .intro, .script-container, .how-to-use, .feature-card, .social-card, .game-card, .step').forEach(el => {
-            observer.observe(el);
+            // Modal functionality
+            modalConfirm.addEventListener('click', function() {
+                window.open(currentRedirectUrl, '_blank');
+                confirmationModal.classList.remove('active');
+            });
+
+            modalCancel.addEventListener('click', function() {
+                confirmationModal.classList.remove('active');
+            });
+
+            // Load game images from Roblox API
+            function loadGameImages() {
+                const gamesGrid = document.getElementById('gamesGrid');
+                
+                games.forEach(game => {
+                    const gameCard = document.createElement('div');
+                    gameCard.className = 'game-card';
+                    
+                    // Create image with fallback
+                    const gameImage = document.createElement('img');
+                    gameImage.className = 'game-image';
+                    gameImage.alt = game.name;
+                    gameImage.src = `https://thumbnails.roblox.com/v1/places/gameicons?placeIds=${game.id}&size=512x512&format=Png&isCircular=false`;
+                    
+                    // Add fallback for image loading error
+                    gameImage.onerror = function() {
+                        this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBmaWxsPSIjM0QwRjFGIi8+CjxwYXRoIGQ9Ik0yNTYgMTI4QzE4Ny4yIDEyOCAxMjggMTg3LjIgMTI4IDI1NkMxMjggMzI0LjggMTg3LjIgMzg0IDI1NiAzODRDMzI0LjggMzg0IDM4NCAzMjQuOCAzODQgMjU2QzM4NCAxODcuMiAzMjQuOCAxMjggMjU2IDEyOFoiIGZpbGw9IiM4QjAwMDAiLz4KPHBhdGggZD0iTTI1NiAxOTJDMjIyLjQgMTkyIDE5NiAyMTguNCAxOTYgMjU2QzE5NiAyOTMuNiAyMjIuNCAzMjAgMjU2IDMyMEMyODkuNiAzMjAgMzE2IDI5My42IDMxNiAyNTZDMzE2IDIxOC40IDI4OS42IDE5MiAyNTYgMTkyWiIgZmlsbD0iI0IyMjIyMiIvPgo8L3N2Zz4K';
+                    };
+                    
+                    const gameContent = document.createElement('div');
+                    gameContent.className = 'game-content';
+                    
+                    const gameTitle = document.createElement('h3');
+                    gameTitle.className = 'game-title';
+                    gameTitle.textContent = game.name;
+                    
+                    const gameDesc = document.createElement('p');
+                    gameDesc.className = 'game-desc';
+                    gameDesc.textContent = game.description;
+                    
+                    gameContent.appendChild(gameTitle);
+                    gameContent.appendChild(gameDesc);
+                    
+                    gameCard.appendChild(gameImage);
+                    gameCard.appendChild(gameContent);
+                    
+                    gamesGrid.appendChild(gameCard);
+                });
+            }
+
+            // Initialize game images
+            loadGameImages();
+
+            // Add scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all animated elements
+            document.querySelectorAll('.page-header, .intro, .script-container, .feature-card, .social-card, .game-card').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Prevent scrolling on verification screen
+            document.body.style.overflow = 'hidden';
         });
-
-        // Prevent scrolling on verification screen
-        document.body.style.overflow = 'hidden';
     </script>
 </body>
 </html>
