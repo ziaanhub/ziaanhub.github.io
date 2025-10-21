@@ -5,7 +5,7 @@
     <meta name="author" content="ziaandev">
     <meta name="keywords" content="ZiaanHub, Roblox Hub, Roblox Scripts, Roblox Loader, ziaandev, GitHub Pages, Open Source">
     <meta name="robots" content="index, follow">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <meta charset="UTF-8">
 
     <!-- Theme Color -->
@@ -417,7 +417,7 @@
         }
 
         h1 {
-            font-size: 4rem;
+            font-size: clamp(2.5rem, 5vw, 4rem);
             margin-bottom: 0.8rem;
             color: var(--text-color);
             background: linear-gradient(90deg, #FF6B6B, #B22222, #FF6B6B);
@@ -433,7 +433,7 @@
         }
 
         .tagline {
-            font-size: 1.4rem;
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
             opacity: 0.8;
             margin-top: 0.8rem;
             color: var(--text-muted);
@@ -476,7 +476,7 @@
         }
 
         .intro p {
-            font-size: 1.3rem;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
             margin-bottom: 1.8rem;
             line-height: 1.8;
             animation: fadeIn 1s ease-out 0.8s both;
@@ -547,21 +547,21 @@
         }
 
         .feature-icon {
-            font-size: 3.5rem;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
             margin-bottom: 1.5rem;
             color: var(--highlight-color);
             animation: pulse 2s infinite ease-in-out;
         }
 
         .feature-title {
-            font-size: 1.5rem;
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
             margin-bottom: 1.2rem;
             color: var(--text-color);
         }
 
         .feature-desc {
             color: var(--text-muted);
-            font-size: 1.05rem;
+            font-size: clamp(0.9rem, 2vw, 1.05rem);
             line-height: 1.7;
         }
 
@@ -600,7 +600,7 @@
         }
 
         .script-title {
-            font-size: 2.2rem;
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
             margin-bottom: 2rem;
             color: var(--text-color);
             display: flex;
@@ -613,7 +613,7 @@
 
         .script-title i {
             color: var(--highlight-color);
-            font-size: 2.5rem;
+            font-size: clamp(1.8rem, 3.5vw, 2.5rem);
         }
 
         .code-box {
@@ -638,7 +638,7 @@
         .code-box code {
             color: #f8f8f2;
             font-family: 'Courier New', monospace;
-            font-size: 1.2rem;
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
             display: block;
             white-space: nowrap;
             text-align: center;
@@ -660,7 +660,7 @@
             padding: 1.2rem 2.5rem;
             border-radius: 12px;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
             font-weight: 600;
             transition: all 0.4s ease;
             display: flex;
@@ -753,6 +753,10 @@
             position: relative;
             overflow: hidden;
             box-shadow: var(--shadow), var(--card-glow);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
         }
 
         .social-card:hover {
@@ -773,21 +777,21 @@
         }
 
         .social-icon {
-            font-size: 3.5rem;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
             margin-bottom: 1.5rem;
             color: var(--highlight-color);
             animation: pulse 2s infinite ease-in-out;
         }
 
         .social-title {
-            font-size: 1.5rem;
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
             margin-bottom: 1.2rem;
             color: var(--text-color);
         }
 
         .social-desc {
             color: var(--text-muted);
-            font-size: 1.05rem;
+            font-size: clamp(0.9rem, 2vw, 1.05rem);
             line-height: 1.7;
             margin-bottom: 1.5rem;
         }
@@ -844,14 +848,14 @@
         }
 
         .game-title {
-            font-size: 1.5rem;
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
             margin-bottom: 0.8rem;
             color: var(--text-color);
         }
 
         .game-desc {
             color: var(--text-muted);
-            font-size: 1.05rem;
+            font-size: clamp(0.9rem, 2vw, 1.05rem);
             line-height: 1.7;
         }
 
@@ -897,13 +901,13 @@
         }
 
         .modal-title {
-            font-size: 1.8rem;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
             margin-bottom: 1rem;
             color: var(--text-color);
         }
 
         .modal-text {
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
             margin-bottom: 2rem;
             color: var(--text-muted);
         }
@@ -912,12 +916,13 @@
             display: flex;
             gap: 1rem;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         .modal-btn {
             padding: 1rem 2rem;
             border-radius: 10px;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -968,7 +973,7 @@
 
         footer p {
             margin-bottom: 0.8rem;
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
         }
 
         /* Animations */
@@ -1110,12 +1115,13 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            h1 {
-                font-size: 3rem;
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
             }
             
-            .tagline {
-                font-size: 1.2rem;
+            .nav-links {
+                gap: 1rem;
             }
             
             .buttons {
@@ -1136,23 +1142,6 @@
                 grid-template-columns: 1fr;
             }
             
-            .script-title {
-                font-size: 1.8rem;
-            }
-            
-            .code-box code {
-                font-size: 1rem;
-            }
-            
-            .nav-container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .nav-links {
-                gap: 1rem;
-            }
-            
             .cloudflare-content {
                 padding: 2rem 1.5rem;
             }
@@ -1164,38 +1153,14 @@
             .modal-buttons {
                 flex-direction: column;
             }
+            
+            .page-header, .intro, .script-container {
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
         }
 
         @media (max-width: 480px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-            
-            .tagline {
-                font-size: 1rem;
-            }
-            
-            .script-title {
-                font-size: 1.6rem;
-            }
-            
-            .code-box code {
-                font-size: 0.9rem;
-            }
-            
-            .feature-card, .social-card {
-                padding: 2rem 1.5rem;
-            }
-            
-            .feature-icon, .social-icon {
-                font-size: 3rem;
-            }
-            
-            .btn {
-                padding: 1rem 2rem;
-                font-size: 1rem;
-            }
-            
             .cloudflare-title {
                 font-size: 1.3rem;
             }
@@ -1203,6 +1168,96 @@
             .cloudflare-text {
                 font-size: 1rem;
             }
+            
+            .page {
+                padding: 0 1rem;
+            }
+            
+            .feature-card, .social-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .btn {
+                padding: 1rem 2rem;
+            }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 320px) {
+            .page {
+                padding: 0 0.5rem;
+            }
+            
+            .page-header, .intro, .script-container {
+                margin-left: 0.5rem;
+                margin-right: 0.5rem;
+                padding: 1.5rem 1rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        /* Large screens */
+        @media (min-width: 1400px) {
+            .page {
+                max-width: 1300px;
+            }
+        }
+
+        /* Ultra-wide screens */
+        @media (min-width: 2000px) {
+            .page {
+                max-width: 1600px;
+            }
+            
+            .features, .social-links, .games-grid {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .cloudflare-verify, .welcome-message, .confirmation-modal, .floating-elements {
+                display: none !important;
+            }
+            
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .page-header, .intro, .script-container, .feature-card, .social-card, .game-card {
+                background: white;
+                color: black;
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+
+        /* Reduced motion for accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+            :root {
+                --text-color: #ffffff;
+                --text-muted: #cccccc;
+                --border-color: rgba(255, 255, 255, 0.7);
+            }
+        }
+
+        /* Dark mode compatibility */
+        @media (prefers-color-scheme: dark) {
+            /* Already using dark theme */
         }
     </style>
 </head>
@@ -1664,6 +1719,33 @@
 
             // Prevent scrolling on verification screen
             document.body.style.overflow = 'hidden';
+
+            // Handle viewport changes for different devices
+            function handleViewportChange() {
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                
+                // Adjust font sizes for very small screens
+                if (viewportWidth < 400) {
+                    document.documentElement.style.fontSize = '14px';
+                } else if (viewportWidth < 768) {
+                    document.documentElement.style.fontSize = '15px';
+                } else {
+                    document.documentElement.style.fontSize = '16px';
+                }
+                
+                // Adjust layout for very tall screens
+                if (viewportHeight > 1200) {
+                    document.body.style.paddingBottom = '2rem';
+                }
+            }
+
+            // Initial call
+            handleViewportChange();
+            
+            // Listen for viewport changes
+            window.addEventListener('resize', handleViewportChange);
+            window.addEventListener('orientationchange', handleViewportChange);
         });
     </script>
 </body>
