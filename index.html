@@ -70,231 +70,6 @@
             position: relative;
         }
 
-        /* Cloudflare Verification Screen */
-        .cloudflare-verify {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .cloudflare-verify.hidden {
-            display: none;
-        }
-
-        .cloudflare-content {
-            background: var(--card-color);
-            border-radius: 20px;
-            padding: 3rem;
-            max-width: 600px;
-            width: 100%;
-            box-shadow: var(--shadow), var(--card-glow);
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(10px);
-        }
-
-        .cloudflare-logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 1.5rem;
-        }
-
-        .cloudflare-logo i {
-            font-size: 2.5rem;
-            color: #FF6B6B;
-        }
-
-        .cloudflare-logo span {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--text-color);
-        }
-
-        .cloudflare-title {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: var(--text-color);
-        }
-
-        .cloudflare-text {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            color: var(--text-muted);
-        }
-
-        .cloudflare-status {
-            background: rgba(26, 11, 11, 0.5);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            text-align: left;
-        }
-
-        .status-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 0.8rem;
-        }
-
-        .status-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .status-icon {
-            color: var(--highlight-color);
-        }
-
-        .status-text {
-            color: var(--text-color);
-        }
-
-        .verification-progress {
-            width: 100%;
-            height: 8px;
-            background: rgba(26, 11, 11, 0.5);
-            border-radius: 4px;
-            margin-bottom: 2rem;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #FF6B6B, #B22222);
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-
-        .verification-btn {
-            background: linear-gradient(135deg, var(--accent-color), var(--highlight-color));
-            color: white;
-            border: none;
-            padding: 1.2rem 2.5rem;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: 600;
-            transition: all 0.4s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.8rem;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-            position: relative;
-            overflow: hidden;
-            margin: 0 auto;
-            min-width: 200px;
-        }
-
-        .verification-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25), 0 0 15px rgba(139, 0, 0, 0.4);
-        }
-
-        .verification-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .welcome-message {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s ease;
-        }
-
-        .welcome-message.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .welcome-content {
-            background: var(--card-color);
-            border-radius: 20px;
-            padding: 3rem;
-            max-width: 500px;
-            width: 100%;
-            box-shadow: var(--shadow), var(--card-glow);
-            border: 1px solid var(--border-color);
-            text-align: center;
-            transform: translateY(30px);
-            opacity: 0;
-            transition: all 0.5s ease;
-        }
-
-        .welcome-message.active .welcome-content {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .welcome-title {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--text-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .welcome-title i {
-            color: var(--highlight-color);
-            font-size: 2.8rem;
-        }
-
-        .welcome-text {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            color: var(--text-muted);
-        }
-
-        .welcome-btn {
-            background: linear-gradient(135deg, var(--accent-color), var(--highlight-color));
-            color: white;
-            border: none;
-            padding: 1.2rem 2.5rem;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: 600;
-            transition: all 0.4s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.8rem;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-            position: relative;
-            overflow: hidden;
-            margin: 0 auto;
-            min-width: 200px;
-        }
-
-        .welcome-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25), 0 0 15px rgba(139, 0, 0, 0.4);
-        }
-
         /* Navigation */
         nav {
             background: rgba(61, 15, 15, 0.9);
@@ -305,6 +80,7 @@
             top: 0;
             z-index: 100;
             border-bottom: 1px solid var(--border-color);
+            animation: slideDown 0.8s ease-out;
         }
 
         .nav-container {
@@ -1151,14 +927,6 @@
                 grid-template-columns: 1fr;
             }
             
-            .cloudflare-content {
-                padding: 2rem 1.5rem;
-            }
-            
-            .cloudflare-title {
-                font-size: 1.5rem;
-            }
-            
             .modal-buttons {
                 flex-direction: column;
             }
@@ -1170,14 +938,6 @@
         }
 
         @media (max-width: 480px) {
-            .cloudflare-title {
-                font-size: 1.3rem;
-            }
-            
-            .cloudflare-text {
-                font-size: 1rem;
-            }
-            
             .page {
                 padding: 0 1rem;
             }
@@ -1229,7 +989,7 @@
 
         /* Print styles */
         @media print {
-            .cloudflare-verify, .welcome-message, .confirmation-modal, .floating-elements {
+            .confirmation-modal, .floating-elements {
                 display: none !important;
             }
             
@@ -1271,56 +1031,6 @@
     </style>
 </head>
 <body>
-    <!-- Cloudflare Verification Screen -->
-    <div class="cloudflare-verify" id="cloudflareVerify">
-        <div class="cloudflare-content">
-            <div class="cloudflare-logo">
-                <i class="fas fa-shield-alt"></i>
-                <span>ZiaanHub Security</span>
-            </div>
-            <h2 class="cloudflare-title">Verifying you are human</h2>
-            <p class="cloudflare-text">Please stand by, while we are checking your browser...</p>
-            
-            <div class="cloudflare-status">
-                <div class="status-item">
-                    <i class="fas fa-check status-icon"></i>
-                    <span class="status-text">Redirecting to ziaanhub.github.io</span>
-                </div>
-                <div class="status-item">
-                    <i class="fas fa-sync-alt status-icon"></i>
-                    <span class="status-text">Checking browser security</span>
-                </div>
-                <div class="status-item">
-                    <i class="fas fa-shield-alt status-icon"></i>
-                    <span class="status-text">DDoS protection by ZiaanHub</span>
-                </div>
-            </div>
-            
-            <div class="verification-progress">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-            
-            <button class="verification-btn" id="verifyBtn" disabled>
-                <i class="fas fa-user-shield"></i>
-                Verify to Continue
-            </button>
-        </div>
-    </div>
-
-    <!-- Welcome Message -->
-    <div class="welcome-message" id="welcomeMessage">
-        <div class="welcome-content">
-            <h2 class="welcome-title">
-                <i class="fas fa-fire"></i> Welcome to ZiaanHub
-            </h2>
-            <p class="welcome-text">Thank you for verifying! You now have access to all ZiaanHub features and scripts.</p>
-            <button class="welcome-btn" id="welcomeBtn">
-                <i class="fas fa-rocket"></i>
-                Get Started
-            </button>
-        </div>
-    </div>
-
     <!-- Confirmation Modal -->
     <div class="confirmation-modal" id="confirmationModal">
         <div class="modal-content">
@@ -1554,13 +1264,7 @@
             { id: 12674290606, name: "Poop A Brainrot", description: "Comedy game with absurd mechanics and humorous gameplay." }
         ];
 
-        // Cloudflare verification functionality
         document.addEventListener('DOMContentLoaded', function() {
-            const cloudflareVerify = document.getElementById('cloudflareVerify');
-            const progressBar = document.getElementById('progressBar');
-            const verifyBtn = document.getElementById('verifyBtn');
-            const welcomeMessage = document.getElementById('welcomeMessage');
-            const welcomeBtn = document.getElementById('welcomeBtn');
             const confirmationModal = document.getElementById('confirmationModal');
             const modalTitle = document.getElementById('modalTitle');
             const modalText = document.getElementById('modalText');
@@ -1569,31 +1273,6 @@
             
             let currentRedirectUrl = '';
             let currentPlatform = '';
-
-            // Simulate Cloudflare verification process
-            let progress = 0;
-            const progressInterval = setInterval(() => {
-                progress += Math.random() * 10;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(progressInterval);
-                    verifyBtn.disabled = false;
-                    verifyBtn.innerHTML = '<i class="fas fa-check"></i> Verification Complete';
-                }
-                progressBar.style.width = `${progress}%`;
-            }, 300);
-
-            // Handle verification completion
-            verifyBtn.addEventListener('click', function() {
-                cloudflareVerify.classList.add('hidden');
-                welcomeMessage.classList.add('active');
-                document.body.style.overflow = 'auto';
-            });
-
-            // Handle welcome message
-            welcomeBtn.addEventListener('click', function() {
-                welcomeMessage.classList.remove('active');
-            });
 
             // Setup copy buttons
             function setupCopyButton(buttonId, codeId) {
@@ -1733,9 +1412,6 @@
             document.querySelectorAll('.page-header, .intro, .script-container, .feature-card, .social-card, .game-card').forEach(el => {
                 observer.observe(el);
             });
-
-            // Prevent scrolling on verification screen
-            document.body.style.overflow = 'hidden';
 
             // Handle viewport changes for different devices
             function handleViewportChange() {
