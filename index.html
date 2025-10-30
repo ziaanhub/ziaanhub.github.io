@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZiaanHub - Roblox Exploit Script Platform</title>
+    <meta name="description" content="ZiaanHub - Exclusive script platform for Roblox game exploits with high performance and guaranteed security.">
+    <meta name="author" content="ziaandev">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- React & ReactDOM CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Babel untuk JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #8B0000;
+            --primary-dark: #660000;
+            --primary-light: #A52A2A;
+            --secondary: #333333;
+            --accent: #FF6B6B;
+            --background: #0a0a0a;
+            --surface: #1a0b0b;
+            --text: #f0e6e6;
+            --text-light: #c4a3a3;
+            --text-muted: #8a6e6e;
+            --border: #3a1a1a;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.7), 0 2px 4px -1px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7), 0 4px 6px -2px rgba(0, 0, 0, 0.5);
+            --radius: 8px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --glow: 0 0 15px rgba(139, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            transition: var(--transition);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Aurora Background */
+        .aurora-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .aurora-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.7;
+            filter: blur(60px);
+            animation: auroraFloat 20s ease-in-out infinite alternate;
+        }
+
+        .aurora-1 {
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(139, 0, 0, 0.5) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(255, 107, 107, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 80%, rgba(165, 42, 42, 0.3) 0%, transparent 50%);
+            animation-duration: 25s;
+        }
+
+        .aurora-2 {
+            background: 
+                radial-gradient(ellipse at 60% 80%, rgba(165, 42, 42, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 10%, rgba(139, 0, 0, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 50%, rgba(255, 107, 107, 0.2) 0%, transparent 50%);
+            animation-duration: 30s;
+            animation-delay: -5s;
+        }
+
+        .aurora-3 {
+            background: 
+                radial-gradient(ellipse at 30% 30%, rgba(255, 107, 107, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(139, 0, 0, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 10% 70%, rgba(165, 42, 42, 0.2) 0%, transparent 50%);
+            animation-duration: 35s;
+            animation-delay: -10s;
+        }
+
+        @keyframes auroraFloat {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+            25% {
+                transform: translate(2%, 3%) scale(1.05) rotate(1deg);
+            }
+            50% {
+                transform: translate(-1%, 2%) scale(0.98) rotate(-1deg);
+            }
+            75% {
+                transform: translate(3%, -1%) scale(1.02) rotate(0.5deg);
+            }
+            100% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+        }
+
+        /* Nebula Background */
+        .nebula-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            overflow: hidden;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(139, 0, 0, 0.1) 0%, transparent 40%),
+                radial-gradient(ellipse at 80% 60%, rgba(165, 42, 42, 0.08) 0%, transparent 40%),
+                radial-gradient(ellipse at 40% 80%, rgba(255, 107, 107, 0.05) 0%, transparent 40%);
+            animation: nebula-drift 30s ease-in-out infinite alternate;
+        }
+
+        @keyframes nebula-drift {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(1%, 2%) scale(1.02);
+            }
+            66% {
+                transform: translate(-1%, 1%) scale(0.98);
+            }
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+        }
+
+        /* Particle Background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(139, 0, 0, 0.1);
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000%) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(26, 11, 11, 0.9);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .logo-image {
+            height: 40px;
+            width: auto;
+            filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.5));
+            transition: var(--transition);
+        }
+
+        .logo:hover .logo-image {
+            filter: drop-shadow(0 0 10px rgba(139, 0, 0, 0.8));
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+        }
+
+        .nav-link.active {
+            color: var(--accent);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent);
+            transform: scaleX(1);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            transform: scaleX(1);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .mobile-menu-btn:hover {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 10rem 0 6rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            background: linear-gradient(90deg, #FF6B6B, #B22222, #FF6B6B);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer 3s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: var(--shadow-lg), var(--glow);
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: var(--glow);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 5rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-light);
+        }
+
+        /* Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: var(--surface);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-lg), var(--glow);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 1.75rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: var(--shadow-lg), var(--glow);
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .feature-description {
+            color: var(--text-light);
+        }
+
+        /* Script Section */
+        .script-container {
+            background-color: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .script-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .script-header {
+            background-color: rgba(139, 0, 0, 0.1);
+            color: var(--text);
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .script-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+        }
+
+        .script-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .script-code {
+            padding: 2rem;
+            background-color: #1e1e1e;
+            color: #e2e8f0;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-content {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .copy-btn.copied {
+            background-color: #10b981;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text {
+            color: var(--text-light);
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .about-image {
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            position: relative;
+            height: 300px;
+        }
+
+        .about-image:hover {
+            transform: scale(1.03);
+            box-shadow: var(--shadow-lg), var(--glow);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--surface);
+            color: var(--text);
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .social-link:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: var(--shadow-lg), var(--glow);
+        }
+
+        /* Disclaimer */
+        .disclaimer {
+            background-color: rgba(139, 0, 0, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin-top: 3rem;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .disclaimer:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .disclaimer-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+
+        .disclaimer-text {
+            color: var(--text-light);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--surface);
+            padding: 3rem 0;
+            border-top: 1px solid var(--border);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer-text {
+            color: var(--text-light);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--surface);
+                flex-direction: column;
+                padding: 1rem 0;
+                box-shadow: var(--shadow);
+                border-top: 1px solid var(--border);
+            }
+
+            .nav-links.mobile-open {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero {
+                padding: 8rem 0 4rem;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .section {
+                padding: 3rem 0;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .script-header {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .script-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // React Components
+        const { useState, useEffect, useRef } = React;
+
+        // Background Animation Component
+        function BackgroundAnimation() {
+            const [particles, setParticles] = useState([]);
+            
+            useEffect(() => {
+                // Create particles
+                const newParticles = [];
+                for (let i = 0; i < 15; i++) {
+                    newParticles.push({
+                        id: i,
+                        size: Math.random() * 15 + 5,
+                        left: Math.random() * 100,
+                        animationDelay: Math.random() * 15,
+                        animationDuration: Math.random() * 10 + 20
+                    });
+                }
+                setParticles(newParticles);
+            }, []);
+            
+            return (
+                <>
+                    <div className="nebula-background"></div>
+                    <div className="aurora-background">
+                        <div className="aurora-layer aurora-1"></div>
+                        <div className="aurora-layer aurora-2"></div>
+                        <div className="aurora-layer aurora-3"></div>
+                    </div>
+                    <div className="particles">
+                        {particles.map(particle => (
+                            <div 
+                                key={particle.id}
+                                className="particle"
+                                style={{
+                                    width: `${particle.size}px`,
+                                    height: `${particle.size}px`,
+                                    left: `${particle.left}%`,
+                                    animationDelay: `${particle.animationDelay}s`,
+                                    animationDuration: `${particle.animationDuration}s`
+                                }}
+                            ></div>
+                        ))}
+                    </div>
+                </>
+            );
+        }
+
+        // Header Component
+        function Header({ activeSection, onNavClick }) {
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+            
+            const navItems = [
+                { id: 'home', label: 'Home' },
+                { id: 'features', label: 'Features' },
+                { id: 'script', label: 'Script' },
+                { id: 'about', label: 'About' }
+            ];
+            
+            const toggleMobileMenu = () => {
+                setMobileMenuOpen(!mobileMenuOpen);
+            };
+            
+            const handleNavClick = (sectionId) => {
+                onNavClick(sectionId);
+                setMobileMenuOpen(false);
+            };
+            
+            return (
+                <header>
+                    <div className="container">
+                        <div className="nav-container">
+                            <a href="#" className="logo">
+                                <img 
+                                    src="https://files.catbox.moe/7w5wvx.png" 
+                                    alt="ZiaanHub Logo" 
+                                    className="logo-image"
+                                />
+                                <span>ZiaanHub</span>
+                            </a>
+                            
+                            <ul className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
+                                {navItems.map(item => (
+                                    <li key={item.id}>
+                                        <a 
+                                            href={`#${item.id}`}
+                                            className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                handleNavClick(item.id);
+                                            }}
+                                        >
+                                            {item.label}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                            
+                            <div className="nav-actions">
+                                <button className="mobile-menu-btn" onClick={toggleMobileMenu}>
+                                    <i className="fas fa-bars"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            );
+        }
+
+        // Hero Section Component
+        function Hero({ onNavClick }) {
+            return (
+                <section className="hero" id="home">
+                    <div className="container">
+                        <div className="hero-content">
+                            <h1 className="hero-title">ZiaanHub</h1>
+                            <p className="hero-subtitle">
+                                Exclusive script platform for Roblox game exploits with high performance and guaranteed security.
+                            </p>
+                            <div className="hero-actions">
+                                <button 
+                                    className="btn btn-primary"
+                                    onClick={() => onNavClick('script')}
+                                >
+                                    <i className="fas fa-code"></i>
+                                    Get Script
+                                </button>
+                                <button 
+                                    className="btn btn-secondary"
+                                    onClick={() => onNavClick('about')}
+                                >
+                                    <i className="fas fa-info-circle"></i>
+                                    About Us
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Features Section Component
+        function Features() {
+            const features = [
+                {
+                    icon: 'fas fa-bolt',
+                    title: 'High Performance',
+                    description: 'Optimized scripts for maximum performance with minimal impact on game FPS.'
+                },
+                {
+                    icon: 'fas fa-shield-alt',
+                    title: 'Anti-Detection',
+                    description: 'Advanced technology to avoid detection by Roblox anti-cheat systems.'
+                },
+                {
+                    icon: 'fas fa-sync',
+                    title: 'Auto Update',
+                    description: 'Scripts are always automatically updated for compatibility with the latest game updates.'
+                },
+                {
+                    icon: 'fas fa-gamepad',
+                    title: 'Multi-Game Support',
+                    description: 'Supports various popular Roblox games with specific features for each game.'
+                },
+                {
+                    icon: 'fas fa-cogs',
+                    title: 'Customizable',
+                    description: 'User-friendly interface with comprehensive customization options.'
+                },
+                {
+                    icon: 'fas fa-user-secret',
+                    title: 'Stealth Mode',
+                    description: 'Stealth mode to avoid being reported by other players while using scripts.'
+                }
+            ];
+            
+            return (
+                <section className="section" id="features">
+                    <div className="container">
+                        <div className="section-header fade-in">
+                            <h2 className="section-title">ZiaanHub Premium Features</h2>
+                            <p className="section-subtitle">
+                                Enjoy an unparalleled gaming experience with our exclusive features.
+                            </p>
+                        </div>
+                        
+                        <div className="features-grid">
+                            {features.map((feature, index) => (
+                                <div className="feature-card fade-in" key={index}>
+                                    <div className="feature-icon">
+                                        <i className={feature.icon}></i>
+                                    </div>
+                                    <h3 className="feature-title">{feature.title}</h3>
+                                    <p className="feature-description">{feature.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Script Section Component
+        function ScriptSection() {
+            const [copied, setCopied] = useState(false);
+            const scriptCode = 'loadstring(game:HttpGet("https://ziaanhub.github.io/ziaanhub.lua"))()';
+            
+            const copyToClipboard = async () => {
+                try {
+                    await navigator.clipboard.writeText(scriptCode);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                } catch (err) {
+                    console.error('Failed to copy: ', err);
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = scriptCode;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                }
+            };
+            
+            return (
+                <section className="section" id="script">
+                    <div className="container">
+                        <div className="section-header fade-in">
+                            <h2 className="section-title">ZiaanHub Loader</h2>
+                            <p className="section-subtitle">
+                                Copy the script below and execute it in your preferred executor.
+                            </p>
+                        </div>
+                        
+                        <div className="script-container fade-in">
+                            <div className="script-header">
+                                <div className="script-title">
+                                    <i className="fas fa-file-code"></i>
+                                    ZiaanHub Main Script
+                                </div>
+                                <div className="script-actions">
+                                    <a 
+                                        href="https://ziaanhub.github.io/ziaanhub/base/view.lua" 
+                                        className="btn btn-outline" 
+                                        target="_blank"
+                                    >
+                                        <i className="fas fa-external-link-alt"></i>
+                                        View Raw
+                                    </a>
+                                </div>
+                            </div>
+                            <div className="script-code">
+                                <button 
+                                    className={`copy-btn ${copied ? 'copied' : ''}`}
+                                    onClick={copyToClipboard}
+                                >
+                                    <i className="far fa-copy"></i>
+                                    <span>{copied ? 'Copied!' : 'Copy'}</span>
+                                </button>
+                                <pre className="code-content">{scriptCode}</pre>
+                            </div>
+                        </div>
+                        
+                        <div className="disclaimer fade-in">
+                            <h4 className="disclaimer-title">Important: Read Before Using</h4>
+                            <p className="disclaimer-text">
+                                This script is intended for personal use and educational purposes. Users are fully responsible for their use of this script. 
+                                We do not recommend using scripts to harm other players or violate Roblox ToS. 
+                                Use wisely and at your own risk.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // About Section Component
+        function About() {
+            const socialLinks = [
+                { 
+                    icon: 'fab fa-youtube', 
+                    url: 'https://youtube.com/@ziaandev',
+                    label: 'YouTube'
+                },
+                { 
+                    icon: 'fab fa-tiktok', 
+                    url: 'https://tiktok.com/@ziaandev',
+                    label: 'TikTok'
+                },
+                { 
+                    icon: 'fab fa-discord', 
+                    url: 'https://discord.gg/VarezyDsyz',
+                    label: 'Discord'
+                },
+                { 
+                    icon: 'fab fa-github', 
+                    url: 'https://github.com/ziaanhub',
+                    label: 'GitHub'
+                }
+            ];
+            
+            return (
+                <section className="section" id="about">
+                    <div className="container">
+                        <div className="section-header fade-in">
+                            <h2 className="section-title">About ZiaanHub</h2>
+                            <p className="section-subtitle">
+                                Exclusive script platform for an unparalleled gaming experience.
+                            </p>
+                        </div>
+                        
+                        <div className="about-content fade-in">
+                            <div className="about-text">
+                                <p>
+                                    ZiaanHub is an exclusive script platform developed to provide 
+                                    the best gaming experience in Roblox. With a focus on performance, security, 
+                                    and ease of use, our scripts are designed to meet the needs of 
+                                    various types of players.
+                                </p>
+                                <p>
+                                    Our developer team continuously works to update and improve scripts 
+                                    to remain compatible with the latest Roblox updates and provide the 
+                                    latest features requested by the community.
+                                </p>
+                                <p>
+                                    Join our community to get support, share experiences, 
+                                    and stay updated with the latest ZiaanHub developments.
+                                </p>
+                                
+                                <div className="social-links">
+                                    {socialLinks.map((link, index) => (
+                                        <a 
+                                            key={index}
+                                            href={link.url} 
+                                            className="social-link" 
+                                            target="_blank"
+                                            aria-label={link.label}
+                                        >
+                                            <i className={link.icon}></i>
+                                        </a>
+                                    ))}
+                                </div>
+                            </div>
+                            
+                            <div className="about-image">
+                                <img src="https://litter.catbox.moe/aucjnot2ga64u5py.jpg" alt="ZiaanHub Thumbnail" />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Footer Component
+        function Footer() {
+            return (
+                <footer>
+                    <div className="container">
+                        <div className="footer-content">
+                            <div className="footer-text">
+                                <p>&copy; 2025 ZiaanHub. All rights reserved.</p>
+                                <p>Exclusive script platform for Roblox</p>
+                            </div>
+                            <div className="footer-links">
+                                <a href="#" className="footer-link">Privacy Policy</a>
+                                <a href="#" className="footer-link">Terms of Service</a>
+                                <a href="#about" className="footer-link">Contact</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            );
+        }
+
+        // Main App Component
+        function App() {
+            const [activeSection, setActiveSection] = useState('home');
+            
+            // Handle navigation click
+            const handleNavClick = (sectionId) => {
+                setActiveSection(sectionId);
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    window.scrollTo({
+                        top: element.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            };
+            
+            // Scroll animation observer
+            useEffect(() => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, { threshold: 0.1 });
+                
+                const fadeElements = document.querySelectorAll('.fade-in');
+                fadeElements.forEach(element => {
+                    observer.observe(element);
+                });
+                
+                return () => {
+                    fadeElements.forEach(element => {
+                        observer.unobserve(element);
+                    });
+                };
+            }, []);
+            
+            // Update active section on scroll
+            useEffect(() => {
+                const handleScroll = () => {
+                    const sections = ['home', 'features', 'script', 'about'];
+                    const scrollPosition = window.scrollY + 100;
+                    
+                    for (const sectionId of sections) {
+                        const element = document.getElementById(sectionId);
+                        if (element && scrollPosition >= element.offsetTop) {
+                            setActiveSection(sectionId);
+                        }
+                    }
+                };
+                
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+            
+            return (
+                <div className="app">
+                    <BackgroundAnimation />
+                    <Header 
+                        activeSection={activeSection}
+                        onNavClick={handleNavClick}
+                    />
+                    <Hero onNavClick={handleNavClick} />
+                    <Features />
+                    <ScriptSection />
+                    <About />
+                    <Footer />
+                </div>
+            );
+        }
+
+        // Render the App
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
