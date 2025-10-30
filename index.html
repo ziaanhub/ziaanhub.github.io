@@ -1079,14 +1079,84 @@
 
     <script type="text/babel">
         // React Components
-        const { useState, useEffect, useRef } = React;
+        const { useState, useEffect, useRef, useCallback, useMemo } = React;
+
+        // Custom Hooks
+        const useLocalStorage = (key, initialValue) => {
+            const [storedValue, setStoredValue] = useState(() => {
+                try {
+                    const item = window.localStorage.getItem(key);
+                    return item ? JSON.parse(item) : initialValue;
+                } catch (error) {
+                    console.error(`Error reading localStorage key "${key}":`, error);
+                    return initialValue;
+                }
+            });
+
+            const setValue = (value) => {
+                try {
+                    setStoredValue(value);
+                    window.localStorage.setItem(key, JSON.stringify(value));
+                } catch (error) {
+                    console.error(`Error setting localStorage key "${key}":`, error);
+                }
+            };
+
+            return [storedValue, setValue];
+        };
+
+        const useScrollDirection = () => {
+            const [scrollDirection, setScrollDirection] = useState('up');
+            const [lastScrollY, setLastScrollY] = useState(0);
+
+            useEffect(() => {
+                const updateScrollDirection = () => {
+                    const scrollY = window.scrollY;
+                    const direction = scrollY > lastScrollY ? 'down' : 'up';
+                    
+                    if (direction !== scrollDirection && (scrollY - lastScrollY > 10 || scrollY - lastScrollY < -10)) {
+                        setScrollDirection(direction);
+                    }
+                    setLastScrollY(scrollY > 0 ? scrollY : 0);
+                };
+
+                window.addEventListener('scroll', updateScrollDirection, { passive: true });
+                return () => window.removeEventListener('scroll', updateScrollDirection);
+            }, [scrollDirection, lastScrollY]);
+
+            return scrollDirection;
+        };
+
+        const useIntersectionObserver = (threshold = 0.1, rootMargin = '0px 0px -50px 0px') => {
+            const [elements, setElements] = useState([]);
+            
+            useEffect(() => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, { threshold, rootMargin });
+
+                const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
+                animatedElements.forEach(element => {
+                    observer.observe(element);
+                });
+
+                return () => {
+                    animatedElements.forEach(element => {
+                        observer.unobserve(element);
+                    });
+                };
+            }, [threshold, rootMargin]);
+            
+            return setElements;
+        };
 
         // Advanced Background Animation Component
         function BackgroundAnimation() {
-            const [particles, setParticles] = useState([]);
-            
-            useEffect(() => {
-                // Create particles
+            const particles = useMemo(() => {
                 const newParticles = [];
                 for (let i = 0; i < 30; i++) {
                     newParticles.push({
@@ -1097,7 +1167,7 @@
                         animationDuration: Math.random() * 10 + 15
                     });
                 }
-                setParticles(newParticles);
+                return newParticles;
             }, []);
             
             return (
@@ -1130,51 +1200,33 @@
         // Advanced Header Component
         function Header({ activeSection, onNavClick, darkMode, toggleDarkMode }) {
             const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-            const [scrolled, setScrolled] = useState(false);
-            const [visible, setVisible] = useState(true);
-            const [lastScrollY, setLastScrollY] = useState(0);
+            const scrollDirection = useScrollDirection();
+            const headerRef = useRef(null);
             
-            const navItems = [
+            const navItems = useMemo(() => [
                 { id: 'home', label: 'Home' },
                 { id: 'features', label: 'Features' },
                 { id: 'script', label: 'Script' },
                 { id: 'about', label: 'About' }
-            ];
+            ], []);
             
-            useEffect(() => {
-                const handleScroll = () => {
-                    const currentScrollY = window.scrollY;
-                    
-                    if (currentScrollY > 100) {
-                        setScrolled(true);
-                    } else {
-                        setScrolled(false);
-                    }
-                    
-                    if (currentScrollY > lastScrollY && currentScrollY > 100) {
-                        setVisible(false);
-                    } else {
-                        setVisible(true);
-                    }
-                    
-                    setLastScrollY(currentScrollY);
-                };
-                
-                window.addEventListener('scroll', handleScroll, { passive: true });
-                return () => window.removeEventListener('scroll', handleScroll);
-            }, [lastScrollY]);
+            const toggleMobileMenu = useCallback(() => {
+                setMobileMenuOpen(prev => !prev);
+            }, []);
             
-            const toggleMobileMenu = () => {
-                setMobileMenuOpen(!mobileMenuOpen);
-            };
-            
-            const handleNavClick = (sectionId) => {
+            const handleNavClick = useCallback((sectionId) => {
                 onNavClick(sectionId);
                 setMobileMenuOpen(false);
-            };
+            }, [onNavClick]);
             
             return (
-                <header className={`${scrolled ? 'scrolled' : ''} ${visible ? 'visible' : ''}`}>
+                <header 
+                    ref={headerRef}
+                    className={`
+                        ${scrollDirection === 'down' ? 'scrolled' : ''} 
+                        ${scrollDirection === 'up' ? 'visible' : ''}
+                    `}
+                >
                     <div className="container">
                         <div className="nav-container">
                             <a href="#" className="logo">
@@ -1250,7 +1302,7 @@
 
         // Advanced Features Section Component
         function Features() {
-            const features = [
+            const features = useMemo(() => [
                 {
                     icon: 'fas fa-bolt',
                     title: 'High Performance',
@@ -1281,7 +1333,7 @@
                     title: 'Stealth Mode',
                     description: 'Advanced stealth features to avoid detection by other players and reporting systems.'
                 }
-            ];
+            ], []);
             
             return (
                 <section className="section" id="features">
@@ -1314,7 +1366,7 @@
             const [copied, setCopied] = useState(false);
             const scriptCode = 'loadstring(game:HttpGet("https://ziaanhub.github.io/ziaanhub.lua"))()';
             
-            const copyToClipboard = async () => {
+            const copyToClipboard = useCallback(async () => {
                 try {
                     await navigator.clipboard.writeText(scriptCode);
                     setCopied(true);
@@ -1331,7 +1383,7 @@
                     setCopied(true);
                     setTimeout(() => setCopied(false), 2000);
                 }
-            };
+            }, [scriptCode]);
             
             return (
                 <section className="section" id="script">
@@ -1354,6 +1406,7 @@
                                         href="https://ziaanhub.github.io/ziaanhub/base/view.lua" 
                                         className="btn btn-outline" 
                                         target="_blank"
+                                        rel="noopener noreferrer"
                                     >
                                         <i className="fas fa-external-link-alt"></i>
                                         View Raw
@@ -1404,7 +1457,7 @@
 
         // Advanced About Section Component
         function About() {
-            const socialLinks = [
+            const socialLinks = useMemo(() => [
                 { 
                     icon: 'fab fa-youtube', 
                     url: 'https://youtube.com/@ziaandev',
@@ -1425,7 +1478,7 @@
                     url: 'https://github.com/ziaanhub',
                     label: 'GitHub'
                 }
-            ];
+            ], []);
             
             return (
                 <section className="section" id="about">
@@ -1462,6 +1515,7 @@
                                             href={link.url} 
                                             className="social-link" 
                                             target="_blank"
+                                            rel="noopener noreferrer"
                                             aria-label={link.label}
                                         >
                                             <i className={link.icon}></i>
@@ -1511,7 +1565,7 @@
                             </div>
                             
                             <div className="footer-links">
-                                <h3 style={{color: var(--text), marginBottom: '1rem'}}>Quick Links</h3>
+                                <h3 style={{color: 'var(--text)', marginBottom: '1rem'}}>Quick Links</h3>
                                 <a href="#home" className="footer-link">
                                     <i className="fas fa-home"></i>
                                     Home
@@ -1531,7 +1585,7 @@
                             </div>
                             
                             <div className="footer-links">
-                                <h3 style={{color: var(--text), marginBottom: '1rem'}}>Resources</h3>
+                                <h3 style={{color: 'var(--text)', marginBottom: '1rem'}}>Resources</h3>
                                 <a href="#" className="footer-link">
                                     <i className="fas fa-book"></i>
                                     Documentation
@@ -1560,46 +1614,79 @@
             );
         }
 
+        // Loading Screen Component
+        function LoadingScreen() {
+            return (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'var(--background)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 9999,
+                    flexDirection: 'column',
+                    gap: '2rem'
+                }}>
+                    <img 
+                        src="https://files.catbox.moe/7w5wvx.png" 
+                        alt="ZiaanHub Logo" 
+                        style={{ 
+                            height: '80px', 
+                            filter: 'drop-shadow(0 0 10px rgba(139, 0, 0, 0.5))',
+                            animation: 'pulse 2s infinite'
+                        }}
+                    />
+                    <div style={{
+                        width: '60px',
+                        height: '60px',
+                        border: '5px solid rgba(139, 0, 0, 0.3)',
+                        borderTop: '5px solid var(--primary)',
+                        borderRadius: '50%',
+                        animation: 'spin 1s linear infinite'
+                    }}></div>
+                    <style>{`
+                        @keyframes spin {
+                            0% { transform: rotate(0deg); }
+                            100% { transform: rotate(360deg); }
+                        }
+                    `}</style>
+                </div>
+            );
+        }
+
         // Advanced Main App Component
         function App() {
-            const [darkMode, setDarkMode] = useState(false);
+            const [darkMode, setDarkMode] = useLocalStorage('theme', false);
             const [activeSection, setActiveSection] = useState('home');
             const [isLoading, setIsLoading] = useState(true);
             
-            // Initialize theme from localStorage or default to light
+            // Initialize theme and setup
             useEffect(() => {
-                const savedTheme = localStorage.getItem('theme');
-                
-                if (savedTheme === 'dark') {
-                    setDarkMode(true);
+                if (darkMode) {
                     document.body.classList.add('dark-mode');
                 } else {
-                    setDarkMode(false);
                     document.body.classList.remove('dark-mode');
                 }
                 
                 // Simulate loading
-                setTimeout(() => {
+                const timer = setTimeout(() => {
                     setIsLoading(false);
                 }, 1500);
-            }, []);
+                
+                return () => clearTimeout(timer);
+            }, [darkMode]);
             
             // Toggle dark/light mode
-            const toggleDarkMode = () => {
-                const newDarkMode = !darkMode;
-                setDarkMode(newDarkMode);
-                
-                if (newDarkMode) {
-                    document.body.classList.add('dark-mode');
-                    localStorage.setItem('theme', 'dark');
-                } else {
-                    document.body.classList.remove('dark-mode');
-                    localStorage.setItem('theme', 'light');
-                }
-            };
+            const toggleDarkMode = useCallback(() => {
+                setDarkMode(prevMode => !prevMode);
+            }, [setDarkMode]);
             
             // Handle navigation click
-            const handleNavClick = (sectionId) => {
+            const handleNavClick = useCallback((sectionId) => {
                 setActiveSection(sectionId);
                 const element = document.getElementById(sectionId);
                 if (element) {
@@ -1608,33 +1695,6 @@
                         behavior: 'smooth'
                     });
                 }
-            };
-            
-            // Scroll animation observer
-            useEffect(() => {
-                const observerOptions = {
-                    threshold: 0.1,
-                    rootMargin: '0px 0px -50px 0px'
-                };
-                
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('visible');
-                        }
-                    });
-                }, observerOptions);
-                
-                const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
-                animatedElements.forEach(element => {
-                    observer.observe(element);
-                });
-                
-                return () => {
-                    animatedElements.forEach(element => {
-                        observer.unobserve(element);
-                    });
-                };
             }, []);
             
             // Update active section on scroll
@@ -1655,38 +1715,12 @@
                 return () => window.removeEventListener('scroll', handleScroll);
             }, []);
             
+            // Setup intersection observer for animations
+            useIntersectionObserver();
+            
             // Loading screen
             if (isLoading) {
-                return (
-                    <div style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        backgroundColor: 'var(--background)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        zIndex: 9999,
-                        flexDirection: 'column',
-                        gap: '2rem'
-                    }}>
-                        <img 
-                            src="https://files.catbox.moe/7w5wvx.png" 
-                            alt="ZiaanHub Logo" 
-                            style={{ height: '80px', filter: 'drop-shadow(0 0 10px rgba(139, 0, 0, 0.5))' }}
-                        />
-                        <div style={{
-                            width: '60px',
-                            height: '60px',
-                            border: '5px solid rgba(139, 0, 0, 0.3)',
-                            borderTop: '5px solid var(--primary)',
-                            borderRadius: '50%',
-                            animation: 'spin 1s linear infinite'
-                        }}></div>
-                    </div>
-                );
+                return <LoadingScreen />;
             }
             
             return (
