@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZiaanHub</title>
-    <meta name="description" content="ZiaanHub - Platform script eksklusif untuk exploit game Roblox dengan performa tinggi dan keamanan terjamin.">
+    <title>ZiaanHub - Roblox Exploit Script Platform</title>
+    <meta name="description" content="ZiaanHub - Exclusive script platform for Roblox game exploits with high performance and guaranteed security.">
     <meta name="author" content="ziaandev">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -73,13 +73,21 @@
             transform: translate(-50%, -50%);
             width: 40vmin;
             height: 40vmin;
-            background: radial-gradient(circle, #000000 0%, #1a0000 30%, #330000 60%, #660000 100%);
+            background: radial-gradient(circle, 
+                #000000 0%, 
+                #1a0000 15%, 
+                #330000 30%, 
+                #660000 50%, 
+                #8B0000 70%, 
+                #A52A2A 85%, 
+                transparent 100%);
             border-radius: 50%;
             box-shadow: 
                 0 0 80px rgba(139, 0, 0, 0.8),
                 0 0 160px rgba(139, 0, 0, 0.6),
                 0 0 240px rgba(139, 0, 0, 0.4);
             animation: pulse 8s ease-in-out infinite alternate;
+            filter: blur(0.5px);
         }
 
         .blackhole-accretion {
@@ -91,12 +99,17 @@
             height: 70vmin;
             border-radius: 50%;
             background: 
-                repeating-conic-gradient(
-                    from 0deg,
-                    transparent 0deg 10deg,
-                    rgba(139, 0, 0, 0.3) 10deg 20deg
-                );
-            animation: rotate 30s linear infinite;
+                radial-gradient(circle at 30% 30%, 
+                    rgba(255, 107, 107, 0.3) 0%, 
+                    rgba(165, 42, 42, 0.2) 20%, 
+                    rgba(139, 0, 0, 0.1) 40%, 
+                    transparent 70%),
+                radial-gradient(circle at 70% 70%, 
+                    rgba(255, 107, 107, 0.2) 0%, 
+                    rgba(165, 42, 42, 0.15) 20%, 
+                    rgba(139, 0, 0, 0.1) 40%, 
+                    transparent 70%);
+            animation: rotate 25s linear infinite;
             filter: blur(1px);
         }
 
@@ -109,12 +122,17 @@
             height: 100vmin;
             border-radius: 50%;
             background: 
-                repeating-conic-gradient(
-                    from 0deg,
-                    transparent 0deg 15deg,
-                    rgba(255, 107, 107, 0.2) 15deg 30deg
-                );
-            animation: rotate 45s linear infinite reverse;
+                radial-gradient(circle at 20% 20%, 
+                    rgba(255, 107, 107, 0.15) 0%, 
+                    rgba(165, 42, 42, 0.1) 15%, 
+                    rgba(139, 0, 0, 0.05) 30%, 
+                    transparent 60%),
+                radial-gradient(circle at 80% 80%, 
+                    rgba(255, 107, 107, 0.1) 0%, 
+                    rgba(165, 42, 42, 0.07) 15%, 
+                    rgba(139, 0, 0, 0.03) 30%, 
+                    transparent 60%);
+            animation: rotate 40s linear infinite reverse;
             filter: blur(2px);
         }
 
@@ -126,16 +144,37 @@
             width: 120vmin;
             height: 120vmin;
             border-radius: 50%;
-            background: radial-gradient(circle, transparent 40%, rgba(139, 0, 0, 0.1) 70%, transparent 100%);
+            background: 
+                radial-gradient(circle, 
+                    rgba(255, 107, 107, 0.1) 0%, 
+                    rgba(139, 0, 0, 0.05) 30%, 
+                    transparent 70%);
             animation: pulse-glow 12s ease-in-out infinite alternate;
+            filter: blur(5px);
         }
 
-        .blackhole-particles {
+        .blackhole-energy {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150vmin;
+            height: 150vmin;
+            border-radius: 50%;
+            background: 
+                conic-gradient(
+                    from 0deg at 50% 50%,
+                    rgba(255, 107, 107, 0.1) 0%,
+                    rgba(165, 42, 42, 0.05) 15%,
+                    rgba(139, 0, 0, 0.03) 30%,
+                    transparent 50%,
+                    rgba(139, 0, 0, 0.03) 70%,
+                    rgba(165, 42, 42, 0.05) 85%,
+                    rgba(255, 107, 107, 0.1) 100%
+                );
+            animation: rotate 60s linear infinite;
+            filter: blur(8px);
+            opacity: 0.7;
         }
 
         @keyframes rotate {
@@ -673,6 +712,9 @@
             box-shadow: var(--shadow-lg);
             border: 1px solid var(--border);
             transition: var(--transition);
+            position: relative;
+            height: 300px;
+            background-color: var(--primary-dark);
         }
 
         .about-image:hover {
@@ -682,8 +724,59 @@
 
         .about-image img {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover;
             display: block;
+        }
+
+        .thumbnail-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .thumbnail-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .thumbnail-input {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .thumbnail-input input {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .thumbnail-input button {
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .thumbnail-input button:hover {
+            background: var(--primary-light);
         }
 
         /* Social Links */
@@ -871,6 +964,15 @@
                 width: 150vmin;
                 height: 150vmin;
             }
+
+            .blackhole-energy {
+                width: 180vmin;
+                height: 180vmin;
+            }
+
+            .thumbnail-input {
+                flex-direction: column;
+            }
         }
 
         @media (max-width: 480px) {
@@ -934,6 +1036,7 @@
                 <>
                     <div className="nebula-background"></div>
                     <div className="blackhole-background">
+                        <div className="blackhole-energy"></div>
                         <div className="blackhole-glow"></div>
                         <div className="blackhole-accretion-outer"></div>
                         <div className="blackhole-accretion"></div>
@@ -988,6 +1091,7 @@
                                     alt="ZiaanHub Logo" 
                                     className="logo-image"
                                 />
+                                <span>ZiaanHub</span>
                             </a>
                             
                             <ul className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
@@ -1026,7 +1130,7 @@
                         <div className="hero-content">
                             <h1 className="hero-title">ZiaanHub</h1>
                             <p className="hero-subtitle">
-                                Platform script eksklusif untuk exploit game Roblox dengan performa tinggi dan keamanan terjamin.
+                                Exclusive script platform for Roblox game exploits with high performance and guaranteed security.
                             </p>
                             <div className="hero-actions">
                                 <button 
@@ -1034,14 +1138,14 @@
                                     onClick={() => onNavClick('script')}
                                 >
                                     <i className="fas fa-code"></i>
-                                    Dapatkan Script
+                                    Get Script
                                 </button>
                                 <button 
                                     className="btn btn-secondary"
                                     onClick={() => onNavClick('about')}
                                 >
                                     <i className="fas fa-info-circle"></i>
-                                    Tentang Kami
+                                    About Us
                                 </button>
                             </div>
                         </div>
@@ -1056,32 +1160,32 @@
                 {
                     icon: 'fas fa-bolt',
                     title: 'High Performance',
-                    description: 'Script yang dioptimalkan untuk performa maksimal dengan dampak minimal pada FPS game.'
+                    description: 'Optimized scripts for maximum performance with minimal impact on game FPS.'
                 },
                 {
                     icon: 'fas fa-shield-alt',
                     title: 'Anti-Detection',
-                    description: 'Teknologi canggih untuk menghindari deteksi sistem anti-cheat Roblox.'
+                    description: 'Advanced technology to avoid detection by Roblox anti-cheat systems.'
                 },
                 {
                     icon: 'fas fa-sync',
                     title: 'Auto Update',
-                    description: 'Script selalu diperbarui secara otomatis untuk kompatibilitas dengan update game terbaru.'
+                    description: 'Scripts are always automatically updated for compatibility with the latest game updates.'
                 },
                 {
                     icon: 'fas fa-gamepad',
                     title: 'Multi-Game Support',
-                    description: 'Mendukung berbagai game Roblox populer dengan fitur khusus untuk setiap game.'
+                    description: 'Supports various popular Roblox games with specific features for each game.'
                 },
                 {
                     icon: 'fas fa-cogs',
                     title: 'Customizable',
-                    description: 'Antarmuka yang mudah digunakan dengan opsi kustomisasi yang lengkap.'
+                    description: 'User-friendly interface with comprehensive customization options.'
                 },
                 {
                     icon: 'fas fa-user-secret',
                     title: 'Stealth Mode',
-                    description: 'Mode siluman untuk menghindari laporan pemain lain saat menggunakan script.'
+                    description: 'Stealth mode to avoid being reported by other players while using scripts.'
                 }
             ];
             
@@ -1089,9 +1193,9 @@
                 <section className="section" id="features">
                     <div className="container">
                         <div className="section-header fade-in">
-                            <h2 className="section-title">Fitur Unggulan ZiaanHub</h2>
+                            <h2 className="section-title">ZiaanHub Premium Features</h2>
                             <p className="section-subtitle">
-                                Nikmati pengalaman gaming yang tak tertandingi dengan fitur-fitur eksklusif kami.
+                                Enjoy an unparalleled gaming experience with our exclusive features.
                             </p>
                         </div>
                         
@@ -1141,7 +1245,7 @@
                         <div className="section-header fade-in">
                             <h2 className="section-title">ZiaanHub Loader</h2>
                             <p className="section-subtitle">
-                                Salin script di bawah ini dan eksekusi di executor pilihan Anda.
+                                Copy the script below and execute it in your preferred executor.
                             </p>
                         </div>
                         
@@ -1175,11 +1279,11 @@
                         </div>
                         
                         <div className="disclaimer fade-in">
-                            <h4 className="disclaimer-title">Penting: Baca Sebelum Menggunakan</h4>
+                            <h4 className="disclaimer-title">Important: Read Before Using</h4>
                             <p className="disclaimer-text">
-                                Script ini ditujukan untuk penggunaan pribadi dan edukasi. Pengguna bertanggung jawab penuh atas penggunaan script ini. 
-                                Kami tidak menganjurkan penggunaan script untuk merugikan pemain lain atau melanggar ToS Roblox. 
-                                Gunakan dengan bijak dan risiko sendiri.
+                                This script is intended for personal use and educational purposes. Users are fully responsible for their use of this script. 
+                                We do not recommend using scripts to harm other players or violate Roblox ToS. 
+                                Use wisely and at your own risk.
                             </p>
                         </div>
                     </div>
@@ -1189,6 +1293,9 @@
 
         // About Section Component
         function About() {
+            const [thumbnailUrl, setThumbnailUrl] = useState('');
+            const [customThumbnail, setCustomThumbnail] = useState('');
+            
             const socialLinks = [
                 { 
                     icon: 'fab fa-youtube', 
@@ -1212,32 +1319,38 @@
                 }
             ];
             
+            const handleThumbnailChange = () => {
+                if (customThumbnail.trim() !== '') {
+                    setThumbnailUrl(customThumbnail);
+                }
+            };
+            
             return (
                 <section className="section" id="about">
                     <div className="container">
                         <div className="section-header fade-in">
-                            <h2 className="section-title">Tentang ZiaanHub</h2>
+                            <h2 className="section-title">About ZiaanHub</h2>
                             <p className="section-subtitle">
-                                Platform script eksklusif untuk pengalaman gaming yang tak tertandingi.
+                                Exclusive script platform for an unparalleled gaming experience.
                             </p>
                         </div>
                         
                         <div className="about-content fade-in">
                             <div className="about-text">
                                 <p>
-                                    ZiaanHub adalah platform script eksklusif yang dikembangkan untuk memberikan 
-                                    pengalaman gaming terbaik di Roblox. Dengan fokus pada performa, keamanan, 
-                                    dan kemudahan penggunaan, script kami dirancang untuk memenuhi kebutuhan 
-                                    berbagai jenis pemain.
+                                    ZiaanHub is an exclusive script platform developed to provide 
+                                    the best gaming experience in Roblox. With a focus on performance, security, 
+                                    and ease of use, our scripts are designed to meet the needs of 
+                                    various types of players.
                                 </p>
                                 <p>
-                                    Tim developer kami terus bekerja untuk memperbarui dan meningkatkan script 
-                                    agar tetap kompatibel dengan update terbaru Roblox dan menyediakan fitur-fitur 
-                                    terbaru yang diinginkan oleh komunitas.
+                                    Our developer team continuously works to update and improve scripts 
+                                    to remain compatible with the latest Roblox updates and provide the 
+                                    latest features requested by the community.
                                 </p>
                                 <p>
-                                    Bergabunglah dengan komunitas kami untuk mendapatkan dukungan, berbagi pengalaman, 
-                                    dan tetap update dengan perkembangan terbaru ZiaanHub.
+                                    Join our community to get support, share experiences, 
+                                    and stay updated with the latest ZiaanHub developments.
                                 </p>
                                 
                                 <div className="social-links">
@@ -1256,16 +1369,24 @@
                             </div>
                             
                             <div className="about-image">
-                                <div style={{
-                                    width: '100%', 
-                                    height: '300px', 
-                                    background: 'linear-gradient(135deg, #8B0000, #660000)', 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
-                                    justifyContent: 'center', 
-                                    color: 'white'
-                                }}>
-                                    <i className="fas fa-bolt" style={{fontSize: '4rem'}}></i>
+                                {thumbnailUrl ? (
+                                    <img src={thumbnailUrl} alt="Custom Thumbnail" />
+                                ) : (
+                                    <div className="thumbnail-placeholder">
+                                        <i className="fas fa-image"></i>
+                                        <span>Custom Thumbnail</span>
+                                    </div>
+                                )}
+                                <div className="thumbnail-input">
+                                    <input 
+                                        type="text" 
+                                        placeholder="Paste image URL here..." 
+                                        value={customThumbnail}
+                                        onChange={(e) => setCustomThumbnail(e.target.value)}
+                                    />
+                                    <button onClick={handleThumbnailChange}>
+                                        <i className="fas fa-upload"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -1282,7 +1403,7 @@
                         <div className="footer-content">
                             <div className="footer-text">
                                 <p>&copy; 2025 ZiaanHub. All rights reserved.</p>
-                                <p>Platform script eksklusif untuk Roblox</p>
+                                <p>Exclusive script platform for Roblox</p>
                             </div>
                             <div className="footer-links">
                                 <a href="#" className="footer-link">Privacy Policy</a>
