@@ -31,19 +31,8 @@
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.7), 0 2px 4px -1px rgba(0, 0, 0, 0.5);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7), 0 4px 6px -2px rgba(0, 0, 0, 0.5);
             --radius: 8px;
-            --transition: all 0.3s ease;
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             --glow: 0 0 15px rgba(139, 0, 0, 0.5);
-        }
-
-        .light-mode {
-            --background: #f8fafc;
-            --surface: #ffffff;
-            --text: #1e293b;
-            --text-light: #64748b;
-            --text-muted: #94a3b8;
-            --border: #e2e8f0;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
 
         * {
@@ -54,6 +43,7 @@
 
         html {
             scroll-behavior: smooth;
+            cursor: none;
         }
 
         body {
@@ -63,21 +53,94 @@
             line-height: 1.6;
             transition: var(--transition);
             overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        }
+
+        .cursor-follower {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: 2px solid rgba(139, 0, 0, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.3s ease, border 0.3s ease;
+        }
+
+        .cursor.hover, .cursor-follower.hover {
+            transform: scale(1.5);
+            background: var(--accent);
+            border-color: var(--accent);
         }
 
         /* Background Animation */
-        .bg-animation {
+        .aurora-background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(139, 0, 0, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(139, 0, 0, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(139, 0, 0, 0.05) 0%, transparent 50%);
-            background-color: var(--background);
+            overflow: hidden;
+        }
+
+        .aurora-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.5;
+            filter: blur(60px);
+        }
+
+        .aurora-1 {
+            background: radial-gradient(ellipse at 20% 50%, rgba(139, 0, 0, 0.4) 0%, transparent 50%),
+                       radial-gradient(ellipse at 80% 20%, rgba(255, 107, 107, 0.3) 0%, transparent 50%);
+            animation: auroraFloat 15s ease-in-out infinite alternate;
+        }
+
+        .aurora-2 {
+            background: radial-gradient(ellipse at 60% 80%, rgba(165, 42, 42, 0.3) 0%, transparent 50%),
+                       radial-gradient(ellipse at 40% 10%, rgba(139, 0, 0, 0.2) 0%, transparent 50%);
+            animation: auroraFloat 20s ease-in-out infinite alternate-reverse;
+        }
+
+        .aurora-3 {
+            background: radial-gradient(ellipse at 30% 30%, rgba(255, 107, 107, 0.2) 0%, transparent 50%),
+                       radial-gradient(ellipse at 70% 60%, rgba(139, 0, 0, 0.3) 0%, transparent 50%);
+            animation: auroraFloat 25s ease-in-out infinite alternate;
+        }
+
+        @keyframes auroraFloat {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(5%, 3%) scale(1.05);
+            }
+            66% {
+                transform: translate(-3%, 5%) scale(0.95);
+            }
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
         }
 
         .container {
@@ -101,10 +164,6 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .light-mode header {
-            background-color: rgba(255, 255, 255, 0.9);
-        }
-
         .nav-container {
             display: flex;
             justify-content: space-between;
@@ -126,6 +185,12 @@
             height: 40px;
             width: auto;
             filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.5));
+            transition: var(--transition);
+        }
+
+        .logo:hover .logo-image {
+            filter: drop-shadow(0 0 10px rgba(139, 0, 0, 0.8));
+            transform: scale(1.05);
         }
 
         .nav-links {
@@ -159,35 +224,24 @@
             width: 100%;
             height: 2px;
             background-color: var(--accent);
+            transform: scaleX(1);
+            transition: transform 0.3s ease;
         }
 
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
         }
 
-        .theme-toggle {
-            background: none;
-            border: none;
-            color: var(--text);
-            cursor: pointer;
-            font-size: 1.25rem;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-        }
-
-        .theme-toggle:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .light-mode .theme-toggle:hover {
-            background-color: rgba(0, 0, 0, 0.05);
+        .nav-link:hover::after {
+            transform: scaleX(1);
         }
 
         .mobile-menu-btn {
@@ -197,6 +251,11 @@
             color: var(--text);
             font-size: 1.5rem;
             cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .mobile-menu-btn:hover {
+            color: var(--accent);
         }
 
         /* Hero Section */
@@ -263,9 +322,26 @@
             font-weight: 600;
             text-decoration: none;
             transition: var(--transition);
-            cursor: pointer;
+            cursor: none;
             border: none;
             font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn-primary {
@@ -276,7 +352,7 @@
 
         .btn-primary:hover {
             background: linear-gradient(135deg, var(--primary-light), var(--primary));
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.02);
             box-shadow: var(--shadow-lg), var(--glow);
         }
 
@@ -289,16 +365,7 @@
 
         .btn-secondary:hover {
             background-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .light-mode .btn-secondary {
-            background-color: rgba(0, 0, 0, 0.05);
-            color: var(--text);
-        }
-
-        .light-mode .btn-secondary:hover {
-            background-color: rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px) scale(1.02);
         }
 
         .btn-outline {
@@ -310,7 +377,7 @@
         .btn-outline:hover {
             background-color: var(--primary);
             color: white;
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.02);
             box-shadow: var(--glow);
         }
 
@@ -354,6 +421,7 @@
             border: 1px solid var(--border);
             position: relative;
             overflow: hidden;
+            cursor: none;
         }
 
         .feature-card::before {
@@ -367,7 +435,7 @@
         }
 
         .feature-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.02);
             box-shadow: var(--shadow-lg), var(--glow);
         }
 
@@ -383,6 +451,12 @@
             color: white;
             font-size: 1.75rem;
             box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: var(--shadow-lg), var(--glow);
         }
 
         .feature-title {
@@ -406,6 +480,7 @@
             margin: 0 auto;
             border: 1px solid var(--border);
             position: relative;
+            cursor: none;
         }
 
         .script-container::before {
@@ -426,10 +501,6 @@
             align-items: center;
             justify-content: space-between;
             border-bottom: 1px solid var(--border);
-        }
-
-        .light-mode .script-header {
-            background-color: rgba(139, 0, 0, 0.05);
         }
 
         .script-title {
@@ -468,7 +539,7 @@
             border-radius: 4px;
             padding: 0.5rem 1rem;
             font-size: 0.875rem;
-            cursor: pointer;
+            cursor: none;
             transition: var(--transition);
             display: flex;
             align-items: center;
@@ -477,6 +548,7 @@
 
         .copy-btn:hover {
             background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
         }
 
         .copy-btn.copied {
@@ -504,6 +576,13 @@
             overflow: hidden;
             box-shadow: var(--shadow-lg);
             border: 1px solid var(--border);
+            transition: var(--transition);
+            cursor: none;
+        }
+
+        .about-image:hover {
+            transform: scale(1.03);
+            box-shadow: var(--shadow-lg), var(--glow);
         }
 
         .about-image img {
@@ -533,12 +612,13 @@
             transition: var(--transition);
             box-shadow: var(--shadow);
             border: 1px solid var(--border);
+            cursor: none;
         }
 
         .social-link:hover {
             background-color: var(--primary);
             color: white;
-            transform: translateY(-3px);
+            transform: translateY(-5px) scale(1.1);
             box-shadow: var(--shadow-lg), var(--glow);
         }
 
@@ -550,10 +630,13 @@
             border-radius: var(--radius);
             margin-top: 3rem;
             border: 1px solid var(--border);
+            transition: var(--transition);
+            cursor: none;
         }
 
-        .light-mode .disclaimer {
-            background-color: rgba(139, 0, 0, 0.05);
+        .disclaimer:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
         }
 
         .disclaimer-title {
@@ -605,10 +688,12 @@
             color: var(--text-light);
             text-decoration: none;
             transition: var(--transition);
+            cursor: none;
         }
 
         .footer-link:hover {
             color: var(--accent);
+            transform: translateY(-2px);
         }
 
         /* Animation Classes */
@@ -623,8 +708,51 @@
             transform: translateY(0);
         }
 
+        /* Particle Background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(139, 0, 0, 0.1);
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000%) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
         /* Mobile Styles */
         @media (max-width: 768px) {
+            html {
+                cursor: auto;
+            }
+
+            .cursor, .cursor-follower {
+                display: none;
+            }
+
             .nav-links {
                 display: none;
                 position: absolute;
@@ -713,13 +841,108 @@
         // React Components
         const { useState, useEffect, useRef } = React;
 
+        // Custom Cursor Component
+        function CustomCursor() {
+            const [position, setPosition] = useState({ x: 0, y: 0 });
+            const [hover, setHover] = useState(false);
+            
+            useEffect(() => {
+                const handleMouseMove = (e) => {
+                    setPosition({ x: e.clientX, y: e.clientY });
+                };
+                
+                const handleMouseOver = (e) => {
+                    if (e.target.matches('button, a, .feature-card, .social-link, .script-container, .about-image, .disclaimer')) {
+                        setHover(true);
+                    }
+                };
+                
+                const handleMouseOut = (e) => {
+                    if (e.target.matches('button, a, .feature-card, .social-link, .script-container, .about-image, .disclaimer')) {
+                        setHover(false);
+                    }
+                };
+                
+                document.addEventListener('mousemove', handleMouseMove);
+                document.addEventListener('mouseover', handleMouseOver);
+                document.addEventListener('mouseout', handleMouseOut);
+                
+                return () => {
+                    document.removeEventListener('mousemove', handleMouseMove);
+                    document.removeEventListener('mouseover', handleMouseOver);
+                    document.removeEventListener('mouseout', handleMouseOut);
+                };
+            }, []);
+            
+            return (
+                <>
+                    <div 
+                        className={`cursor ${hover ? 'hover' : ''}`}
+                        style={{
+                            left: `${position.x}px`,
+                            top: `${position.y}px`,
+                            transform: `translate(-50%, -50%)`
+                        }}
+                    ></div>
+                    <div 
+                        className={`cursor-follower ${hover ? 'hover' : ''}`}
+                        style={{
+                            left: `${position.x}px`,
+                            top: `${position.y}px`,
+                            transform: `translate(-50%, -50%)`
+                        }}
+                    ></div>
+                </>
+            );
+        }
+
         // Background Animation Component
         function BackgroundAnimation() {
-            return <div className="bg-animation"></div>;
+            const [particles, setParticles] = useState([]);
+            
+            useEffect(() => {
+                // Create particles
+                const newParticles = [];
+                for (let i = 0; i < 20; i++) {
+                    newParticles.push({
+                        id: i,
+                        size: Math.random() * 20 + 5,
+                        left: Math.random() * 100,
+                        animationDelay: Math.random() * 15,
+                        animationDuration: Math.random() * 10 + 15
+                    });
+                }
+                setParticles(newParticles);
+            }, []);
+            
+            return (
+                <>
+                    <div className="aurora-background">
+                        <div className="aurora-layer aurora-1"></div>
+                        <div className="aurora-layer aurora-2"></div>
+                        <div className="aurora-layer aurora-3"></div>
+                    </div>
+                    <div className="particles">
+                        {particles.map(particle => (
+                            <div 
+                                key={particle.id}
+                                className="particle"
+                                style={{
+                                    width: `${particle.size}px`,
+                                    height: `${particle.size}px`,
+                                    left: `${particle.left}%`,
+                                    animationDelay: `${particle.animationDelay}s`,
+                                    animationDuration: `${particle.animationDuration}s`
+                                }}
+                            ></div>
+                        ))}
+                    </div>
+                </>
+            );
         }
 
         // Header Component
-        function Header({ activeSection, onNavClick, darkMode, toggleDarkMode }) {
+        function Header({ activeSection, onNavClick }) {
             const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
             
             const navItems = [
@@ -768,9 +991,6 @@
                             </ul>
                             
                             <div className="nav-actions">
-                                <button className="theme-toggle" onClick={toggleDarkMode}>
-                                    <i className={darkMode ? 'fas fa-sun' : 'fas fa-moon'}></i>
-                                </button>
                                 <button className="mobile-menu-btn" onClick={toggleMobileMenu}>
                                     <i className="fas fa-bars"></i>
                                 </button>
@@ -1060,35 +1280,7 @@
 
         // Main App Component
         function App() {
-            const [darkMode, setDarkMode] = useState(true);
             const [activeSection, setActiveSection] = useState('home');
-            
-            // Initialize theme from localStorage or default to dark
-            useEffect(() => {
-                const savedTheme = localStorage.getItem('theme');
-                
-                if (savedTheme === 'light') {
-                    setDarkMode(false);
-                    document.body.classList.add('light-mode');
-                } else {
-                    setDarkMode(true);
-                    document.body.classList.remove('light-mode');
-                }
-            }, []);
-            
-            // Toggle dark/light mode
-            const toggleDarkMode = () => {
-                const newDarkMode = !darkMode;
-                setDarkMode(newDarkMode);
-                
-                if (newDarkMode) {
-                    document.body.classList.remove('light-mode');
-                    localStorage.setItem('theme', 'dark');
-                } else {
-                    document.body.classList.add('light-mode');
-                    localStorage.setItem('theme', 'light');
-                }
-            };
             
             // Handle navigation click
             const handleNavClick = (sectionId) => {
@@ -1144,12 +1336,11 @@
             
             return (
                 <div className="app">
+                    <CustomCursor />
                     <BackgroundAnimation />
                     <Header 
                         activeSection={activeSection}
                         onNavClick={handleNavClick}
-                        darkMode={darkMode}
-                        toggleDarkMode={toggleDarkMode}
                     />
                     <Hero onNavClick={handleNavClick} />
                     <Features />
