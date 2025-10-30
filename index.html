@@ -22,23 +22,6 @@
             --primary-light: #A52A2A;
             --secondary: #333333;
             --accent: #FF6B6B;
-            --background: #0a0a0a;
-            --surface: #1a0b0b;
-            --text: #f0e6e6;
-            --text-light: #c4a3a3;
-            --text-muted: #8a6e6e;
-            --border: #3a1a1a;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.7), 0 2px 4px -1px rgba(0, 0, 0, 0.5);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7), 0 4px 6px -2px rgba(0, 0, 0, 0.5);
-            --radius: 8px;
-            --transition: all 0.3s ease;
-            --glow: 0 0 15px rgba(139, 0, 0, 0.5);
-            --transition-slow: 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --transition-medium: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --transition-fast: 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .light-mode {
             --background: #f8fafc;
             --surface: #ffffff;
             --text: #1e293b;
@@ -47,6 +30,23 @@
             --border: #e2e8f0;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 8px;
+            --transition: all 0.3s ease;
+            --glow: 0 0 15px rgba(139, 0, 0, 0.2);
+            --transition-slow: 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-medium: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-fast: 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .dark-mode {
+            --background: #0f172a;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --text-light: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
         }
 
         * {
@@ -87,7 +87,7 @@
 
         .particle {
             position: absolute;
-            background: radial-gradient(circle, rgba(139, 0, 0, 0.3) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(139, 0, 0, 0.1) 0%, transparent 70%);
             border-radius: 50%;
             animation: float 20s infinite linear;
         }
@@ -183,7 +183,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            background-color: rgba(26, 11, 11, 0.9);
+            background-color: rgba(255, 255, 255, 0.95);
             box-shadow: var(--shadow);
             z-index: 1000;
             transition: var(--transition-slow);
@@ -192,16 +192,16 @@
             transform: translateY(0);
         }
 
+        .dark-mode header {
+            background-color: rgba(30, 41, 59, 0.95);
+        }
+
         header.scrolled {
             transform: translateY(-100%);
         }
 
         header.visible {
             transform: translateY(0);
-        }
-
-        .light-mode header {
-            background-color: rgba(255, 255, 255, 0.9);
         }
 
         .nav-container {
@@ -302,12 +302,12 @@
         }
 
         .theme-toggle:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.05);
             transform: rotate(15deg);
         }
 
-        .light-mode .theme-toggle:hover {
-            background-color: rgba(0, 0, 0, 0.05);
+        .dark-mode .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         .mobile-menu-btn {
@@ -333,6 +333,7 @@
             min-height: 100vh;
             display: flex;
             align-items: center;
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.05) 0%, rgba(255, 107, 107, 0.05) 100%);
         }
 
         .hero-content {
@@ -461,24 +462,23 @@
         }
 
         .btn-secondary {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            backdrop-filter: blur(10px);
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--text);
             border: 1px solid var(--border);
         }
 
         .btn-secondary:hover {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(0, 0, 0, 0.1);
             transform: translateY(-3px);
         }
 
-        .light-mode .btn-secondary {
-            background-color: rgba(0, 0, 0, 0.05);
+        .dark-mode .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.1);
             color: var(--text);
         }
 
-        .light-mode .btn-secondary:hover {
-            background-color: rgba(0, 0, 0, 0.1);
+        .dark-mode .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
         .btn-outline {
@@ -631,7 +631,7 @@
         }
 
         .script-header {
-            background-color: rgba(139, 0, 0, 0.1);
+            background-color: rgba(139, 0, 0, 0.05);
             color: var(--text);
             padding: 1.5rem 2rem;
             display: flex;
@@ -640,8 +640,8 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .light-mode .script-header {
-            background-color: rgba(139, 0, 0, 0.05);
+        .dark-mode .script-header {
+            background-color: rgba(139, 0, 0, 0.1);
         }
 
         .script-title {
@@ -698,9 +698,9 @@
             background-color: #10b981;
         }
 
-        /* Executors Compatibility Section */
-        .executors-compatibility {
-            background: linear-gradient(135deg, rgba(139, 0, 0, 0.1), rgba(178, 34, 34, 0.05));
+        /* Universal Support Section */
+        .universal-support {
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.05), rgba(178, 34, 34, 0.02));
             border-radius: var(--radius);
             padding: 3rem;
             margin-top: 3rem;
@@ -708,18 +708,18 @@
             border: 1px solid var(--border);
         }
 
-        .light-mode .executors-compatibility {
-            background: linear-gradient(135deg, rgba(139, 0, 0, 0.05), rgba(178, 34, 34, 0.02));
+        .dark-mode .universal-support {
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.1), rgba(178, 34, 34, 0.05));
         }
 
-        .compatibility-title {
+        .support-title {
             font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 1rem;
             color: var(--text);
         }
 
-        .compatibility-text {
+        .support-text {
             color: var(--text-light);
             margin-bottom: 2rem;
             max-width: 700px;
@@ -727,60 +727,17 @@
             margin-right: auto;
         }
 
-        .executors-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .executor-badge {
-            background-color: var(--surface);
-            border-radius: var(--radius);
-            padding: 1.5rem 1rem;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            text-align: center;
-            border: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
+        .support-badge {
+            display: inline-flex;
             align-items: center;
             gap: 0.75rem;
-        }
-
-        .executor-badge:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .executor-icon {
-            width: 50px;
-            height: 50px;
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             color: white;
-            font-size: 1.25rem;
-        }
-
-        .executor-name {
+            padding: 1rem 2rem;
+            border-radius: 50px;
             font-weight: 600;
-            color: var(--text);
-        }
-
-        .executor-status {
-            font-size: 0.875rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            background-color: #10b981;
-            color: white;
-        }
-
-        .executor-status.premium {
-            background-color: var(--primary);
+            box-shadow: var(--shadow);
+            margin-top: 1rem;
         }
 
         /* Advanced About Section */
@@ -882,7 +839,7 @@
 
         /* Advanced Disclaimer */
         .disclaimer {
-            background-color: rgba(139, 0, 0, 0.1);
+            background-color: rgba(139, 0, 0, 0.05);
             border-left: 4px solid var(--primary);
             padding: 2rem;
             border-radius: var(--radius);
@@ -899,12 +856,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(139, 0, 0, 0.05), transparent);
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.02), transparent);
             z-index: -1;
         }
 
-        .light-mode .disclaimer {
-            background-color: rgba(139, 0, 0, 0.05);
+        .dark-mode .disclaimer {
+            background-color: rgba(139, 0, 0, 0.1);
         }
 
         .disclaimer-title {
@@ -1095,7 +1052,7 @@
                 font-size: 2rem;
             }
 
-            .features-grid, .executors-grid {
+            .features-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -1111,7 +1068,7 @@
                 justify-content: space-between;
             }
 
-            .executors-compatibility {
+            .universal-support {
                 padding: 2rem 1.5rem;
             }
         }
@@ -1181,7 +1138,6 @@
                 { id: 'home', label: 'Home' },
                 { id: 'features', label: 'Features' },
                 { id: 'script', label: 'Script' },
-                { id: 'executors', label: 'Executors' },
                 { id: 'about', label: 'About' }
             ];
             
@@ -1377,24 +1333,13 @@
                 }
             };
             
-            const executors = [
-                { name: 'Synapse X', status: 'premium' },
-                { name: 'Script-Ware', status: 'premium' },
-                { name: 'Krnl', status: 'free' },
-                { name: 'Fluxus', status: 'free' },
-                { name: 'Oxygen U', status: 'free' },
-                { name: 'Comet', status: 'free' },
-                { name: 'Delta', status: 'free' },
-                { name: 'Electron', status: 'free' }
-            ];
-            
             return (
                 <section className="section" id="script">
                     <div className="container">
                         <div className="section-header fade-in">
                             <h2 className="section-title">ZiaanHub Loader</h2>
                             <p className="section-subtitle">
-                                Copy the script below and execute it in your preferred executor. Our script is compatible with all major executors.
+                                Copy the script below and execute it in your preferred executor. Our script is compatible with all executors.
                             </p>
                         </div>
                         
@@ -1427,26 +1372,17 @@
                             </div>
                         </div>
                         
-                        <div className="executors-compatibility fade-in">
-                            <h3 className="compatibility-title">
+                        <div className="universal-support fade-in">
+                            <h3 className="support-title">
                                 <i className="fas fa-check-circle"></i>
                                 Universal Executor Support
                             </h3>
-                            <p className="compatibility-text">
-                                ZiaanHub scripts are compatible with all major executors. Whether you're using a free or premium executor, our scripts will work seamlessly.
+                            <p className="support-text">
+                                ZiaanHub scripts are compatible with <strong>all executors</strong>. Whether you're using Synapse X, Krnl, Fluxus, Script-Ware, or any other executor, our scripts will work seamlessly without any compatibility issues.
                             </p>
-                            <div className="executors-grid">
-                                {executors.map((executor, index) => (
-                                    <div className="executor-badge" key={index}>
-                                        <div className="executor-icon">
-                                            <i className="fas fa-bolt"></i>
-                                        </div>
-                                        <div className="executor-name">{executor.name}</div>
-                                        <div className={`executor-status ${executor.status}`}>
-                                            {executor.status === 'premium' ? 'Premium' : 'Free'}
-                                        </div>
-                                    </div>
-                                ))}
+                            <div className="support-badge">
+                                <i className="fas fa-bolt"></i>
+                                ZiaanHub Supports All Executors
                             </div>
                         </div>
                         
@@ -1460,76 +1396,6 @@
                                 We do not endorse using scripts to gain unfair advantages, harm other players, or violate Roblox Terms of Service. 
                                 Use responsibly and at your own risk.
                             </p>
-                        </div>
-                    </div>
-                </section>
-            );
-        }
-
-        // Advanced Executors Section Component
-        function Executors() {
-            const executors = [
-                {
-                    icon: 'fas fa-syringe',
-                    title: 'Synapse X',
-                    description: 'The most powerful and reliable premium executor with extensive features and excellent compatibility.',
-                    status: 'Premium',
-                    features: ['High Execution Speed', 'Advanced Debugging', 'Regular Updates', 'Premium Support']
-                },
-                {
-                    icon: 'fas fa-crown',
-                    title: 'Script-Ware',
-                    description: 'Modern executor with a clean interface, advanced security features, and reliable performance.',
-                    status: 'Premium',
-                    features: ['User-Friendly UI', 'Advanced Security', 'Multi-Platform Support', 'Regular Updates']
-                },
-                {
-                    icon: 'fas fa-bolt',
-                    title: 'Krnl',
-                    description: 'Popular free executor with capabilities nearly matching premium options and strong community support.',
-                    status: 'Free',
-                    features: ['Powerful Execution', 'Regular Updates', 'Strong Community', 'Wide Compatibility']
-                },
-                {
-                    icon: 'fas fa-feather',
-                    title: 'Fluxus',
-                    description: 'Lightweight free executor optimized for performance on lower-end devices without sacrificing features.',
-                    status: 'Free',
-                    features: ['Lightweight', 'Good Performance', 'Easy to Use', 'Regular Updates']
-                }
-            ];
-            
-            return (
-                <section className="section" id="executors">
-                    <div className="container">
-                        <div className="section-header fade-in">
-                            <h2 className="section-title">Recommended Executors</h2>
-                            <p className="section-subtitle">
-                                These executors are fully compatible with ZiaanHub scripts and provide the best experience for our users.
-                            </p>
-                        </div>
-                        
-                        <div className="features-grid">
-                            {executors.map((executor, index) => (
-                                <div className="feature-card fade-in" key={index}>
-                                    <div className="feature-icon">
-                                        <i className={executor.icon}></i>
-                                    </div>
-                                    <h3 className="feature-title">{executor.title}</h3>
-                                    <p className="feature-description">{executor.description}</p>
-                                    <div className={`btn ${executor.status === 'Premium' ? 'btn-primary' : 'btn-outline'}`}>
-                                        {executor.status}
-                                    </div>
-                                    <div style={{marginTop: '1rem', textAlign: 'left'}}>
-                                        <h4 style={{fontSize: '0.9rem', marginBottom: '0.5rem', color: var(--text)}}>Key Features:</h4>
-                                        <ul style={{color: var(--text-light), fontSize: '0.85rem', paddingLeft: '1rem'}}>
-                                            {executor.features.map((feature, i) => (
-                                                <li key={i}>{feature}</li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </div>
-                            ))}
                         </div>
                     </div>
                 </section>
@@ -1658,10 +1524,6 @@
                                     <i className="fas fa-code"></i>
                                     Script
                                 </a>
-                                <a href="#executors" className="footer-link">
-                                    <i className="fas fa-rocket"></i>
-                                    Executors
-                                </a>
                                 <a href="#about" className="footer-link">
                                     <i className="fas fa-info-circle"></i>
                                     About
@@ -1700,20 +1562,20 @@
 
         // Advanced Main App Component
         function App() {
-            const [darkMode, setDarkMode] = useState(true);
+            const [darkMode, setDarkMode] = useState(false);
             const [activeSection, setActiveSection] = useState('home');
             const [isLoading, setIsLoading] = useState(true);
             
-            // Initialize theme from localStorage or default to dark
+            // Initialize theme from localStorage or default to light
             useEffect(() => {
                 const savedTheme = localStorage.getItem('theme');
                 
-                if (savedTheme === 'light') {
-                    setDarkMode(false);
-                    document.body.classList.add('light-mode');
-                } else {
+                if (savedTheme === 'dark') {
                     setDarkMode(true);
-                    document.body.classList.remove('light-mode');
+                    document.body.classList.add('dark-mode');
+                } else {
+                    setDarkMode(false);
+                    document.body.classList.remove('dark-mode');
                 }
                 
                 // Simulate loading
@@ -1728,10 +1590,10 @@
                 setDarkMode(newDarkMode);
                 
                 if (newDarkMode) {
-                    document.body.classList.remove('light-mode');
+                    document.body.classList.add('dark-mode');
                     localStorage.setItem('theme', 'dark');
                 } else {
-                    document.body.classList.add('light-mode');
+                    document.body.classList.remove('dark-mode');
                     localStorage.setItem('theme', 'light');
                 }
             };
@@ -1778,7 +1640,7 @@
             // Update active section on scroll
             useEffect(() => {
                 const handleScroll = () => {
-                    const sections = ['home', 'features', 'script', 'executors', 'about'];
+                    const sections = ['home', 'features', 'script', 'about'];
                     const scrollPosition = window.scrollY + 100;
                     
                     for (const sectionId of sections) {
@@ -1839,7 +1701,6 @@
                     <Hero onNavClick={handleNavClick} />
                     <Features />
                     <ScriptSection />
-                    <Executors />
                     <About />
                     <Footer />
                 </div>
