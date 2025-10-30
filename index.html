@@ -1,63 +1,54 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta name="description" content="ZiaanHub Loader is created solely for educational purposes and learning Roblox scripting. Any use outside of educational purposes is entirely the responsibility of the user. The developer is not responsible for any damages or consequences resulting from the use of this script">
-    <meta name="author" content="ziaandev">
-    <meta name="keywords" content="ZiaanHub, Roblox Hub, Roblox Scripts, Roblox Loader, ziaandev, GitHub Pages, Open Source">
-    <meta name="robots" content="index, follow">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <meta charset="UTF-8">
-
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#8B0000">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:title" content="ZiaanHub Loader">
-    <meta property="og:description" content="ZiaanHub Loader is created solely for educational purposes and learning Roblox scripting. Any use outside of educational purposes is entirely the responsibility of the user. The developer is not responsible for any damages or consequences resulting from the use of this script">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://ziaanhub.github.io/">
-    <meta property="og:image" content="https://ziaanhub.github.io/doc/img/apple-touch-icon.png">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="ZiaanHub Loader">
-    <meta name="twitter:description" content="ZiaanHub Loader is created solely for educational purposes and learning Roblox scripting. Any use outside of educational purposes is entirely the responsibility of the user. The developer is not responsible for any damages or consequences resulting from the use of this script.">
-    <meta name="twitter:image" content="https://ziaanhub.github.io/doc/img/apple-touch-icon.png">
-    <meta name="twitter:site" content="@ziaandev">
-
-    <!-- Favicon & Manifest -->
-    <link rel="icon" type="image/png" sizes="96x96" href="doc/img/favicon-96x96.png">
-    <link rel="icon" type="image/svg+xml" href="doc/img/favicon.svg">
-    <link rel="shortcut icon" href="doc/img/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="doc/img/apple-touch-icon.png">
-    <link rel="manifest" href="doc/img/site.webmanifest">
-    <title>ZiaanHub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZiaanHub - Roblox Scripting Education</title>
+    <meta name="description" content="ZiaanHub - Platform edukasi untuk belajar scripting Roblox dengan pendekatan yang aman dan bertanggung jawab.">
+    <meta name="author" content="ziaandev">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- React & ReactDOM CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Babel untuk JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
     <style>
         :root {
-            --primary-color: #0a0a0a;
-            --secondary-color: #1a0b0b;
-            --accent-color: #8B0000;
-            --accent-hover: #A52A2A;
-            --text-color: #f0e6e6;
-            --text-muted: #c4a3a3;
-            --highlight-color: #B22222;
-            --success-color: #28a745;
-            --card-color: rgba(26, 11, 11, 0.85);
-            --border-color: rgba(139, 0, 0, 0.5);
-            --shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
-            --glow: 0 0 25px rgba(139, 0, 0, 0.5);
-            --card-glow: 0 0 40px rgba(139, 0, 0, 0.2);
-            --transition-slow: 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --transition-medium: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --transition-fast: 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #60a5fa;
+            --secondary: #64748b;
+            --accent: #f59e0b;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            --background: #0f172a;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --text-light: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         html {
@@ -65,1752 +56,995 @@
         }
 
         body {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: var(--text-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
             line-height: 1.6;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-            perspective: 1000px;
+            transition: var(--transition);
         }
 
-        /* 3D Background */
-        .three-d-bg {
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header & Navigation */
+        header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            z-index: -2;
-            overflow: hidden;
-        }
-
-        .particles-js {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Preloader */
-        .preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--primary-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
-
-        .preloader.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .loader {
-            width: 80px;
-            height: 80px;
-            border: 5px solid rgba(139, 0, 0, 0.3);
-            border-top: 5px solid var(--highlight-color);
-            border-radius: 50%;
-            animation: spin 1.5s linear infinite;
-            position: relative;
-        }
-
-        .loader::after {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
-            border: 5px solid transparent;
-            border-top: 5px solid rgba(178, 34, 34, 0.5);
-            border-radius: 50%;
-            animation: spin 2s linear infinite;
-        }
-
-        /* Navigation */
-        nav {
-            background: rgba(26, 11, 11, 0.85);
-            padding: 1.5rem;
+            background-color: var(--surface);
             box-shadow: var(--shadow);
-            backdrop-filter: blur(15px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border-color);
-            animation: slideDown 0.8s ease-out;
-            transform-style: preserve-3d;
+            z-index: 1000;
+            transition: var(--transition);
         }
 
         .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 1rem 0;
         }
 
         .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--text-color);
             display: flex;
             align-items: center;
-            gap: 10px;
-            transform: translateZ(20px);
-            transition: transform 0.3s ease;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+            text-decoration: none;
         }
 
-        .logo:hover {
-            transform: translateZ(30px) scale(1.05);
-        }
-
-        .logo i {
-            color: var(--highlight-color);
+        .logo-icon {
+            font-size: 1.75rem;
         }
 
         .nav-links {
             display: flex;
             gap: 2rem;
+            list-style: none;
         }
 
         .nav-link {
-            color: var(--text-color);
+            color: var(--text);
             text-decoration: none;
             font-weight: 500;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             position: relative;
             padding: 0.5rem 0;
-            transform-style: preserve-3d;
         }
 
         .nav-link:hover {
-            color: var(--highlight-color);
-            transform: translateY(-2px) translateZ(10px);
+            color: var(--primary);
         }
 
-        .nav-link::after {
+        .nav-link.active {
+            color: var(--primary);
+        }
+
+        .nav-link.active::after {
             content: '';
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 0;
+            width: 100%;
             height: 2px;
-            background: var(--highlight-color);
-            transition: width 0.3s ease;
-            transform: translateZ(0);
+            background-color: var(--primary);
         }
 
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .nav-link.active {
-            color: var(--highlight-color);
-        }
-
-        .nav-link.active::after {
-            width: 100%;
-        }
-
-        /* Main Content */
-        .page {
-            display: none;
-            max-width: 1200px;
-            margin: 3rem auto;
-            padding: 0 2rem;
-            animation: fadeIn 1s ease-out;
-            transform-style: preserve-3d;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        /* Header Styles */
-        .page-header {
-            text-align: center;
-            margin-bottom: 4rem;
-            padding: 4rem 2rem;
-            background: var(--card-color);
-            border-radius: 20px;
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow), var(--card-glow);
-            transform: translateY(30px) rotateX(5deg);
-            opacity: 0;
-            animation: fadeUp3D 1s 0.3s forwards;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
-            transform-style: preserve-3d;
-        }
-
-        .page-header:hover {
-            transform: translateY(-5px) rotateX(0deg) translateZ(10px);
-            box-shadow: var(--shadow), var(--glow);
-        }
-
-        .page-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(139, 0, 0, 0.1) 0%, transparent 100%);
-            z-index: -1;
-        }
-
-        h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            margin-bottom: 0.8rem;
-            color: var(--text-color);
-            background: linear-gradient(90deg, #FF6B6B, #B22222, #FF6B6B);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: inline-block;
-            position: relative;
-            animation: shimmer 3s infinite linear;
-            text-shadow: 0 0 20px rgba(178, 34, 34, 0.3);
-            letter-spacing: 1px;
-            transform: translateZ(20px);
-        }
-
-        .tagline {
-            font-size: clamp(1rem, 2.5vw, 1.4rem);
-            opacity: 0.8;
-            margin-top: 0.8rem;
-            color: var(--text-muted);
-            letter-spacing: 1.5px;
-            animation: fadeIn 1.5s ease-out 0.5s both;
-            transform: translateZ(15px);
-        }
-
-        /* Intro Section */
-        .intro {
-            text-align: center;
-            margin-bottom: 4rem;
-            padding: 4rem 3rem;
-            background: var(--card-color);
-            border-radius: 20px;
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow), var(--card-glow);
-            transform: translateY(30px) rotateX(5deg);
-            opacity: 0;
-            animation: fadeUp3D 1s 0.3s forwards;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
-            transform-style: preserve-3d;
-        }
-
-        .intro:hover {
-            transform: translateY(-5px) rotateX(0deg) translateZ(10px);
-            box-shadow: var(--shadow), var(--glow);
-        }
-
-        .intro::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(139, 0, 0, 0.1) 0%, transparent 100%);
-            z-index: -1;
-        }
-
-        .intro p {
-            font-size: clamp(1rem, 2.5vw, 1.3rem);
-            margin-bottom: 1.8rem;
-            line-height: 1.8;
-            animation: fadeIn 1s ease-out 0.8s both;
-            transform: translateZ(15px);
-        }
-
-        .intro p:last-child {
-            margin-bottom: 0;
-        }
-
-        .disclaimer {
-            background: rgba(239, 68, 68, 0.1);
-            border-left: 4px solid #ef4444;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin-top: 2rem;
-            animation: fadeIn 1s ease-out 1s both;
-            transform: translateY(10px) translateZ(10px);
-        }
-
-        /* Features Section */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        .feature-card {
-            background: var(--card-color);
-            border-radius: 16px;
-            padding: 2.5rem 2rem;
-            text-align: center;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            transform: translateY(30px) rotateY(10deg);
-            opacity: 0;
-            animation: fadeUp3D 1s 0.7s forwards;
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
-            backdrop-filter: blur(10px);
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow), var(--card-glow);
-            transform-style: preserve-3d;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px) scale(1.02) rotateY(0deg) translateZ(20px);
-            box-shadow: var(--shadow), var(--glow);
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #FF6B6B, #B22222, #FF6B6B);
-            background-size: 200% auto;
-            animation: shimmer 3s infinite linear;
-        }
-
-        .feature-card:nth-child(2) {
-            animation-delay: 0.8s;
-        }
-
-        .feature-card:nth-child(3) {
-            animation-delay: 0.9s;
-        }
-
-        .feature-icon {
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
-            margin-bottom: 1.5rem;
-            color: var(--highlight-color);
-            animation: pulse 2s infinite ease-in-out;
-            transform: translateZ(20px);
-        }
-
-        .feature-title {
-            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-            margin-bottom: 1.2rem;
-            color: var(--text-color);
-            transform: translateZ(15px);
-        }
-
-        .feature-desc {
-            color: var(--text-muted);
-            font-size: clamp(0.9rem, 2vw, 1.05rem);
-            line-height: 1.7;
-            transform: translateZ(10px);
-        }
-
-        /* Script Container */
-        .script-container {
-            background: var(--card-color);
-            border-radius: 20px;
-            padding: 3rem;
-            margin-bottom: 3rem;
-            box-shadow: var(--shadow), var(--card-glow);
-            border: 1px solid var(--border-color);
-            transform: translateY(30px) rotateX(5deg);
-            opacity: 0;
-            animation: fadeUp3D 1s 0.5s forwards;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(15px);
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
-            transform-style: preserve-3d;
-        }
-
-        .script-container:hover {
-            transform: translateY(-8px) rotateX(0deg) translateZ(15px);
-            box-shadow: var(--shadow), var(--glow);
-        }
-
-        .script-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #FF6B6B, #B22222, #FF6B6B);
-            background-size: 200% auto;
-            animation: shimmer 3s infinite linear;
-        }
-
-        .script-title {
-            font-size: clamp(1.6rem, 3vw, 2.2rem);
-            margin-bottom: 2rem;
-            color: var(--text-color);
+        .nav-actions {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 15px;
-            text-align: center;
-            animation: fadeIn 1s ease-out 0.7s both;
-            transform: translateZ(20px);
+            gap: 1rem;
         }
 
-        .script-title i {
-            color: var(--highlight-color);
-            font-size: clamp(1.8rem, 3.5vw, 2.5rem);
-        }
-
-        .code-box {
-            background: rgba(26, 11, 11, 0.8);
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            position: relative;
-            overflow-x: auto;
-            border: 1px solid var(--border-color);
-            transition: all 0.5s ease;
-            backdrop-filter: blur(10px);
-            animation: fadeIn 1s ease-out 0.9s both;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transform: translateZ(10px);
-        }
-
-        .code-box:hover {
-            box-shadow: var(--glow);
-            transform: scale(1.01) translateZ(15px);
-        }
-
-        .code-box code {
-            color: #f8f8f2;
-            font-family: 'Courier New', monospace;
-            font-size: clamp(0.9rem, 2vw, 1.2rem);
-            display: block;
-            white-space: nowrap;
-            text-align: center;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
-        }
-
-        .buttons {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-            animation: fadeIn 1s ease-out 1.1s both;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, var(--accent-color), var(--highlight-color));
-            color: white;
+        .theme-toggle {
+            background: none;
             border: none;
-            padding: 1.2rem 2.5rem;
-            border-radius: 12px;
+            color: var(--text);
             cursor: pointer;
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
-            font-weight: 600;
-            transition: all 0.4s ease;
+            font-size: 1.25rem;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.8rem;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-            position: relative;
-            overflow: hidden;
-            min-width: 180px;
-            text-decoration: none;
-            transform: translateZ(0);
-            transform-style: preserve-3d;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
         }
 
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.7s;
+        .theme-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.05);
         }
 
-        .btn:hover {
-            transform: translateY(-5px) translateZ(10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25), 0 0 15px rgba(178, 34, 34, 0.4);
+        .dark-mode .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
-        .btn:hover::before {
-            left: 100%;
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
-        .btn-copy:hover::after {
-            content: "Salin Script";
-            position: absolute;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            top: -45px;
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .btn-copy.copied {
-            background: linear-gradient(135deg, var(--success-color), #28a745);
-            transform: scale(0.98);
-        }
-
-        .btn-copy.copied::after {
-            content: "Tersalin!";
-            position: absolute;
-            background-color: var(--success-color);
-            color: white;
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            top: -45px;
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        /* About Section - Updated for centered buttons */
-        .social-links {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .social-card {
-            background: var(--card-color);
-            border-radius: 16px;
-            padding: 2.5rem 2rem;
+        /* Hero Section */
+        .hero {
+            padding: 10rem 0 6rem;
             text-align: center;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            transform: translateY(30px) rotateY(10deg);
-            opacity: 0;
-            animation: fadeUp3D 1s 0.7s forwards;
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
-            backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
             position: relative;
             overflow: hidden;
-            box-shadow: var(--shadow), var(--card-glow);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 350px;
-            transform-style: preserve-3d;
         }
 
-        .social-card:hover {
-            transform: translateY(-10px) scale(1.02) rotateY(0deg) translateZ(20px);
-            box-shadow: var(--shadow), var(--glow);
-        }
-
-        .social-card::before {
+        .hero::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #FF6B6B, #B22222, #FF6B6B);
-            background-size: 200% auto;
-            animation: shimmer 3s infinite linear;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
 
-        .social-icon {
+        .hero-content {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
             font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
             margin-bottom: 1.5rem;
-            color: var(--highlight-color);
-            animation: pulse 2s infinite ease-in-out;
-            transform: translateZ(20px);
+            line-height: 1.2;
         }
 
-        .social-title {
-            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-            margin-bottom: 1.2rem;
-            color: var(--text-color);
-            transform: translateZ(15px);
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .social-desc {
-            color: var(--text-muted);
-            font-size: clamp(0.9rem, 2vw, 1.05rem);
-            line-height: 1.7;
-            margin-bottom: 2rem;
-            max-width: 90%;
-            transform: translateZ(10px);
-        }
-
-        .social-btn-container {
+        .hero-actions {
             display: flex;
+            gap: 1rem;
             justify-content: center;
-            width: 100%;
-            margin-top: auto;
+            flex-wrap: wrap;
         }
 
-        /* Games Section */
-        .games-grid {
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #eab308;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 5rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-light);
+        }
+
+        /* Features */
+        .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: var(--surface);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(37, 99, 235, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--primary);
+            font-size: 1.75rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .feature-description {
+            color: var(--text-light);
+        }
+
+        /* Script Section */
+        .script-container {
+            background-color: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .script-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .script-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+        }
+
+        .script-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .script-code {
+            padding: 2rem;
+            background-color: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            border-radius: 0 0 var(--radius) var(--radius);
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-content {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .copy-btn.copied {
+            background-color: #10b981;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text {
+            color: var(--text-light);
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .about-image {
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--surface);
+            color: var(--text);
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .social-link:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Disclaimer */
+        .disclaimer {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            border-radius: var(--radius);
             margin-top: 3rem;
         }
 
-        .game-card {
-            background: var(--card-color);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            transform: translateY(30px) rotateX(5deg);
-            opacity: 0;
-            animation: fadeUp3D 1s 0.7s forwards;
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
-            backdrop-filter: blur(10px);
-            position: relative;
-            box-shadow: var(--shadow), var(--card-glow);
-            transform-style: preserve-3d;
+        .dark-mode .disclaimer {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-left-color: #f59e0b;
         }
 
-        .game-card:hover {
-            transform: translateY(-10px) scale(1.02) rotateX(0deg) translateZ(20px);
-            box-shadow: var(--shadow), var(--glow);
-        }
-
-        .game-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #FF6B6B, #B22222, #FF6B6B);
-            background-size: 200% auto;
-            animation: shimmer 3s infinite linear;
-        }
-
-        .game-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-bottom: 1px solid var(--border-color);
-            transition: transform 0.5s ease;
-            transform: translateZ(0);
-        }
-
-        .game-card:hover .game-image {
-            transform: scale(1.05) translateZ(10px);
-        }
-
-        .game-content {
-            padding: 1.5rem;
-            transform-style: preserve-3d;
-        }
-
-        .game-title {
-            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-            margin-bottom: 0.8rem;
-            color: var(--text-color);
-            transform: translateZ(15px);
-        }
-
-        .game-desc {
-            color: var(--text-muted);
-            font-size: clamp(0.9rem, 2vw, 1.05rem);
-            line-height: 1.7;
-            transform: translateZ(10px);
-        }
-
-        /* Confirmation Modal */
-        .confirmation-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .confirmation-modal.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .modal-content {
-            background: var(--card-color);
-            border-radius: 20px;
-            padding: 3rem;
-            max-width: 500px;
-            width: 100%;
-            box-shadow: var(--shadow), var(--card-glow);
-            border: 1px solid var(--border-color);
-            text-align: center;
-            transform: translateY(30px) scale(0.9);
-            opacity: 0;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(15px);
-            transform-style: preserve-3d;
-        }
-
-        .confirmation-modal.active .modal-content {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-        }
-
-        .modal-title {
-            font-size: clamp(1.3rem, 3vw, 1.8rem);
-            margin-bottom: 1rem;
-            color: var(--text-color);
-            transform: translateZ(20px);
-        }
-
-        .modal-text {
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
-            margin-bottom: 2rem;
-            color: var(--text-muted);
-            transform: translateZ(15px);
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .modal-btn {
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            font-size: clamp(0.9rem, 2vw, 1rem);
+        .disclaimer-title {
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            min-width: 120px;
-            transform: translateZ(0);
-            transform-style: preserve-3d;
+            margin-bottom: 0.5rem;
+            color: #92400e;
         }
 
-        .modal-btn-confirm {
-            background: linear-gradient(135deg, var(--accent-color), var(--highlight-color));
-            color: white;
-            border: none;
+        .dark-mode .disclaimer-title {
+            color: #f59e0b;
         }
 
-        .modal-btn-cancel {
-            background: rgba(26, 11, 11, 0.5);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
+        .disclaimer-text {
+            color: #92400e;
         }
 
-        .modal-btn:hover {
-            transform: translateY(-3px) translateZ(10px);
-        }
-
-        /* Security Modal */
-        .security-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 3000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s ease;
-            backdrop-filter: blur(20px);
-        }
-
-        .security-modal.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .security-content {
-            background: var(--card-color);
-            border-radius: 20px;
-            padding: 3rem;
-            max-width: 500px;
-            width: 100%;
-            box-shadow: var(--shadow), var(--card-glow);
-            border: 1px solid var(--border-color);
-            text-align: center;
-            transform: translateY(30px) scale(0.9) rotateX(10deg);
-            opacity: 0;
-            transition: all 0.5s ease;
-            backdrop-filter: blur(15px);
-            transform-style: preserve-3d;
-        }
-
-        .security-modal.active .security-content {
-            transform: translateY(0) scale(1) rotateX(0deg);
-            opacity: 1;
-        }
-
-        .security-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            color: var(--highlight-color);
-            animation: pulse 2s infinite;
-            transform: translateZ(20px);
-        }
-
-        .security-title {
-            font-size: clamp(1.5rem, 3vw, 2rem);
-            margin-bottom: 1rem;
-            color: var(--text-color);
-            transform: translateZ(15px);
-        }
-
-        .security-text {
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
-            margin-bottom: 2rem;
-            color: var(--text-muted);
-            transform: translateZ(10px);
-        }
-
-        .security-input {
-            width: 100%;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            background: rgba(26, 11, 11, 0.7);
-            color: var(--text-color);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            transform: translateZ(10px);
-        }
-
-        .security-input:focus {
-            outline: none;
-            border-color: var(--highlight-color);
-            box-shadow: 0 0 10px rgba(178, 34, 34, 0.3);
-        }
-
-        .security-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
+        .dark-mode .disclaimer-text {
+            color: #fcd34d;
         }
 
         /* Footer */
         footer {
-            background: rgba(26, 11, 11, 0.9);
-            padding: 2.5rem;
-            text-align: center;
-            margin-top: 4rem;
-            backdrop-filter: blur(15px);
-            border-top: 1px solid var(--border-color);
-            animation: fadeIn 1.5s 1.2s forwards;
+            background-color: var(--surface);
+            padding: 3rem 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer-text {
+            color: var(--text-light);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            color: var(--primary);
+        }
+
+        /* Animation Classes */
+        .fade-in {
             opacity: 0;
-            position: relative;
-            overflow: hidden;
-            transform-style: preserve-3d;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, #FF6B6B, #B22222, #FF6B6B);
-            background-size: 200% auto;
-            animation: shimmer 3s infinite linear;
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        footer p {
-            margin-bottom: 0.8rem;
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
-            transform: translateZ(10px);
-        }
-
-        /* Animations */
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeUp {
-            from {
-                transform: translateY(30px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeUp3D {
-            from {
-                transform: translateY(30px) rotateX(5deg);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0) rotateX(0deg);
-                opacity: 1;
-            }
-        }
-
-        @keyframes shimmer {
-            0% {
-                background-position: -200% 0;
-            }
-            100% {
-                background-position: 200% 0;
-            }
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        @keyframes float3D {
-            0% {
-                transform: translate(0, 0) rotateX(0deg) rotateY(0deg);
-            }
-            33% {
-                transform: translate(40px, -60px) rotateX(20deg) rotateY(120deg);
-            }
-            66% {
-                transform: translate(-30px, 30px) rotateX(-20deg) rotateY(240deg);
-            }
-            100% {
-                transform: translate(0, 0) rotateX(0deg) rotateY(360deg);
-            }
-        }
-
-        /* Floating Elements */
-        .floating-elements {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .floating-element {
-            position: absolute;
-            background: rgba(178, 34, 34, 0.1);
-            border-radius: 50%;
-            animation: float3D 20s infinite linear;
-            transform-style: preserve-3d;
-        }
-
-        .floating-element:nth-child(1) {
-            width: 100px;
-            height: 100px;
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .floating-element:nth-child(2) {
-            width: 150px;
-            height: 150px;
-            top: 70%;
-            left: 80%;
-            animation-delay: -5s;
-        }
-
-        .floating-element:nth-child(3) {
-            width: 80px;
-            height: 80px;
-            top: 50%;
-            left: 5%;
-            animation-delay: -10s;
-        }
-
-        .floating-element:nth-child(4) {
-            width: 120px;
-            height: 120px;
-            top: 20%;
-            left: 85%;
-            animation-delay: -7s;
-        }
-
-        .floating-element:nth-child(5) {
-            width: 90px;
-            height: 90px;
-            top: 80%;
-            left: 15%;
-            animation-delay: -12s;
-        }
-
-        /* Responsive Design */
+        /* Mobile Styles */
         @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
             .nav-links {
-                gap: 1rem;
+                display: none;
             }
-            
-            .buttons {
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero {
+                padding: 8rem 0 4rem;
+            }
+
+            .hero-actions {
                 flex-direction: column;
                 align-items: center;
             }
-            
+
             .btn {
                 width: 100%;
                 max-width: 300px;
             }
-            
-            .intro, .script-container {
-                padding: 2rem 1.5rem;
-            }
-            
-            .features, .social-links, .games-grid {
+
+            .about-content {
                 grid-template-columns: 1fr;
+                gap: 2rem;
             }
-            
-            .modal-buttons, .security-buttons {
+
+            .footer-content {
                 flex-direction: column;
+                text-align: center;
             }
-            
-            .page-header, .intro, .script-container {
-                margin-left: 1rem;
-                margin-right: 1rem;
-            }
-        }
 
-        @media (max-width: 480px) {
-            .page {
-                padding: 0 1rem;
-            }
-            
-            .feature-card, .social-card {
-                padding: 2rem 1.5rem;
-            }
-            
-            .btn {
-                padding: 1rem 2rem;
-            }
-        }
-
-        /* Extra small devices */
-        @media (max-width: 320px) {
-            .page {
-                padding: 0 0.5rem;
-            }
-            
-            .page-header, .intro, .script-container {
-                margin-left: 0.5rem;
-                margin-right: 0.5rem;
-                padding: 1.5rem 1rem;
-            }
-            
-            .nav-links {
-                flex-wrap: wrap;
+            .footer-links {
                 justify-content: center;
             }
         }
 
-        /* Large screens */
-        @media (min-width: 1400px) {
-            .page {
-                max-width: 1300px;
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
             }
-        }
 
-        /* Ultra-wide screens */
-        @media (min-width: 2000px) {
-            .page {
-                max-width: 1600px;
+            .section {
+                padding: 3rem 0;
             }
-            
-            .features, .social-links, .games-grid {
-                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            }
-        }
 
-        /* Print styles */
-        @media print {
-            .confirmation-modal, .security-modal, .floating-elements, .three-d-bg, .preloader {
-                display: none !important;
+            .section-title {
+                font-size: 1.75rem;
             }
-            
-            body {
-                background: white;
-                color: black;
-            }
-            
-            .page-header, .intro, .script-container, .feature-card, .social-card, .game-card {
-                background: white;
-                color: black;
-                box-shadow: none;
-                border: 1px solid #ccc;
-            }
-        }
 
-        /* Reduced motion for accessibility */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
+            .features-grid {
+                grid-template-columns: 1fr;
             }
-        }
 
-        /* High contrast mode */
-        @media (prefers-contrast: high) {
-            :root {
-                --text-color: #ffffff;
-                --text-muted: #cccccc;
-                --border-color: rgba(255, 255, 255, 0.7);
+            .script-header {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
             }
-        }
 
-        /* Dark mode compatibility */
-        @media (prefers-color-scheme: dark) {
-            /* Already using dark theme */
+            .script-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Preloader -->
-    <div class="preloader" id="preloader">
-        <div class="loader"></div>
-    </div>
+    <div id="root"></div>
 
-    <!-- 3D Background -->
-    <div class="three-d-bg" id="threeDBg"></div>
+    <script type="text/babel">
+        // React Components
+        const { useState, useEffect, useRef } = React;
 
-    <!-- Confirmation Modal -->
-    <div class="confirmation-modal" id="confirmationModal">
-        <div class="modal-content">
-            <h3 class="modal-title" id="modalTitle">Confirm Redirect</h3>
-            <p class="modal-text" id="modalText">You are about to be redirected to an external website. Are you sure you want to continue?</p>
-            <div class="modal-buttons">
-                <button class="modal-btn modal-btn-confirm" id="modalConfirm">Yes, Continue</button>
-                <button class="modal-btn modal-btn-cancel" id="modalCancel">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Security Modal -->
-    <div class="security-modal" id="securityModal">
-        <div class="security-content">
-            <div class="security-icon">
-                <i class="fas fa-shield-alt"></i>
-            </div>
-            <h3 class="security-title">Security Verification</h3>
-            <p class="security-text">Please enter the security code to access the script:</p>
-            <input type="text" class="security-input" id="securityInput" placeholder="Enter code: ZiaanHub2025" autocomplete="off">
-            <div class="security-buttons">
-                <button class="modal-btn modal-btn-confirm" id="securityConfirm">Verify</button>
-                <button class="modal-btn modal-btn-cancel" id="securityCancel">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Floating Elements -->
-    <div class="floating-elements">
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-    </div>
-
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <div class="logo">
-                <i class="fas fa-fire"></i> ZiaanHub
-            </div>
-            <div class="nav-links">
-                <a href="#home" class="nav-link active" data-page="home">Home</a>
-                <a href="#about" class="nav-link" data-page="about">About</a>
-                <a href="#scripts" class="nav-link" data-page="scripts">Scripts</a>
-                <a href="#games" class="nav-link" data-page="games">Supported Games</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Home Page -->
-    <section id="home" class="page active">
-        <div class="page-header">
-            <h1>ZiaanHub</h1>
-            <p class="tagline">Powerful scripts for enhanced gaming experience</p>
-        </div>
-
-        <div class="intro">
-            <p>Welcome to ZiaanHub! Your ultimate destination for powerful scripts designed to enhance your gaming experience.</p>
-            <p>ZiaanHub provides high-performance, safe, and regularly updated scripts for popular Roblox games.</p>
-            <div class="disclaimer">
-                <p><strong>Disclaimer:</strong> This script is for educational purposes only. Use at your own risk. The developer is not responsible for any damages or consequences resulting from the use of this script.</p>
-            </div>
-        </div>
-
-        <div class="features">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <h3 class="feature-title">High Performance</h3>
-                <p class="feature-desc">Optimized scripts for maximum performance and minimal lag, ensuring smooth gameplay.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h3 class="feature-title">Safe & Secure</h3>
-                <p class="feature-desc">Regularly updated to ensure safety and compatibility with the latest game updates.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-sync"></i>
-                </div>
-                <h3 class="feature-title">Auto Updates</h3>
-                <p class="feature-desc">Automatic updates with the latest features and improvements for enhanced functionality.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Page -->
-    <section id="about" class="page">
-        <div class="page-header">
-            <h1>About ZiaanHub</h1>
-            <p class="tagline">Learn more about our platform and connect with us</p>
-        </div>
-
-        <div class="intro">
-            <p>ZiaanHub is a powerful scripting platform designed to enhance your Roblox gaming experience. Our scripts are created with performance and safety in mind, providing you with the best tools to improve your gameplay.</p>
-            <p>We believe in transparency and education, which is why all our scripts are open source and available for learning purposes.</p>
-        </div>
-
-        <div class="social-links">
-            <div class="social-card">
-                <div class="social-icon">
-                    <i class="fab fa-youtube"></i>
-                </div>
-                <h3 class="social-title">YouTube</h3>
-                <p class="social-desc">Check out our tutorials and showcase videos on YouTube.</p>
-                <div class="social-btn-container">
-                    <button class="btn social-btn" data-url="https://youtube.com/@ziaandev" data-platform="YouTube">
-                        <i class="fab fa-youtube"></i>
-                        Visit Channel
-                    </button>
-                </div>
-            </div>
-            <div class="social-card">
-                <div class="social-icon">
-                    <i class="fab fa-tiktok"></i>
-                </div>
-                <h3 class="social-title">TikTok</h3>
-                <p class="social-desc">Follow us for short clips and updates on TikTok.</p>
-                <div class="social-btn-container">
-                    <button class="btn social-btn" data-url="https://tiktok.com/@ziaandev" data-platform="TikTok">
-                        <i class="fab fa-tiktok"></i>
-                        Follow Us
-                    </button>
-                </div>
-            </div>
-            <div class="social-card">
-                <div class="social-icon">
-                    <i class="fab fa-discord"></i>
-                </div>
-                <h3 class="social-title">Discord</h3>
-                <p class="social-desc">Join our community for support and discussions.</p>
-                <div class="social-btn-container">
-                    <button class="btn social-btn" data-url="https://discord.gg/VarezyDsyz" data-platform="Discord">
-                        <i class="fab fa-discord"></i>
-                        Join Server
-                    </button>
-                </div>
-            </div>
-            <div class="social-card">
-                <div class="social-icon">
-                    <i class="fab fa-github"></i>
-                </div>
-                <h3 class="social-title">GitHub</h3>
-                <p class="social-desc">Explore our open-source scripts and contribute.</p>
-                <div class="social-btn-container">
-                    <button class="btn social-btn" data-url="https://github.com/ziaanhub" data-platform="GitHub">
-                        <i class="fab fa-github"></i>
-                        View Repository
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Scripts Page -->
-    <section id="scripts" class="page">
-        <div class="page-header">
-            <h1>ZiaanHub Scripts</h1>
-            <p class="tagline">Access our powerful scripts for various Roblox games</p>
-        </div>
-
-        <div class="intro">
-            <p>Below you'll find the main ZiaanHub script that works with all supported games. Simply copy and execute it in your preferred Roblox executor.</p>
-            <div class="disclaimer">
-                <p><strong>Important:</strong> This script is provided for educational purposes only. Use responsibly and at your own risk.</p>
-            </div>
-        </div>
-
-        <div class="script-container">
-            <h2 class="script-title">
-                <i class="fas fa-code"></i> Main ZiaanHub Script
-            </h2>
-            <div class="code-box">
-                <code id="script-code">loadstring(game:HttpGet("https://ziaanhub.github.io/ziaanhub.lua"))()</code>
-            </div>
-            <div class="buttons">
-                <button class="btn btn-copy" id="copy-btn">
-                    <i class="far fa-copy"></i>
-                    Copy Script
-                </button>
-                <a href="https://ziaanhub.github.io/ziaanhub/base/view.lua" class="btn" target="_blank">
-                    <i class="fas fa-external-link-alt"></i>
-                    View Raw
-                </a>
-            </div>
-        </div>
-
-        <div class="features">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-gamepad"></i>
-                </div>
-                <h3 class="feature-title">Multi-Game Support</h3>
-                <p class="feature-desc">Our script automatically detects the game you're playing and loads the appropriate features.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-cogs"></i>
-                </div>
-                <h3 class="feature-title">Customizable</h3>
-                <p class="feature-desc">Easily customize the script settings to match your preferences and playstyle.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-rocket"></i>
-                </div>
-                <h3 class="feature-title">Fast Execution</h3>
-                <p class="feature-desc">Optimized for quick loading and minimal impact on game performance.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Supported Games Page -->
-    <section id="games" class="page">
-        <div class="page-header">
-            <h1>Supported Games</h1>
-            <p class="tagline">ZiaanHub works with these popular Roblox games</p>
-        </div>
-
-        <div class="intro">
-            <p>ZiaanHub is compatible with a variety of popular Roblox games. Our scripts are specifically optimized for these titles to provide the best experience.</p>
-        </div>
-
-        <div class="games-grid" id="gamesGrid">
-            <!-- Games will be loaded dynamically via JavaScript -->
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2025 ZiaanHub. All rights reserved. | Powerful scripts for enhanced gaming</p>
-        <p>For educational purposes only</p>
-    </footer>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script>
-        // Game data with Roblox place IDs
-        const games = [
-            { id: 9872472334, name: "Evade", description: "Survival horror game where players must evade various entities while completing objectives." },
-            { id: 2753915549, name: "Blox Fruits", description: "Adventure game inspired by the popular anime One Piece, featuring fruits that grant special powers." },
-            { id: 7240102173, name: "Guts and Blackpowder", description: "Historical zombie survival game set during the Napoleonic Wars." },
-            { id: 537413788, name: "Build a Beehive", description: "Simulation game where players build and manage their own beehive." },
-            { id: 12674290606, name: "Poop A Brainrot", description: "Comedy game with absurd mechanics and humorous gameplay." }
-        ];
-
-        // Security code
-        const SECURITY_CODE = "ZiaanHub2025";
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const preloader = document.getElementById('preloader');
-            const confirmationModal = document.getElementById('confirmationModal');
-            const securityModal = document.getElementById('securityModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalText = document.getElementById('modalText');
-            const modalConfirm = document.getElementById('modalConfirm');
-            const modalCancel = document.getElementById('modalCancel');
-            const securityInput = document.getElementById('securityInput');
-            const securityConfirm = document.getElementById('securityConfirm');
-            const securityCancel = document.getElementById('securityCancel');
+        // Header Component
+        function Header({ activeSection, onNavClick, darkMode, toggleDarkMode }) {
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
             
-            let currentRedirectUrl = '';
-            let currentPlatform = '';
-            let isSecurityVerified = false;
+            const navItems = [
+                { id: 'home', label: 'Home' },
+                { id: 'features', label: 'Features' },
+                { id: 'script', label: 'Script' },
+                { id: 'about', label: 'About' }
+            ];
+            
+            const toggleMobileMenu = () => {
+                setMobileMenuOpen(!mobileMenuOpen);
+            };
+            
+            const handleNavClick = (sectionId) => {
+                onNavClick(sectionId);
+                setMobileMenuOpen(false);
+            };
+            
+            return (
+                <header>
+                    <div className="container">
+                        <div className="nav-container">
+                            <a href="#" className="logo">
+                                <i className="fas fa-code logo-icon"></i>
+                                ZiaanHub
+                            </a>
+                            
+                            <ul className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
+                                {navItems.map(item => (
+                                    <li key={item.id}>
+                                        <a 
+                                            href={`#${item.id}`}
+                                            className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                handleNavClick(item.id);
+                                            }}
+                                        >
+                                            {item.label}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                            
+                            <div className="nav-actions">
+                                <button className="theme-toggle" onClick={toggleDarkMode}>
+                                    <i className={darkMode ? 'fas fa-sun' : 'fas fa-moon'}></i>
+                                </button>
+                                <button className="mobile-menu-btn" onClick={toggleMobileMenu}>
+                                    <i className="fas fa-bars"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            );
+        }
 
-            // Initialize Three.js background
-            function initThreeJS() {
-                const scene = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-                
-                renderer.setSize(window.innerWidth, window.innerHeight);
-                renderer.setClearColor(0x000000, 0);
-                document.getElementById('threeDBg').appendChild(renderer.domElement);
-                
-                // Create particles
-                const particlesGeometry = new THREE.BufferGeometry();
-                const particlesCount = 500;
-                
-                const posArray = new Float32Array(particlesCount * 3);
-                
-                for(let i = 0; i < particlesCount * 3; i++) {
-                    posArray[i] = (Math.random() - 0.5) * 10;
+        // Hero Section Component
+        function Hero({ onNavClick }) {
+            return (
+                <section className="hero" id="home">
+                    <div className="container">
+                        <div className="hero-content">
+                            <h1 className="hero-title">ZiaanHub</h1>
+                            <p className="hero-subtitle">
+                                Platform edukasi untuk belajar scripting Roblox dengan pendekatan yang aman dan bertanggung jawab.
+                            </p>
+                            <div className="hero-actions">
+                                <button 
+                                    className="btn btn-primary"
+                                    onClick={() => onNavClick('script')}
+                                >
+                                    <i className="fas fa-code"></i>
+                                    Dapatkan Script
+                                </button>
+                                <button 
+                                    className="btn btn-secondary"
+                                    onClick={() => onNavClick('about')}
+                                >
+                                    <i className="fas fa-info-circle"></i>
+                                    Pelajari Lebih Lanjut
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Features Section Component
+        function Features() {
+            const features = [
+                {
+                    icon: 'fas fa-graduation-cap',
+                    title: 'Fokus Pendidikan',
+                    description: 'Script kami dibuat khusus untuk tujuan pembelajaran dan memahami konsep scripting Roblox.'
+                },
+                {
+                    icon: 'fas fa-shield-alt',
+                    title: 'Aman & Terpercaya',
+                    description: 'Kami memprioritaskan keamanan dan transparansi dalam semua aspek platform kami.'
+                },
+                {
+                    icon: 'fas fa-code',
+                    title: 'Kode Berkualitas',
+                    description: 'Script yang terstruktur dengan baik untuk memudahkan pembelajaran dan pemahaman.'
                 }
-                
-                particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-                
-                // Material
-                const particlesMaterial = new THREE.PointsMaterial({
-                    size: 0.02,
-                    color: 0x8B0000,
-                    transparent: true,
-                    opacity: 0.6
-                });
-                
-                // Mesh
-                const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-                scene.add(particlesMesh);
-                
-                camera.position.z = 5;
-                
-                // Mouse movement effect
-                let mouseX = 0;
-                let mouseY = 0;
-                
-                document.addEventListener('mousemove', (event) => {
-                    mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-                    mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-                });
-                
-                // Animation
-                function animate() {
-                    requestAnimationFrame(animate);
-                    
-                    particlesMesh.rotation.y += 0.001;
-                    particlesMesh.rotation.x += 0.0005;
-                    
-                    // Mouse interaction
-                    particlesMesh.rotation.y += mouseX * 0.0005;
-                    particlesMesh.rotation.x += mouseY * 0.0005;
-                    
-                    renderer.render(scene, camera);
-                }
-                
-                animate();
-                
-                // Handle window resize
-                window.addEventListener('resize', () => {
-                    camera.aspect = window.innerWidth / window.innerHeight;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(window.innerWidth, window.innerHeight);
-                });
-            }
+            ];
+            
+            return (
+                <section className="section" id="features">
+                    <div className="container">
+                        <div className="section-header fade-in">
+                            <h2 className="section-title">Mengapa ZiaanHub?</h2>
+                            <p className="section-subtitle">
+                                Platform kami dirancang khusus untuk membantu Anda belajar scripting dengan cara yang efektif dan aman.
+                            </p>
+                        </div>
+                        
+                        <div className="features-grid">
+                            {features.map((feature, index) => (
+                                <div className="feature-card fade-in" key={index}>
+                                    <div className="feature-icon">
+                                        <i className={feature.icon}></i>
+                                    </div>
+                                    <h3 className="feature-title">{feature.title}</h3>
+                                    <p className="feature-description">{feature.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
 
-            // Hide preloader after page loads
-            window.addEventListener('load', function() {
-                setTimeout(() => {
-                    preloader.classList.add('hidden');
-                    // Initialize Three.js after preloader is hidden
-                    initThreeJS();
-                }, 1500);
-            });
-
-            // Setup copy buttons with security
-            function setupCopyButton(buttonId, codeId) {
-                document.getElementById(buttonId).addEventListener('click', function() {
-                    if (!isSecurityVerified) {
-                        securityModal.classList.add('active');
-                        return;
-                    }
-                    
-                    copyCode(codeId, buttonId);
-                });
-            }
-
-            // Copy code function
-            function copyCode(codeId, buttonId) {
-                const code = document.getElementById(codeId).textContent;
-                navigator.clipboard.writeText(code).then(() => {
-                    const btn = document.getElementById(buttonId);
-                    btn.classList.add('copied');
-                    setTimeout(() => {
-                        btn.classList.remove('copied');
-                    }, 2000);
-                }).catch(err => {
+        // Script Section Component
+        function ScriptSection() {
+            const [copied, setCopied] = useState(false);
+            const scriptCode = 'loadstring(game:HttpGet("https://ziaanhub.github.io/ziaanhub.lua"))()';
+            
+            const copyToClipboard = async () => {
+                try {
+                    await navigator.clipboard.writeText(scriptCode);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                } catch (err) {
                     console.error('Failed to copy: ', err);
                     // Fallback for older browsers
                     const textArea = document.createElement('textarea');
-                    textArea.value = code;
+                    textArea.value = scriptCode;
                     document.body.appendChild(textArea);
                     textArea.select();
                     document.execCommand('copy');
                     document.body.removeChild(textArea);
-                    
-                    const btn = document.getElementById(buttonId);
-                    btn.classList.add('copied');
-                    setTimeout(() => {
-                        btn.classList.remove('copied');
-                    }, 2000);
-                });
-            }
-
-            // Setup copy buttons
-            setupCopyButton('copy-btn', 'script-code');
-
-            // Security verification
-            securityConfirm.addEventListener('click', function() {
-                if (securityInput.value === SECURITY_CODE) {
-                    isSecurityVerified = true;
-                    securityModal.classList.remove('active');
-                    securityInput.value = '';
-                    
-                    // Copy the code after verification
-                    copyCode('script-code', 'copy-btn');
-                } else {
-                    securityInput.value = '';
-                    securityInput.placeholder = "Invalid code! Try again";
-                    securityInput.style.borderColor = "#ef4444";
-                    
-                    setTimeout(() => {
-                        securityInput.placeholder = "Enter code: ZiaanHub2025";
-                        securityInput.style.borderColor = "var(--border-color)";
-                    }, 2000);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
                 }
-            });
-
-            securityCancel.addEventListener('click', function() {
-                securityModal.classList.remove('active');
-                securityInput.value = '';
-            });
-
-            // Navigation functionality
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Update active nav link
-                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // Show selected page
-                    const pageId = this.getAttribute('data-page');
-                    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-                    document.getElementById(pageId).classList.add('active');
-                    
-                    // Scroll to top
-                    window.scrollTo(0, 0);
-                });
-            });
-
-            // Social media buttons with confirmation
-            document.querySelectorAll('.social-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const url = this.getAttribute('data-url');
-                    const platform = this.getAttribute('data-platform');
-                    
-                    currentRedirectUrl = url;
-                    currentPlatform = platform;
-                    
-                    modalTitle.textContent = `Redirect to ${platform}`;
-                    modalText.textContent = `You are about to be redirected to ${platform}. Are you sure you want to continue?`;
-                    confirmationModal.classList.add('active');
-                });
-            });
-
-            // Modal functionality
-            modalConfirm.addEventListener('click', function() {
-                window.open(currentRedirectUrl, '_blank');
-                confirmationModal.classList.remove('active');
-            });
-
-            modalCancel.addEventListener('click', function() {
-                confirmationModal.classList.remove('active');
-            });
-
-            // Load game images from Roblox API
-            function loadGameImages() {
-                const gamesGrid = document.getElementById('gamesGrid');
-                
-                games.forEach(game => {
-                    const gameCard = document.createElement('div');
-                    gameCard.className = 'game-card';
-                    
-                    // Create image with fallback
-                    const gameImage = document.createElement('img');
-                    gameImage.className = 'game-image';
-                    gameImage.alt = game.name;
-                    gameImage.src = `https://thumbnails.roblox.com/v1/places/gameicons?placeIds=${game.id}&size=512x512&format=Png&isCircular=false`;
-                    
-                    // Add fallback for image loading error
-                    gameImage.onerror = function() {
-                        this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBmaWxsPSIjM0QwRjFGIi8+CjxwYXRoIGQ9Ik0yNTYgMTI4QzE4Ny4yIDEyOCAxMjggMTg3LjIgMTI4IDI1NkMxMjggMzI0LjggMTg3LjIgMzg0IDI1NiAzODRDMzI0LjggMzg0IDM4NCAzMjQuOCAzODQgMjU2QzM4NCAxODcuMiAzMjQuOCAxMjggMjU2IDEyOFoiIGZpbGw9IiM4QjAwMDAiLz4KPHBhdGggZD0iTTI1NiAxOTJDMjIyLjQgMTkyIDE5NiAyMTguNCAxOTYgMjU2QzE5NiAyOTMuNiAyMjIuNCAzMjAgMjU2IDMyMEMyODkuNiAzMjAgMzE2IDI5My42IDMxNiAyNTZDMzE2IDIxOC40IDI4OS42IDE5MiAyNTYgMTkyWiIgZmlsbD0iI0IyMjIyMiIvPgo8L3N2Zz4K';
-                    };
-                    
-                    const gameContent = document.createElement('div');
-                    gameContent.className = 'game-content';
-                    
-                    const gameTitle = document.createElement('h3');
-                    gameTitle.className = 'game-title';
-                    gameTitle.textContent = game.name;
-                    
-                    const gameDesc = document.createElement('p');
-                    gameDesc.className = 'game-desc';
-                    gameDesc.textContent = game.description;
-                    
-                    gameContent.appendChild(gameTitle);
-                    gameContent.appendChild(gameDesc);
-                    
-                    gameCard.appendChild(gameImage);
-                    gameCard.appendChild(gameContent);
-                    
-                    gamesGrid.appendChild(gameCard);
-                });
-            }
-
-            // Initialize game images
-            loadGameImages();
-
-            // Add scroll animations
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
             };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.animationPlayState = 'running';
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-
-            // Observe all animated elements
-            document.querySelectorAll('.page-header, .intro, .script-container, .feature-card, .social-card, .game-card').forEach(el => {
-                observer.observe(el);
-            });
-
-            // Handle viewport changes for different devices
-            function handleViewportChange() {
-                const viewportWidth = window.innerWidth;
-                const viewportHeight = window.innerHeight;
-                
-                // Adjust font sizes for very small screens
-                if (viewportWidth < 400) {
-                    document.documentElement.style.fontSize = '14px';
-                } else if (viewportWidth < 768) {
-                    document.documentElement.style.fontSize = '15px';
-                } else {
-                    document.documentElement.style.fontSize = '16px';
-                }
-                
-                // Adjust layout for very tall screens
-                if (viewportHeight > 1200) {
-                    document.body.style.paddingBottom = '2rem';
-                }
-            }
-
-            // Initial call
-            handleViewportChange();
             
-            // Listen for viewport changes
-            window.addEventListener('resize', handleViewportChange);
-            window.addEventListener('orientationchange', handleViewportChange);
+            return (
+                <section className="section" id="script">
+                    <div className="container">
+                        <div className="section-header fade-in">
+                            <h2 className="section-title">Script Utama ZiaanHub</h2>
+                            <p className="section-subtitle">
+                                Salin script di bawah ini untuk memulai pembelajaran scripting Roblox.
+                            </p>
+                        </div>
+                        
+                        <div className="script-container fade-in">
+                            <div className="script-header">
+                                <div className="script-title">
+                                    <i className="fas fa-file-code"></i>
+                                    ZiaanHub Loader
+                                </div>
+                                <div className="script-actions">
+                                    <a 
+                                        href="https://ziaanhub.github.io/ziaanhub/base/view.lua" 
+                                        className="btn btn-outline" 
+                                        target="_blank"
+                                    >
+                                        <i className="fas fa-external-link-alt"></i>
+                                        View Raw
+                                    </a>
+                                </div>
+                            </div>
+                            <div className="script-code">
+                                <button 
+                                    className={`copy-btn ${copied ? 'copied' : ''}`}
+                                    onClick={copyToClipboard}
+                                >
+                                    <i className="far fa-copy"></i>
+                                    <span>{copied ? 'Copied!' : 'Copy'}</span>
+                                </button>
+                                <pre className="code-content">{scriptCode}</pre>
+                            </div>
+                        </div>
+                        
+                        <div className="disclaimer fade-in">
+                            <h4 className="disclaimer-title">Peringatan Penting</h4>
+                            <p className="disclaimer-text">
+                                Script ini dibuat semata-mata untuk tujuan pendidikan dan pembelajaran scripting Roblox. 
+                                Penggunaan di luar tujuan pendidikan sepenuhnya menjadi tanggung jawab pengguna. 
+                                Developer tidak bertanggung jawab atas segala kerusakan atau konsekuensi yang timbul dari penggunaan script ini.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
 
-            // Add parallax effect on mouse move
-            document.addEventListener('mousemove', (e) => {
-                const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
-                const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+        // About Section Component
+        function About() {
+            const socialLinks = [
+                { 
+                    icon: 'fab fa-youtube', 
+                    url: 'https://youtube.com/@ziaandev',
+                    label: 'YouTube'
+                },
+                { 
+                    icon: 'fab fa-tiktok', 
+                    url: 'https://tiktok.com/@ziaandev',
+                    label: 'TikTok'
+                },
+                { 
+                    icon: 'fab fa-discord', 
+                    url: 'https://discord.gg/VarezyDsyz',
+                    label: 'Discord'
+                },
+                { 
+                    icon: 'fab fa-github', 
+                    url: 'https://github.com/ziaanhub',
+                    label: 'GitHub'
+                }
+            ];
+            
+            return (
+                <section className="section" id="about">
+                    <div className="container">
+                        <div className="section-header fade-in">
+                            <h2 className="section-title">Tentang ZiaanHub</h2>
+                            <p className="section-subtitle">
+                                Misi kami adalah membuat pembelajaran scripting Roblox lebih mudah diakses dan dipahami.
+                            </p>
+                        </div>
+                        
+                        <div className="about-content fade-in">
+                            <div className="about-text">
+                                <p>
+                                    ZiaanHub adalah platform edukasi yang berfokus pada pembelajaran scripting Roblox. 
+                                    Kami percaya bahwa dengan pendekatan yang tepat, scripting dapat menjadi alat yang sangat berharga 
+                                    untuk memahami konsep pemrograman.
+                                </p>
+                                <p>
+                                    Semua script yang kami sediakan dirancang dengan struktur yang jelas dan dokumentasi yang lengkap 
+                                    untuk memudahkan proses belajar. Kami juga menyediakan komunitas di mana Anda dapat berdiskusi 
+                                    dan bertanya tentang scripting.
+                                </p>
+                                <p>
+                                    Bergabunglah dengan komunitas kami untuk mendapatkan dukungan dan berbagi pengetahuan dengan 
+                                    sesama penggemar scripting Roblox.
+                                </p>
+                                
+                                <div className="social-links">
+                                    {socialLinks.map((link, index) => (
+                                        <a 
+                                            key={index}
+                                            href={link.url} 
+                                            className="social-link" 
+                                            target="_blank"
+                                            aria-label={link.label}
+                                        >
+                                            <i className={link.icon}></i>
+                                        </a>
+                                    ))}
+                                </div>
+                            </div>
+                            
+                            <div className="about-image">
+                                <div style={{
+                                    width: '100%', 
+                                    height: '300px', 
+                                    background: 'linear-gradient(135deg, #2563eb, #1d4ed8)', 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'center', 
+                                    color: 'white'
+                                }}>
+                                    <i className="fas fa-code" style={{fontSize: '4rem'}}></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Footer Component
+        function Footer() {
+            return (
+                <footer>
+                    <div className="container">
+                        <div className="footer-content">
+                            <div className="footer-text">
+                                <p>&copy; 2025 ZiaanHub. All rights reserved.</p>
+                            </div>
+                            <div className="footer-links">
+                                <a href="#" className="footer-link">Privacy Policy</a>
+                                <a href="#" className="footer-link">Terms of Service</a>
+                                <a href="#about" className="footer-link">Contact</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            );
+        }
+
+        // Main App Component
+        function App() {
+            const [darkMode, setDarkMode] = useState(false);
+            const [activeSection, setActiveSection] = useState('home');
+            
+            // Initialize theme from localStorage or system preference
+            useEffect(() => {
+                const savedTheme = localStorage.getItem('theme');
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                 
-                document.querySelectorAll('.page-header, .intro, .script-container, .feature-card, .social-card, .game-card').forEach(el => {
-                    el.style.transform = `translateY(${moveY}px) translateX(${moveX}px) ${el.style.transform.split(' ').slice(2).join(' ')}`;
+                if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                    setDarkMode(true);
+                    document.body.classList.add('dark-mode');
+                }
+            }, []);
+            
+            // Toggle dark/light mode
+            const toggleDarkMode = () => {
+                const newDarkMode = !darkMode;
+                setDarkMode(newDarkMode);
+                
+                if (newDarkMode) {
+                    document.body.classList.add('dark-mode');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    localStorage.setItem('theme', 'light');
+                }
+            };
+            
+            // Handle navigation click
+            const handleNavClick = (sectionId) => {
+                setActiveSection(sectionId);
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    window.scrollTo({
+                        top: element.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            };
+            
+            // Scroll animation observer
+            useEffect(() => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, { threshold: 0.1 });
+                
+                const fadeElements = document.querySelectorAll('.fade-in');
+                fadeElements.forEach(element => {
+                    observer.observe(element);
                 });
-            });
-        });
+                
+                return () => {
+                    fadeElements.forEach(element => {
+                        observer.unobserve(element);
+                    });
+                };
+            }, []);
+            
+            // Update active section on scroll
+            useEffect(() => {
+                const handleScroll = () => {
+                    const sections = ['home', 'features', 'script', 'about'];
+                    const scrollPosition = window.scrollY + 100;
+                    
+                    for (const sectionId of sections) {
+                        const element = document.getElementById(sectionId);
+                        if (element && scrollPosition >= element.offsetTop) {
+                            setActiveSection(sectionId);
+                        }
+                    }
+                };
+                
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+            
+            return (
+                <div className="app">
+                    <Header 
+                        activeSection={activeSection}
+                        onNavClick={handleNavClick}
+                        darkMode={darkMode}
+                        toggleDarkMode={toggleDarkMode}
+                    />
+                    <Hero onNavClick={handleNavClick} />
+                    <Features />
+                    <ScriptSection />
+                    <About />
+                    <Footer />
+                </div>
+            );
+        }
+
+        // Render the App
+        ReactDOM.render(<App />, document.getElementById('root'));
     </script>
 </body>
 </html>
