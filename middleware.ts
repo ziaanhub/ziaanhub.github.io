@@ -1,8 +1,9 @@
-import { updateSession } from "@/lib/supabase/middleware"
+// Middleware is now disabled - route protection handled in pages instead
+import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
-export async function middleware(request: NextRequest) {
-  return await updateSession(request)
+export function middleware(request: NextRequest) {
+  return NextResponse.next()
 }
 
 export const config = {
