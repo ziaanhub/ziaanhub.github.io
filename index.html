@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZiaanHub - Solutions For Scripting Tools For Roblox Games</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-red: #e63946;
+            --dark-red: #d00000;
+            --dark-bg: #121212;
+            --darker-bg: #0a0a0a;
+            --card-bg: #1e1e1e;
+            --text-light: #f5f5f5;
+            --text-muted: #aaaaaa;
+            --accent-color: #ff2e4d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(230, 57, 70, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(230, 57, 70, 0.1) 0%, transparent 20%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .logo-container {
+            perspective: 1000px;
+            margin-bottom: 2rem;
+        }
+
+        .logo-3d {
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--primary-red);
+            text-shadow: 
+                0 0 10px rgba(230, 57, 70, 0.7),
+                0 5px 0 #8a0000,
+                0 10px 10px rgba(0, 0, 0, 0.5);
+            transform-style: preserve-3d;
+            transform: rotateX(15deg) rotateY(-5deg);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            letter-spacing: 2px;
+        }
+
+        .logo-3d:hover {
+            transform: rotateX(10deg) rotateY(-2deg) scale(1.05);
+            text-shadow: 
+                0 0 15px rgba(230, 57, 70, 0.9),
+                0 5px 0 #8a0000,
+                0 15px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-3d:active {
+            transform: rotateX(5deg) rotateY(0deg) scale(0.98);
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary-red);
+            border-radius: 50%;
+            opacity: 0;
+            box-shadow: 0 0 10px var(--primary-red);
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .code-container {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .code-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-red), var(--accent-color));
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .code-title {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 57, 70, 0.4);
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+
+        .code-content {
+            background-color: var(--darker-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        .code-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-red), var(--accent-color));
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--primary-red);
+        }
+
+        /* Animasi untuk partikel */
+        @keyframes particle-animation {
+            0% {
+                transform: translate(0, 0) scale(0);
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Responsif */
+        @media (max-width: 768px) {
+            .logo-3d {
+                font-size: 3.5rem;
+            }
+            
+            .tagline {
+                font-size: 1.2rem;
+            }
+            
+            .code-content {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <h1 class="logo-3d" id="ziaan-logo">ZiaanHub</h1>
+                <div class="particles" id="particles"></div>
+            </div>
+            <p class="tagline">Solutions For Scripting Tools For Roblox Games</p>
+        </header>
+
+        <main>
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-title">Loadstring Code</div>
+                    <button class="copy-btn" id="copy-btn">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+                <div class="code-content">
+                    loadstring(game:HttpGet("https://ziaanhub.github.io/ziaanhub.lua"))()
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2023 ZiaanHub. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Animasi partikel ketika logo disentuh/diklik
+        document.getElementById('ziaan-logo').addEventListener('click', function(e) {
+            createParticles(e);
+        });
+
+        function createParticles(e) {
+            const particlesContainer = document.getElementById('particles');
+            const rect = e.target.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Hapus partikel lama
+            particlesContainer.innerHTML = '';
+            
+            // Buat partikel baru
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Posisi awal partikel di sekitar titik klik
+                const size = Math.random() * 10 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                
+                // Warna acak dalam spektrum merah
+                const hue = Math.floor(Math.random() * 30) + 330; // 330-360 untuk merah-ungu
+                particle.style.backgroundColor = `hsl(${hue}, 100%, 60%)`;
+                particle.style.boxShadow = `0 0 10px hsl(${hue}, 100%, 60%)`;
+                
+                // Arah dan jarak acak
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 100 + 50;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                particle.style.setProperty('--tx', `${tx}px`);
+                particle.style.setProperty('--ty', `${ty}px`);
+                
+                // Animasi partikel
+                particle.style.animation = `particle-animation ${Math.random() * 1 + 0.5}s ease-out forwards`;
+                
+                particlesContainer.appendChild(particle);
+                
+                // Hapus partikel setelah animasi selesai
+                setTimeout(() => {
+                    if (particle.parentNode === particlesContainer) {
+                        particlesContainer.removeChild(particle);
+                    }
+                }, 1000);
+            }
+        }
+
+        // Fungsi copy kode
+        document.getElementById('copy-btn').addEventListener('click', function() {
+            const code = document.querySelector('.code-content').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                }, 2000);
+            });
+        });
+
+        // Efek hover 3D pada logo
+        const logo = document.getElementById('ziaan-logo');
+        logo.addEventListener('mousemove', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const angleY = (x - centerX) / 20;
+            const angleX = (centerY - y) / 20;
+            
+            this.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) scale(1.05)`;
+        });
+        
+        logo.addEventListener('mouseleave', function() {
+            this.style.transform = 'rotateX(15deg) rotateY(-5deg) scale(1)';
+        });
+    </script>
+</body>
+</html>
