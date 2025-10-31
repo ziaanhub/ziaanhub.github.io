@@ -9,12 +9,17 @@ export default async function Home() {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const { data: topScripts } = await supabase
+  let topScripts = []
+  const { data, error } = await supabase
     .from("scripts")
     .select("*, profiles:author_id(username, avatar_url)")
     .eq("is_public", true)
     .order("views_count", { ascending: false })
     .limit(6)
+
+  if (!error) {
+    topScripts = data || []
+  }
 
   return (
     <main className="min-h-screen bg-background">
@@ -122,25 +127,38 @@ export default async function Home() {
       {/* Top Scripts Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <h3 className="text-3xl font-bold mb-8 text-balance">Popular Scripts</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {topScripts?.map((script: any) => (
-            <Link key={script.id} href={`/scripts/${script.id}`}>
-              <div className="p-6 border border-border rounded-lg hover:border-primary transition-colors h-full cursor-pointer">
-                <div className="flex items-start justify-between mb-3">
-                  <span className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded font-medium">
-                    {script.language}
-                  </span>
-                  <span className="text-xs text-muted-foreground">{script.views_count} views</span>
+        {topScripts.length === 0 ? (
+          <div className="text-center py-12 border border-dashed border-border rounded-lg">
+            <p className="text-muted-foreground mb-4">No scripts uploaded yet. Be the first to share!</p>
+            {user && (
+              <Link href="/dashboard/upload">
+                <Button className="gap-2">
+                  Upload Your First Script <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+            )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {topScripts.map((script: any) => (
+              <Link key={script.id} href={`/scripts/${script.id}`}>
+                <div className="p-6 border border-border rounded-lg hover:border-primary transition-colors h-full cursor-pointer">
+                  <div className="flex items-start justify-between mb-3">
+                    <span className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded font-medium">
+                      {script.language}
+                    </span>
+                    <span className="text-xs text-muted-foreground">{script.views_count} views</span>
+                  </div>
+                  <h4 className="text-lg font-semibold mb-2 text-balance line-clamp-2">{script.title}</h4>
+                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{script.description}</p>
+                  <div className="flex items-center justify-between text-xs text-muted-foreground">
+                    <span>By {script.profiles?.username}</span>
+                  </div>
                 </div>
-                <h4 className="text-lg font-semibold mb-2 text-balance line-clamp-2">{script.title}</h4>
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{script.description}</p>
-                <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  <span>By {script.profiles?.username}</span>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+              </Link>
+            ))}
+          </div>
+        )}
         <div className="text-center mt-8">
           <Link href="/scripts">
             <Button variant="outline" size="lg">

@@ -31,15 +31,16 @@ CREATE TABLE IF NOT EXISTS public.profiles (
 );
 
 -- Create scripts table with tags support
+-- Changed author_id to reference profiles(id) instead of auth.users(id) to properly support foreign key relationships
 CREATE TABLE IF NOT EXISTS public.scripts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title TEXT NOT NULL,
   description TEXT,
-  content TEXT NOT NULL,
+  code TEXT NOT NULL,
   language TEXT NOT NULL,
   category TEXT DEFAULT 'general',
   tags TEXT[] DEFAULT ARRAY[]::TEXT[],
-  author_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  author_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
   is_public BOOLEAN DEFAULT TRUE,
   views_count INT DEFAULT 0,
   downloads_count INT DEFAULT 0,
