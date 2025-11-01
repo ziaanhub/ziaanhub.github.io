@@ -7,14 +7,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-red: #e63946;
-            --dark-red: #d00000;
-            --dark-bg: #121212;
-            --darker-bg: #0a0a0a;
-            --card-bg: #1e1e1e;
-            --text-light: #f5f5f5;
-            --text-muted: #aaaaaa;
-            --accent-color: #ff2e4d;
+            --primary-red: #8B0000;
+            --dark-red: #5A0000;
+            --darker-red: #3A0000;
+            --light-red: #A30000;
+            --accent-red: #FF2A2A;
+            --dark-bg: #0D0D0D;
+            --darker-bg: #080808;
+            --card-bg: #1A1A1A;
+            --text-light: #F0F0F0;
+            --text-muted: #B0B0B0;
+            --border-color: #2A0A0A;
         }
 
         * {
@@ -30,8 +33,9 @@
             min-height: 100vh;
             overflow-x: hidden;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(230, 57, 70, 0.1) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(230, 57, 70, 0.1) 0%, transparent 20%);
+                radial-gradient(circle at 10% 20%, rgba(139, 0, 0, 0.15) 0%, transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(139, 0, 0, 0.15) 0%, transparent 25%),
+                linear-gradient(to bottom, var(--darker-bg), var(--dark-bg));
         }
 
         .container {
@@ -43,40 +47,94 @@
         header {
             text-align: center;
             padding: 3rem 0;
+            position: relative;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(139, 0, 0, 0.2) 0%, transparent 70%);
+            z-index: -1;
         }
 
         .logo-container {
             perspective: 1000px;
             margin-bottom: 2rem;
+            position: relative;
         }
 
         .logo-3d {
-            font-size: 5rem;
+            font-size: 5.5rem;
             font-weight: 900;
             color: var(--primary-red);
             text-shadow: 
-                0 0 10px rgba(230, 57, 70, 0.7),
-                0 5px 0 #8a0000,
-                0 10px 10px rgba(0, 0, 0, 0.5);
+                0 1px 0 #500000,
+                0 2px 0 #500000,
+                0 3px 0 #500000,
+                0 4px 0 #500000,
+                0 5px 0 #500000,
+                0 6px 0 #500000,
+                0 7px 0 #500000,
+                0 8px 0 #500000,
+                0 9px 0 #500000,
+                0 10px 0 #500000,
+                0 15px 20px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(139, 0, 0, 0.5);
             transform-style: preserve-3d;
             transform: rotateX(15deg) rotateY(-5deg);
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             cursor: pointer;
             display: inline-block;
             position: relative;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            background: linear-gradient(to bottom, #C00000, #8B0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3));
         }
 
         .logo-3d:hover {
             transform: rotateX(10deg) rotateY(-2deg) scale(1.05);
             text-shadow: 
-                0 0 15px rgba(230, 57, 70, 0.9),
-                0 5px 0 #8a0000,
-                0 15px 15px rgba(0, 0, 0, 0.5);
+                0 1px 0 #500000,
+                0 2px 0 #500000,
+                0 3px 0 #500000,
+                0 4px 0 #500000,
+                0 5px 0 #500000,
+                0 6px 0 #500000,
+                0 7px 0 #500000,
+                0 8px 0 #500000,
+                0 9px 0 #500000,
+                0 10px 0 #500000,
+                0 15px 25px rgba(0, 0, 0, 0.6),
+                0 0 25px rgba(139, 0, 0, 0.7);
         }
 
         .logo-3d:active {
             transform: rotateX(5deg) rotateY(0deg) scale(0.98);
+        }
+
+        .logo-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 150px;
+            background: radial-gradient(ellipse at center, rgba(255, 42, 42, 0.3) 0%, transparent 70%);
+            z-index: -1;
+            filter: blur(15px);
+            opacity: 0.7;
+            transition: all 0.4s ease;
+        }
+
+        .logo-container:hover .logo-glow {
+            opacity: 0.9;
+            width: 320px;
+            height: 160px;
         }
 
         .particles {
@@ -91,32 +149,58 @@
 
         .particle {
             position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: var(--primary-red);
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-red);
             border-radius: 50%;
             opacity: 0;
-            box-shadow: 0 0 10px var(--primary-red);
+            box-shadow: 0 0 10px var(--accent-red), 0 0 20px var(--accent-red);
         }
 
         .tagline {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             color: var(--text-muted);
             margin-bottom: 3rem;
             font-weight: 300;
             letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+            padding: 0 1rem;
+        }
+
+        .tagline::before, .tagline::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 50px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary-red), transparent);
+        }
+
+        .tagline::before {
+            left: -60px;
+        }
+
+        .tagline::after {
+            right: -60px;
         }
 
         .code-container {
             background-color: var(--card-bg);
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            max-width: 800px;
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            max-width: 850px;
             margin: 0 auto;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .code-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
         }
 
         .code-container::before {
@@ -126,7 +210,18 @@
             left: 0;
             width: 100%;
             height: 5px;
-            background: linear-gradient(90deg, var(--primary-red), var(--accent-color));
+            background: linear-gradient(90deg, var(--primary-red), var(--accent-red), var(--primary-red));
+        }
+
+        .code-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.05) 0%, transparent 30%);
+            pointer-events: none;
         }
 
         .code-header {
@@ -137,29 +232,53 @@
         }
 
         .code-title {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: var(--text-light);
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-title i {
+            color: var(--accent-red);
         }
 
         .copy-btn {
             background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
             color: white;
             border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
+            padding: 0.7rem 1.8rem;
+            border-radius: 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.7rem;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .copy-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .copy-btn:hover::before {
+            left: 100%;
         }
 
         .copy-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(230, 57, 70, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(139, 0, 0, 0.5);
         }
 
         .copy-btn:active {
@@ -168,14 +287,15 @@
 
         .code-content {
             background-color: var(--darker-bg);
-            padding: 1.5rem;
-            border-radius: 10px;
+            padding: 1.8rem;
+            border-radius: 8px;
             font-family: 'Courier New', monospace;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--text-light);
             overflow-x: auto;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
             position: relative;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .code-content::before {
@@ -185,33 +305,100 @@
             left: 0;
             width: 4px;
             height: 100%;
-            background: linear-gradient(to bottom, var(--primary-red), var(--accent-color));
+            background: linear-gradient(to bottom, var(--primary-red), var(--accent-red));
+            border-radius: 4px 0 0 4px;
+        }
+
+        .code-content code {
+            display: block;
+            white-space: nowrap;
         }
 
         footer {
             text-align: center;
             margin-top: 4rem;
-            padding: 2rem 0;
+            padding: 3rem 0;
             color: var(--text-muted);
             font-size: 0.9rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, transparent, var(--primary-red), transparent);
         }
 
         .social-links {
             display: flex;
             justify-content: center;
             gap: 1.5rem;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
         }
 
         .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--card-bg), var(--darker-bg));
             color: var(--text-muted);
             font-size: 1.5rem;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
         }
 
         .social-link:hover {
-            color: var(--primary-red);
+            transform: translateY(-5px);
+            color: white;
+            box-shadow: 0 8px 20px rgba(139, 0, 0, 0.4);
+        }
+
+        .social-link:hover::before {
+            opacity: 1;
+        }
+
+        .social-tooltip {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-red);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-link:hover .social-tooltip {
+            opacity: 1;
         }
 
         /* Animasi untuk partikel */
@@ -229,6 +416,16 @@
             }
         }
 
+        /* Efek kedipan teks */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .blink {
+            animation: blink 2s infinite;
+        }
+
         /* Responsif */
         @media (max-width: 768px) {
             .logo-3d {
@@ -241,15 +438,50 @@
             
             .code-content {
                 font-size: 0.9rem;
+                padding: 1.2rem;
             }
+            
+            .code-container {
+                padding: 1.5rem;
+            }
+            
+            .social-links {
+                gap: 1rem;
+            }
+            
+            .social-link {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+        }
+
+        /* Scrollbar kustom */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--primary-red), var(--dark-red));
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, var(--light-red), var(--primary-red));
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
+            <div class="header-bg"></div>
             <div class="logo-container">
                 <h1 class="logo-3d" id="ziaan-logo">ZiaanHub</h1>
+                <div class="logo-glow"></div>
                 <div class="particles" id="particles"></div>
             </div>
             <p class="tagline">Solutions For Scripting Tools For Roblox Games</p>
@@ -258,13 +490,15 @@
         <main>
             <div class="code-container">
                 <div class="code-header">
-                    <div class="code-title">Loadstring Code</div>
+                    <div class="code-title">
+                        <i class="fas fa-code"></i> Loadstring Code
+                    </div>
                     <button class="copy-btn" id="copy-btn">
-                        <i class="fas fa-copy"></i> Copy
+                        <i class="fas fa-copy"></i> Copy Code
                     </button>
                 </div>
                 <div class="code-content">
-                    loadstring(game:HttpGet("https://ziaanhub.github.io/ziaanhub.lua"))()
+                    <code>loadstring(game:HttpGet("https://ziaanhub.github.io/ziaanhub.lua"))()</code>
                 </div>
             </div>
         </main>
@@ -272,10 +506,22 @@
         <footer>
             <p>&copy; 2023 ZiaanHub. All rights reserved.</p>
             <div class="social-links">
-                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                <a href="https://github.com/ZiaanHub" class="social-link" target="_blank">
+                    <i class="fab fa-github"></i>
+                    <span class="social-tooltip">GitHub</span>
+                </a>
+                <a href="https://youtube.com/@ZiaanHub" class="social-link" target="_blank">
+                    <i class="fab fa-youtube"></i>
+                    <span class="social-tooltip">YouTube</span>
+                </a>
+                <a href="https://tiktok.com/@ZiaanHub" class="social-link" target="_blank">
+                    <i class="fab fa-tiktok"></i>
+                    <span class="social-tooltip">TikTok</span>
+                </a>
+                <a href="https://discord.gg/ziaanhub" class="social-link" target="_blank">
+                    <i class="fab fa-discord"></i>
+                    <span class="social-tooltip">Discord</span>
+                </a>
             </div>
         </footer>
     </div>
@@ -296,25 +542,26 @@
             particlesContainer.innerHTML = '';
             
             // Buat partikel baru
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 25; i++) {
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
                 
                 // Posisi awal partikel di sekitar titik klik
-                const size = Math.random() * 10 + 5;
+                const size = Math.random() * 8 + 4;
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
                 particle.style.left = `${x}px`;
                 particle.style.top = `${y}px`;
                 
-                // Warna acak dalam spektrum merah
-                const hue = Math.floor(Math.random() * 30) + 330; // 330-360 untuk merah-ungu
-                particle.style.backgroundColor = `hsl(${hue}, 100%, 60%)`;
-                particle.style.boxShadow = `0 0 10px hsl(${hue}, 100%, 60%)`;
+                // Warna acak dalam spektrum merah tua
+                const hue = Math.floor(Math.random() * 20) + 340; // 340-360 untuk merah tua
+                const saturation = Math.floor(Math.random() * 30) + 70; // 70-100%
+                particle.style.backgroundColor = `hsl(${hue}, ${saturation}%, 50%)`;
+                particle.style.boxShadow = `0 0 10px hsl(${hue}, ${saturation}%, 50%), 0 0 20px hsl(${hue}, ${saturation}%, 50%)`;
                 
                 // Arah dan jarak acak
                 const angle = Math.random() * Math.PI * 2;
-                const distance = Math.random() * 100 + 50;
+                const distance = Math.random() * 120 + 60;
                 const tx = Math.cos(angle) * distance;
                 const ty = Math.sin(angle) * distance;
                 
@@ -322,7 +569,8 @@
                 particle.style.setProperty('--ty', `${ty}px`);
                 
                 // Animasi partikel
-                particle.style.animation = `particle-animation ${Math.random() * 1 + 0.5}s ease-out forwards`;
+                const duration = Math.random() * 1 + 0.7;
+                particle.style.animation = `particle-animation ${duration}s ease-out forwards`;
                 
                 particlesContainer.appendChild(particle);
                 
@@ -331,18 +579,20 @@
                     if (particle.parentNode === particlesContainer) {
                         particlesContainer.removeChild(particle);
                     }
-                }, 1000);
+                }, duration * 1000);
             }
         }
 
         // Fungsi copy kode
         document.getElementById('copy-btn').addEventListener('click', function() {
-            const code = document.querySelector('.code-content').textContent;
+            const code = document.querySelector('.code-content code').textContent;
             navigator.clipboard.writeText(code).then(() => {
                 const originalText = this.innerHTML;
                 this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                this.style.background = 'linear-gradient(135deg, #00A300, #008000)';
                 setTimeout(() => {
                     this.innerHTML = originalText;
+                    this.style.background = 'linear-gradient(135deg, var(--primary-red), var(--dark-red))';
                 }, 2000);
             });
         });
@@ -357,8 +607,8 @@
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
             
-            const angleY = (x - centerX) / 20;
-            const angleX = (centerY - y) / 20;
+            const angleY = (x - centerX) / 25;
+            const angleX = (centerY - y) / 25;
             
             this.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) scale(1.05)`;
         });
@@ -366,6 +616,12 @@
         logo.addEventListener('mouseleave', function() {
             this.style.transform = 'rotateX(15deg) rotateY(-5deg) scale(1)';
         });
+
+        // Efek kedipan pada tagline
+        const tagline = document.querySelector('.tagline');
+        setInterval(() => {
+            tagline.classList.toggle('blink');
+        }, 3000);
     </script>
 </body>
 </html>
