@@ -1,739 +1,470 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZiaanHub - Solutions For Scripting Tools For Roblox Games</title>
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-red: #8B0000;
-            --dark-red: #5A0000;
-            --darker-red: #3A0000;
-            --light-red: #A30000;
-            --accent-red: #FF2A2A;
-            --dark-bg: #0D0D0D;
-            --darker-bg: #080808;
-            --card-bg: #1A1A1A;
-            --text-light: #F0F0F0;
-            --text-muted: #B0B0B0;
-            --border-color: #2A0A0A;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ZiaanHub — Neraka Minecraft Pixel 3D</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+  <!-- React (untuk UI wrapper; kita akan render scene ke canvas) -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 
-        body {
-            background-color: var(--dark-bg);
-            color: var(--text-light);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+  <!-- Three.js -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+  <!-- OrbitControls (dev camera control) -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.149.0/examples/js/controls/OrbitControls.js"></script>
 
-        #root {
-            width: 100%;
-            min-height: 100vh;
-        }
+  <!-- GSAP for animation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.1/gsap.min.js"></script>
 
-        /* Animated Background */
-        .animated-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(139, 0, 0, 0.15) 0%, transparent 25%),
-                radial-gradient(circle at 90% 80%, rgba(139, 0, 0, 0.15) 0%, transparent 25%),
-                linear-gradient(to bottom, var(--darker-bg), var(--dark-bg));
-            overflow: hidden;
-        }
+  <!-- Simplex Noise for lava shader-like movement (tiny lib) -->
+  <script src="https://cdn.jsdelivr.net/npm/simplex-noise@3.0.0/dist/esm/simplex-noise.min.js"></script>
 
-        .floating-shape {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(139, 0, 0, 0.1);
-            filter: blur(40px);
-        }
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
 
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
-        }
+  <style>
+    :root{
+      --bg:#0a0403; --text:#ffe8e8; --accent:#ff3b3b;
+    }
+    html,body { height:100%; margin:0; background:linear-gradient(180deg,#050101 0%, #120202 70%); color:var(--text); font-family:Inter, system-ui, sans-serif; -webkit-font-smoothing:antialiased;}
+    #root { height:100vh; width:100vw; display:flex; align-items:center; justify-content:center; }
+    .app {
+      width:100%;
+      height:100%;
+      position:relative;
+      overflow:hidden;
+    }
 
-        /* Header */
-        header {
-            text-align: center;
-            padding: 3rem 0;
-            position: relative;
-        }
+    /* Top HUD */
+    .hud {
+      position:absolute;
+      top:18px;
+      left:18px;
+      z-index:20;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      backdrop-filter: blur(6px);
+      background: rgba(30,8,8,0.35);
+      padding:8px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255, 60, 60, 0.06);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    }
+    .hud .title { font-weight:700; letter-spacing:1px; color:var(--accent); }
+    .hud button { background:transparent; color:var(--text); border:1px solid rgba(255,255,255,0.04); padding:6px 8px; border-radius:8px; cursor:pointer; }
+    .hud small { color:#ffbcbc; opacity:0.9; margin-left:8px; font-size:12px; }
 
-        .header-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at center, rgba(139, 0, 0, 0.2) 0%, transparent 70%);
-            z-index: -1;
-        }
+    /* Bottom info (we'll hide tiny footer as user requested) */
+    .controls {
+      position:absolute;
+      right:18px;
+      bottom:18px;
+      z-index:20;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      background: rgba(20,6,6,0.35);
+      padding:8px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255, 60, 60, 0.06);
+    }
+    .controls .ghost { color:#ffb2b2; font-size:13px; }
 
-        .logo-container {
-            perspective: 1000px;
-            margin-bottom: 2rem;
-            position: relative;
-        }
+    /* Canvas occupies full */
+    canvas { display:block; width:100%; height:100%; outline:none; }
 
-        .logo-3d {
-            font-size: 5.5rem;
-            font-weight: 900;
-            color: var(--primary-red);
-            text-shadow: 
-                0 1px 0 #500000,
-                0 2px 0 #500000,
-                0 3px 0 #500000,
-                0 4px 0 #500000,
-                0 5px 0 #500000,
-                0 6px 0 #500000,
-                0 7px 0 #500000,
-                0 8px 0 #500000,
-                0 9px 0 #500000,
-                0 10px 0 #500000,
-                0 15px 20px rgba(0, 0, 0, 0.5),
-                0 0 20px rgba(139, 0, 0, 0.5);
-            transform-style: preserve-3d;
-            transform: rotateX(15deg) rotateY(-5deg);
-            transition: all 0.4s ease;
-            cursor: pointer;
-            display: inline-block;
-            position: relative;
-            letter-spacing: 3px;
-            background: linear-gradient(to bottom, #C00000, #8B0000);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3));
-        }
-
-        .logo-3d:hover {
-            transform: rotateX(10deg) rotateY(-2deg) scale(1.05);
-            text-shadow: 
-                0 1px 0 #500000,
-                0 2px 0 #500000,
-                0 3px 0 #500000,
-                0 4px 0 #500000,
-                0 5px 0 #500000,
-                0 6px 0 #500000,
-                0 7px 0 #500000,
-                0 8px 0 #500000,
-                0 9px 0 #500000,
-                0 10px 0 #500000,
-                0 15px 25px rgba(0, 0, 0, 0.6),
-                0 0 25px rgba(139, 0, 0, 0.7);
-        }
-
-        .logo-3d:active {
-            transform: rotateX(5deg) rotateY(0deg) scale(0.98);
-        }
-
-        .logo-glow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            height: 150px;
-            background: radial-gradient(ellipse at center, rgba(255, 42, 42, 0.3) 0%, transparent 70%);
-            z-index: -1;
-            filter: blur(15px);
-            opacity: 0.7;
-            transition: all 0.4s ease;
-        }
-
-        .logo-container:hover .logo-glow {
-            opacity: 0.9;
-            width: 320px;
-            height: 160px;
-        }
-
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .particle {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent-red);
-            border-radius: 50%;
-            opacity: 0;
-            box-shadow: 0 0 10px var(--accent-red), 0 0 20px var(--accent-red);
-        }
-
-        .tagline {
-            font-size: 1.6rem;
-            color: var(--text-muted);
-            margin-bottom: 3rem;
-            font-weight: 300;
-            letter-spacing: 1px;
-            position: relative;
-            display: inline-block;
-            padding: 0 1rem;
-        }
-
-        .tagline::before, .tagline::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 50px;
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--primary-red), transparent);
-        }
-
-        .tagline::before {
-            left: -60px;
-        }
-
-        .tagline::after {
-            right: -60px;
-        }
-
-        /* Code Container */
-        .code-container {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 2.5rem;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            max-width: 850px;
-            margin: 0 auto;
-            border: 1px solid var(--border-color);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .code-container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-        }
-
-        .code-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary-red), var(--accent-red), var(--primary-red));
-        }
-
-        .code-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(139, 0, 0, 0.05) 0%, transparent 30%);
-            pointer-events: none;
-        }
-
-        .code-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .code-title {
-            font-size: 1.3rem;
-            color: var(--text-light);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .code-title i {
-            color: var(--accent-red);
-        }
-
-        .copy-btn {
-            background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
-            color: white;
-            border: none;
-            padding: 0.7rem 1.8rem;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.7rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.4);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .copy-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .copy-btn:hover::before {
-            left: 100%;
-        }
-
-        .copy-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(139, 0, 0, 0.5);
-        }
-
-        .copy-btn:active {
-            transform: translateY(0);
-        }
-
-        .code-content {
-            background-color: var(--darker-bg);
-            padding: 1.8rem;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            font-size: 1.2rem;
-            color: var(--text-light);
-            overflow-x: auto;
-            border: 1px solid var(--border-color);
-            position: relative;
-            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .code-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--primary-red), var(--accent-red));
-            border-radius: 4px 0 0 4px;
-        }
-
-        .code-content code {
-            display: block;
-            white-space: nowrap;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            margin-top: 4rem;
-            padding: 3rem 0;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            border-top: 1px solid var(--border-color);
-            position: relative;
-        }
-
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(to right, transparent, var(--primary-red), transparent);
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--card-bg), var(--darker-bg));
-            color: var(--text-muted);
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .social-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: -1;
-        }
-
-        .social-link:hover {
-            transform: translateY(-5px);
-            color: white;
-            box-shadow: 0 8px 20px rgba(139, 0, 0, 0.4);
-        }
-
-        .social-link:hover::before {
-            opacity: 1;
-        }
-
-        .social-tooltip {
-            position: absolute;
-            bottom: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--primary-red);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .social-link:hover .social-tooltip {
-            opacity: 1;
-        }
-
-        /* Animations */
-        @keyframes particle-animation {
-            0% {
-                transform: translate(0, 0) scale(0);
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.7;
-            }
-            100% {
-                transform: translate(var(--tx), var(--ty)) scale(1);
-                opacity: 0;
-            }
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        .blink {
-            animation: blink 2s infinite;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .logo-3d {
-                font-size: 3.5rem;
-            }
-            
-            .tagline {
-                font-size: 1.2rem;
-            }
-            
-            .code-content {
-                font-size: 0.9rem;
-                padding: 1.2rem;
-            }
-            
-            .code-container {
-                padding: 1.5rem;
-            }
-            
-            .social-links {
-                gap: 1rem;
-            }
-            
-            .social-link {
-                width: 45px;
-                height: 45px;
-                font-size: 1.3rem;
-            }
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--darker-bg);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, var(--primary-red), var(--dark-red));
-            border-radius: 5px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(to bottom, var(--light-red), var(--primary-red));
-        }
-    </style>
+    /* mobile hint */
+    .mobile-hint {
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      top:18px;
+      z-index:21;
+      padding:6px 8px;
+      background:rgba(0,0,0,0.35);
+      border-radius:8px;
+      font-size:13px;
+      color:#ffdddd;
+      display:none;
+    }
+    @media (max-width:820px){
+      .mobile-hint { display:block; }
+    }
+  </style>
 </head>
 <body>
-    <div id="root"></div>
+  <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+  <script type="text/javascript">
+  // ---------- React wrapper ----------
+  const e = React.createElement;
 
-        // Animated Background Component
-        const AnimatedBackground = () => {
-            useEffect(() => {
-                const bg = document.querySelector('.animated-bg');
-                for (let i = 0; i < 15; i++) {
-                    const shape = document.createElement('div');
-                    shape.classList.add('floating-shape');
-                    
-                    const size = Math.random() * 300 + 100;
-                    shape.style.width = `${size}px`;
-                    shape.style.height = `${size}px`;
-                    
-                    const x = Math.random() * 100;
-                    const y = Math.random() * 100;
-                    shape.style.left = `${x}%`;
-                    shape.style.top = `${y}%`;
-                    
-                    bg.appendChild(shape);
-                    
-                    // Animate the shapes
-                    gsap.to(shape, {
-                        x: `+=${Math.random() * 100 - 50}`,
-                        y: `+=${Math.random() * 100 - 50}`,
-                        duration: Math.random() * 20 + 10,
-                        repeat: -1,
-                        yoyo: true,
-                        ease: "sine.inOut"
-                    });
-                }
-            }, []);
+  function App(){
+    return e('div', {className:'app'},
+      e('div',{className:'hud'},
+        e('div',{className:'title'}, 'ZiaanHub — Nether Pixel 3D'),
+        e('button',{id:'btn-pause'}, 'Pause'),
+        e('small', null, 'Klik/Drag pada logo untuk efek pixel')
+      ),
+      e('div',{className:'mobile-hint'}, 'Ketuk & seret untuk interaksi'),
+      e('div',{id:'three-container', style:{width:'100%', height:'100%'}})
+    );
+  }
 
-            return React.createElement('div', { className: 'animated-bg' });
-        };
+  ReactDOM.createRoot(document.getElementById('root')).render(e(App));
 
-        // Header Component
-        const Header = () => {
-            const createParticles = (e) => {
-                const particlesContainer = document.getElementById('particles');
-                const rect = e.target.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                particlesContainer.innerHTML = '';
-                
-                for (let i = 0; i < 25; i++) {
-                    const particle = document.createElement('div');
-                    particle.classList.add('particle');
-                    
-                    const size = Math.random() * 8 + 4;
-                    particle.style.width = `${size}px`;
-                    particle.style.height = `${size}px`;
-                    particle.style.left = `${x}px`;
-                    particle.style.top = `${y}px`;
-                    
-                    const hue = Math.floor(Math.random() * 20) + 340;
-                    const saturation = Math.floor(Math.random() * 30) + 70;
-                    particle.style.backgroundColor = `hsl(${hue}, ${saturation}%, 50%)`;
-                    particle.style.boxShadow = `0 0 10px hsl(${hue}, ${saturation}%, 50%), 0 0 20px hsl(${hue}, ${saturation}%, 50%)`;
-                    
-                    const angle = Math.random() * Math.PI * 2;
-                    const distance = Math.random() * 120 + 60;
-                    const tx = Math.cos(angle) * distance;
-                    const ty = Math.sin(angle) * distance;
-                    
-                    particle.style.setProperty('--tx', `${tx}px`);
-                    particle.style.setProperty('--ty', `${ty}px`);
-                    
-                    const duration = Math.random() * 1 + 0.7;
-                    particle.style.animation = `particle-animation ${duration}s ease-out forwards`;
-                    
-                    particlesContainer.appendChild(particle);
-                    
-                    setTimeout(() => {
-                        if (particle.parentNode === particlesContainer) {
-                            particlesContainer.removeChild(particle);
-                        }
-                    }, duration * 1000);
-                }
-            };
+  // ---------- Three.js Scene ----------
+  (function(){
+    // Globals
+    const container = document.getElementById('three-container');
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x0a0302, 0.015);
 
-            useEffect(() => {
-                const logo = document.getElementById('ziaan-logo');
-                const handleMouseMove = (e) => {
-                    const rect = logo.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    
-                    const angleY = (x - centerX) / 25;
-                    const angleX = (centerY - y) / 25;
-                    
-                    logo.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) scale(1.05)`;
-                };
-                
-                const handleMouseLeave = () => {
-                    logo.style.transform = 'rotateX(15deg) rotateY(-5deg) scale(1)';
-                };
-                
-                logo.addEventListener('mousemove', handleMouseMove);
-                logo.addEventListener('mouseleave', handleMouseLeave);
-                
-                return () => {
-                    logo.removeEventListener('mousemove', handleMouseMove);
-                    logo.removeEventListener('mouseleave', handleMouseLeave);
-                };
-            }, []);
+    const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true, preserveDrawingBuffer:false });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.shadowMap.enabled = true;
+    container.appendChild(renderer.domElement);
 
-            return React.createElement('header', null,
-                React.createElement('div', { className: 'header-bg' }),
-                React.createElement('div', { className: 'logo-container' },
-                    React.createElement('h1', { 
-                        className: 'logo-3d', 
-                        id: 'ziaan-logo',
-                        onClick: createParticles
-                    }, 'ZiaanHub'),
-                    React.createElement('div', { className: 'logo-glow' }),
-                    React.createElement('div', { className: 'particles', id: 'particles' })
-                ),
-                React.createElement('p', { className: 'tagline blink' }, 'Solutions For Scripting Tools For Roblox Games')
-            );
-        };
+    // Camera
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth/container.clientHeight, 0.1, 2000);
+    camera.position.set(0, 30, 120);
 
-        // Code Component
-        const CodeSection = () => {
-            const [isCopied, setIsCopied] = useState(false);
+    // Controls (for desktop dev; hidden on mobile gestures still work)
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enablePan = false;
+    controls.enableDamping = true;
+    controls.enabled = false; // disabled by default; toggle with "P" or button
 
-            const handleCopy = () => {
-                const code = document.querySelector('.code-content code').textContent;
-                navigator.clipboard.writeText(code).then(() => {
-                    setIsCopied(true);
-                    setTimeout(() => setIsCopied(false), 2000);
-                });
-            };
+    // Lighting (hellish red)
+    const hemi = new THREE.HemisphereLight(0xffd1b8, 0x200000, 0.4);
+    scene.add(hemi);
 
-            return React.createElement('div', { className: 'code-container' },
-                React.createElement('div', { className: 'code-header' },
-                    React.createElement('div', { className: 'code-title' },
-                        React.createElement('i', { className: 'fas fa-code' }),
-                        ' Loadstring Code'
-                    ),
-                    React.createElement('button', { 
-                        className: 'copy-btn', 
-                        id: 'copy-btn',
-                        onClick: handleCopy,
-                        style: isCopied ? { background: 'linear-gradient(135deg, #00A300, #008000)' } : {}
-                    },
-                        React.createElement('i', { className: isCopied ? 'fas fa-check' : 'fas fa-copy' }),
-                        isCopied ? ' Copied!' : ' Copy Code'
-                    )
-                ),
-                React.createElement('div', { className: 'code-content' },
-                    React.createElement('code', null, 'loadstring(game:HttpGet("https://ziaanhub.github.io/ziaanhub.lua"))()')
-                )
-            );
-        };
+    const dir = new THREE.DirectionalLight(0xff6b4d, 1.4);
+    dir.position.set(50,80,50);
+    dir.castShadow = true;
+    dir.shadow.mapSize.set(2048,2048);
+    dir.shadow.camera.near=1; dir.shadow.camera.far=300;
+    scene.add(dir);
 
-        // Footer Component
-        const Footer = () => {
-            return React.createElement('footer', null,
-                React.createElement('p', null, '\u00A9 2023 ZiaanHub. All rights reserved.'),
-                React.createElement('div', { className: 'social-links' },
-                    React.createElement('a', { 
-                        href: 'https://github.com/ZiaanHub', 
-                        className: 'social-link', 
-                        target: '_blank',
-                        rel: 'noopener noreferrer'
-                    },
-                        React.createElement('i', { className: 'fab fa-github' }),
-                        React.createElement('span', { className: 'social-tooltip' }, 'GitHub')
-                    ),
-                    React.createElement('a', { 
-                        href: 'https://youtube.com/@ZiaanHub', 
-                        className: 'social-link', 
-                        target: '_blank',
-                        rel: 'noopener noreferrer'
-                    },
-                        React.createElement('i', { className: 'fab fa-youtube' }),
-                        React.createElement('span', { className: 'social-tooltip' }, 'YouTube')
-                    ),
-                    React.createElement('a', { 
-                        href: 'https://tiktok.com/@ZiaanHub', 
-                        className: 'social-link', 
-                        target: '_blank',
-                        rel: 'noopener noreferrer'
-                    },
-                        React.createElement('i', { className: 'fab fa-tiktok' }),
-                        React.createElement('span', { className: 'social-tooltip' }, 'TikTok')
-                    ),
-                    React.createElement('a', { 
-                        href: 'https://discord.gg/ziaanhub', 
-                        className: 'social-link', 
-                        target: '_blank',
-                        rel: 'noopener noreferrer'
-                    },
-                        React.createElement('i', { className: 'fab fa-discord' }),
-                        React.createElement('span', { className: 'social-tooltip' }, 'Discord')
-                    )
-                )
-            );
-        };
+    // Ambient red tint
+    const ambient = new THREE.AmbientLight(0x220000, 0.6);
+    scene.add(ambient);
 
-        // Main App Component
-        const App = () => {
-            return React.createElement('div', null,
-                React.createElement(AnimatedBackground),
-                React.createElement('div', { className: 'container' },
-                    React.createElement(Header),
-                    React.createElement('main', null,
-                        React.createElement(CodeSection)
-                    ),
-                    React.createElement(Footer)
-                )
-            );
-        };
+    // Ground lava plane
+    const lavaGeo = new THREE.PlaneGeometry(600, 600, 120, 120);
+    const lavaMat = new THREE.MeshStandardMaterial({
+      emissive: 0xff3a00,
+      emissiveIntensity: 1.2,
+      metalness: 0.1,
+      roughness: 0.85,
+      transparent: true,
+      opacity: 0.95,
+    });
+    const lava = new THREE.Mesh(lavaGeo, lavaMat);
+    lava.rotation.x = -Math.PI/2;
+    lava.position.y = -30;
+    lava.receiveShadow = true;
+    scene.add(lava);
 
-        // Render the App
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(React.createElement(App));
-    </script>
+    // Simple noise for lava animation
+    const simplex = new SimplexNoise();
+
+    // Particle (embers) system
+    const emberCount = 260;
+    const emberGeo = new THREE.BufferGeometry();
+    const positions = new Float32Array(emberCount*3);
+    const sizes = new Float32Array(emberCount);
+    for(let i=0;i<emberCount;i++){
+      positions[i*3+0] = (Math.random()-0.5)*300;
+      positions[i*3+1] = Math.random()*40 - 10;
+      positions[i*3+2] = (Math.random()-0.5)*300;
+      sizes[i] = Math.random()*2.5 + 0.6;
+    }
+    emberGeo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+    emberGeo.setAttribute('size', new THREE.BufferAttribute(sizes,1));
+    const emberMat = new THREE.PointsMaterial({
+      size: 6,
+      sizeAttenuation: true,
+      color: 0xff6f3e,
+      transparent:true,
+      opacity:0.9,
+      depthWrite:false,
+      blending:THREE.AdditiveBlending
+    });
+    const embers = new THREE.Points(emberGeo, emberMat);
+    scene.add(embers);
+
+    // Create pixel text using a canvas to sample text pixels
+    const text = "ZiaanHub";
+    const pixelSize = 2.6; // cube size
+    const scale = 2.6; // scaling factor for spacing
+    const gap = 0.6; // small gap between cubes
+
+    // create a temporary canvas to rasterize text
+    const textCanvas = document.createElement('canvas');
+    const ctx = textCanvas.getContext('2d');
+    // enlarge canvas to get more detail (increase for more cubes)
+    const W = 800;
+    const H = 220;
+    textCanvas.width = W;
+    textCanvas.height = H;
+    // background black
+    ctx.fillStyle = "black";
+    ctx.fillRect(0,0,W,H);
+    // text styling (pixelated look)
+    const fontSize = 160;
+    ctx.font = `bold ${fontSize}px 'Courier New', monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = 'white';
+    // to pixelate, draw text multiple times or use low-res sampling later
+    ctx.fillText(text, W/2, H/2 + 10);
+
+    // sample image data
+    const img = ctx.getImageData(0,0,W,H).data;
+
+    // threshold & build points
+    const pixels = [];
+    // sample step controls resolution -> bigger step => fewer cubes
+    const sampleStep = 8; // increase to reduce cubes for performance
+    for(let y=0; y<H; y+=sampleStep){
+      for(let x=0; x<W; x+=sampleStep){
+        const idx = (x + y * W) * 4;
+        const alpha = img[idx+3];
+        const r = img[idx];
+        // if pixel is light enough consider it part of text
+        if(r > 50){
+          // center origin
+          const px = (x - W/2) * (pixelSize/ (sampleStep/4)) * scale / 2.8;
+          const py = (H/2 - y) * (pixelSize/ (sampleStep/4)) * scale / 3.2;
+          const pz = 0;
+          pixels.push({x:px, y:py, z:pz});
+        }
+      }
+    }
+
+    // create instanced mesh
+    const boxGeo = new THREE.BoxGeometry(pixelSize, pixelSize, pixelSize);
+    const boxMat = new THREE.MeshStandardMaterial({
+      color:0x8B0000,
+      metalness:0.2,
+      roughness:0.6,
+      emissive: 0x440000,
+      emissiveIntensity: 0.6
+    });
+
+    const count = pixels.length;
+    const instanced = new THREE.InstancedMesh(boxGeo, boxMat, count);
+    instanced.castShadow = true;
+    instanced.receiveShadow = true;
+    scene.add(instanced);
+
+    // per-instance data
+    const dummy = new THREE.Object3D();
+    const basePositions = new Array(count);
+    const velocity = new Array(count).fill().map(()=>({x:0,y:0,z:0}));
+    const touched = new Array(count).fill(0);
+
+    for(let i=0;i<count;i++){
+      const p = pixels[i];
+      basePositions[i] = new THREE.Vector3(p.x, p.y+2.0, p.z);
+      dummy.position.set(p.x, p.y+2.0, p.z);
+      dummy.rotation.set(0, (Math.random()-0.5)*0.4, 0);
+      dummy.updateMatrix();
+      instanced.setMatrixAt(i, dummy.matrix);
+      // set color via instanceColor if needed (but default material used)
+    }
+    instanced.instanceMatrix.needsUpdate = true;
+
+    // Add subtle floating (idle) effect onto base positions
+    const clock = new THREE.Clock();
+
+    // Raycaster for pointer interaction
+    const ray = new THREE.Raycaster();
+    const pointer = new THREE.Vector2(-1,-1);
+    let mouseDown = false;
+
+    // Map pointer on move to world position around pixel cloud center
+    function getPointerWorld(event){
+      const rect = renderer.domElement.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+      pointer.x = x; pointer.y = y;
+      ray.setFromCamera(pointer, camera);
+      // intersect with imaginary plane at z=0 near text
+      const planeZ = new THREE.Plane(new THREE.Vector3(0,0,1), 0);
+      const intersect = new THREE.Vector3();
+      ray.ray.intersectPlane(planeZ, intersect);
+      return intersect;
+    }
+
+    // Interaction: attract nearby pixels towards pointer
+    function interactAt(worldPos, strength=1.0){
+      const radius = 20 + 20*strength; // influence radius
+      for(let i=0;i<count;i++){
+        const bp = basePositions[i];
+        const dx = bp.x - worldPos.x;
+        const dy = bp.y - worldPos.y;
+        const dz = bp.z - worldPos.z;
+        const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+        if(dist < radius){
+          // normalized direction from pixel -> pointer
+          const dirx = (worldPos.x - bp.x) / (dist + 0.0001);
+          const diry = (worldPos.y - bp.y) / (dist + 0.0001);
+          const dirz = (worldPos.z - bp.z) / (dist + 0.0001);
+          // add velocity towards pointer (so cubes "pulled")
+          const pull = (1 - dist/radius) * (4.0 * strength);
+          velocity[i].x += dirx * pull;
+          velocity[i].y += diry * pull;
+          velocity[i].z += dirz * pull;
+          touched[i] = 1.0;
+        }
+      }
+    }
+
+    // Pointer events
+    renderer.domElement.addEventListener('pointermove', (e)=>{
+      const wpos = getPointerWorld(e);
+      // continuous light attraction
+      interactAt(wpos, 0.5);
+    });
+
+    renderer.domElement.addEventListener('pointerdown', (e)=>{
+      mouseDown = true;
+      const wpos = getPointerWorld(e);
+      interactAt(wpos, 1.6);
+      // burst of embers near pointer
+      for(let i=0;i<emberCount;i++){
+        positions[i*3+0] = positions[i*3+0] + (Math.random()-0.5)*10;
+        positions[i*3+1] = positions[i*3+1] + (Math.random()*6)+6;
+        positions[i*3+2] = positions[i*3+2] + (Math.random()-0.5)*10;
+      }
+      emberGeo.attributes.position.needsUpdate = true;
+    });
+
+    renderer.domElement.addEventListener('pointerup', ()=>{ mouseDown = false; });
+
+    // Pause button behaviour
+    const btn = document.getElementById('btn-pause');
+    let paused = false;
+    btn.addEventListener('click', ()=>{
+      paused = !paused;
+      btn.textContent = paused ? 'Resume' : 'Pause';
+      controls.enabled = !paused;
+    });
+
+    // For keyboard toggles
+    window.addEventListener('keydown', (ev)=>{
+      if(ev.key === 'p' || ev.key === 'P'){
+        paused = !paused;
+        btn.textContent = paused ? 'Resume' : 'Pause';
+        controls.enabled = !paused;
+      }
+    });
+
+    // main animation loop
+    function animate(){
+      if(!paused){
+        const t = clock.getElapsedTime();
+        // animate lava vertices (simple procedural)
+        const posAttr = lava.geometry.attributes.position;
+        for(let i=0;i<posAttr.count;i++){
+          const vx = posAttr.getX(i);
+          const vy = posAttr.getY(i);
+          const vz = posAttr.getZ(i);
+          const n = simplex.noise3D(vx*0.02, vz*0.02, t*0.25);
+          posAttr.setY(i, -30 + n*2.6 + Math.sin(t*0.6 + vx*0.03)*0.3);
+        }
+        posAttr.needsUpdate = true;
+        lava.geometry.computeVertexNormals();
+
+        // embers slight rise & wrap
+        for(let i=0;i<emberCount;i++){
+          positions[i*3+1] += 0.02 + Math.random()*0.2;
+          if(positions[i*3+1] > 60) positions[i*3+1] = -10 - Math.random()*20;
+        }
+        emberGeo.attributes.position.needsUpdate = true;
+
+        // update instanced cubes
+        for(let i=0;i<count;i++){
+          // idle breathing using noise
+          const bp = basePositions[i];
+          const n = simplex.noise3D(bp.x*0.02, bp.y*0.02, t*0.5);
+          // apply velocity damping
+          velocity[i].x *= 0.92;
+          velocity[i].y *= 0.88;
+          velocity[i].z *= 0.92;
+
+          // update virtual position (base + small offset)
+          const ox = bp.x + Math.sin(t*1.2 + i) * 0.05 + velocity[i].x;
+          const oy = bp.y + Math.cos(t*1.1 + i*0.5) * 0.04 + velocity[i].y;
+          const oz = bp.z + n*0.6 + velocity[i].z;
+
+          dummy.position.set(ox, oy, oz);
+          // rotation depends on how much it's moved (for wobble)
+          const rot = Math.min(0.6, Math.abs(velocity[i].x)+Math.abs(velocity[i].y))*0.12;
+          dummy.rotation.set(rot * Math.sin(i), (i%2?rot:-rot), rot * Math.cos(i*0.3));
+          // slight scale bounce based on touched
+          const shake = 1 + Math.min(0.45, touched[i]*0.5);
+          dummy.scale.set(shake, shake, shake);
+          dummy.updateMatrix();
+          instanced.setMatrixAt(i, dummy.matrix);
+
+          // decay touched marker
+          touched[i] = Math.max(0, touched[i] - 0.02);
+        }
+        instanced.instanceMatrix.needsUpdate = true;
+      }
+
+      controls.update();
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // Responsiveness
+    window.addEventListener('resize', ()=>{
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w/h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w,h);
+    });
+
+    // initial camera fly-in using GSAP
+    gsap.fromTo(camera.position, { z: 220, y:40 }, { z: 120, y:30, duration: 2.2, ease:'power2.out' });
+
+    // touch drag support (map touch to pointermove)
+    let lastTouch = null;
+    renderer.domElement.addEventListener('touchstart', (ev)=>{
+      ev.preventDefault();
+      const t = ev.touches[0];
+      lastTouch = t;
+      const wpos = getPointerWorld(t);
+      interactAt(wpos, 1.0);
+    }, {passive:false});
+    renderer.domElement.addEventListener('touchmove', (ev)=>{
+      ev.preventDefault();
+      const t = ev.touches[0];
+      const wpos = getPointerWorld(t);
+      interactAt(wpos, 0.6);
+    }, {passive:false});
+    renderer.domElement.addEventListener('touchend', ()=>{ lastTouch = null; });
+
+    // subtle camera oscillation (float)
+    gsap.to(camera.rotation, { x: 0.02, y: -0.02, z: 0.0, duration: 8, ease:'sine.inOut', yoyo:true, repeat:-1 });
+
+    // simple cleanup when page hidden
+    document.addEventListener('visibilitychange', () => {
+      if(document.hidden) renderer.setAnimationLoop(null);
+    });
+
+    // expose some debug to window (optional)
+    window._ziaan_debug = { scene, camera, renderer, instanced };
+  })();
+  </script>
 </body>
 </html>
