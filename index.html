@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZiaanHub - Solutions For Scripting Tools For Roblox Games</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -32,18 +37,45 @@
             color: var(--text-light);
             min-height: 100vh;
             overflow-x: hidden;
-            background-image: 
+        }
+
+        #root {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
                 radial-gradient(circle at 10% 20%, rgba(139, 0, 0, 0.15) 0%, transparent 25%),
                 radial-gradient(circle at 90% 80%, rgba(139, 0, 0, 0.15) 0%, transparent 25%),
                 linear-gradient(to bottom, var(--darker-bg), var(--dark-bg));
+            overflow: hidden;
         }
 
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(139, 0, 0, 0.1);
+            filter: blur(40px);
+        }
+
+        /* Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
+            position: relative;
+            z-index: 1;
         }
 
+        /* Header */
         header {
             text-align: center;
             padding: 3rem 0;
@@ -185,6 +217,7 @@
             right: -60px;
         }
 
+        /* Code Container */
         .code-container {
             background-color: var(--card-bg);
             border-radius: 12px;
@@ -314,6 +347,7 @@
             white-space: nowrap;
         }
 
+        /* Footer */
         footer {
             text-align: center;
             margin-top: 4rem;
@@ -401,7 +435,7 @@
             opacity: 1;
         }
 
-        /* Animasi untuk partikel */
+        /* Animations */
         @keyframes particle-animation {
             0% {
                 transform: translate(0, 0) scale(0);
@@ -416,7 +450,6 @@
             }
         }
 
-        /* Efek kedipan teks */
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.7; }
@@ -426,7 +459,7 @@
             animation: blink 2s infinite;
         }
 
-        /* Responsif */
+        /* Responsive */
         @media (max-width: 768px) {
             .logo-3d {
                 font-size: 3.5rem;
@@ -456,7 +489,7 @@
             }
         }
 
-        /* Scrollbar kustom */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 10px;
         }
@@ -476,152 +509,231 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="header-bg"></div>
-            <div class="logo-container">
-                <h1 class="logo-3d" id="ziaan-logo">ZiaanHub</h1>
-                <div class="logo-glow"></div>
-                <div class="particles" id="particles"></div>
-            </div>
-            <p class="tagline">Solutions For Scripting Tools For Roblox Games</p>
-        </header>
+    <div id="root"></div>
 
-        <main>
-            <div class="code-container">
-                <div class="code-header">
-                    <div class="code-title">
-                        <i class="fas fa-code"></i> Loadstring Code
-                    </div>
-                    <button class="copy-btn" id="copy-btn">
-                        <i class="fas fa-copy"></i> Copy Code
-                    </button>
-                </div>
-                <div class="code-content">
-                    <code>loadstring(game:HttpGet("https://ziaanhub.github.io/ziaanhub.lua"))()</code>
-                </div>
-            </div>
-        </main>
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
 
-        <footer>
-            <p>&copy; 2023 ZiaanHub. All rights reserved.</p>
-            <div class="social-links">
-                <a href="https://github.com/ZiaanHub" class="social-link" target="_blank">
-                    <i class="fab fa-github"></i>
-                    <span class="social-tooltip">GitHub</span>
-                </a>
-                <a href="https://youtube.com/@ZiaanHub" class="social-link" target="_blank">
-                    <i class="fab fa-youtube"></i>
-                    <span class="social-tooltip">YouTube</span>
-                </a>
-                <a href="https://tiktok.com/@ZiaanHub" class="social-link" target="_blank">
-                    <i class="fab fa-tiktok"></i>
-                    <span class="social-tooltip">TikTok</span>
-                </a>
-                <a href="https://discord.gg/ziaanhub" class="social-link" target="_blank">
-                    <i class="fab fa-discord"></i>
-                    <span class="social-tooltip">Discord</span>
-                </a>
-            </div>
-        </footer>
-    </div>
+        // Animated Background Component
+        const AnimatedBackground = () => {
+            useEffect(() => {
+                const bg = document.querySelector('.animated-bg');
+                for (let i = 0; i < 15; i++) {
+                    const shape = document.createElement('div');
+                    shape.classList.add('floating-shape');
+                    
+                    const size = Math.random() * 300 + 100;
+                    shape.style.width = `${size}px`;
+                    shape.style.height = `${size}px`;
+                    
+                    const x = Math.random() * 100;
+                    const y = Math.random() * 100;
+                    shape.style.left = `${x}%`;
+                    shape.style.top = `${y}%`;
+                    
+                    bg.appendChild(shape);
+                    
+                    // Animate the shapes
+                    gsap.to(shape, {
+                        x: `+=${Math.random() * 100 - 50}`,
+                        y: `+=${Math.random() * 100 - 50}`,
+                        duration: Math.random() * 20 + 10,
+                        repeat: -1,
+                        yoyo: true,
+                        ease: "sine.inOut"
+                    });
+                }
+            }, []);
 
-    <script>
-        // Animasi partikel ketika logo disentuh/diklik
-        document.getElementById('ziaan-logo').addEventListener('click', function(e) {
-            createParticles(e);
-        });
+            return React.createElement('div', { className: 'animated-bg' });
+        };
 
-        function createParticles(e) {
-            const particlesContainer = document.getElementById('particles');
-            const rect = e.target.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            // Hapus partikel lama
-            particlesContainer.innerHTML = '';
-            
-            // Buat partikel baru
-            for (let i = 0; i < 25; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
+        // Header Component
+        const Header = () => {
+            const createParticles = (e) => {
+                const particlesContainer = document.getElementById('particles');
+                const rect = e.target.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
                 
-                // Posisi awal partikel di sekitar titik klik
-                const size = Math.random() * 8 + 4;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${x}px`;
-                particle.style.top = `${y}px`;
+                particlesContainer.innerHTML = '';
                 
-                // Warna acak dalam spektrum merah tua
-                const hue = Math.floor(Math.random() * 20) + 340; // 340-360 untuk merah tua
-                const saturation = Math.floor(Math.random() * 30) + 70; // 70-100%
-                particle.style.backgroundColor = `hsl(${hue}, ${saturation}%, 50%)`;
-                particle.style.boxShadow = `0 0 10px hsl(${hue}, ${saturation}%, 50%), 0 0 20px hsl(${hue}, ${saturation}%, 50%)`;
-                
-                // Arah dan jarak acak
-                const angle = Math.random() * Math.PI * 2;
-                const distance = Math.random() * 120 + 60;
-                const tx = Math.cos(angle) * distance;
-                const ty = Math.sin(angle) * distance;
-                
-                particle.style.setProperty('--tx', `${tx}px`);
-                particle.style.setProperty('--ty', `${ty}px`);
-                
-                // Animasi partikel
-                const duration = Math.random() * 1 + 0.7;
-                particle.style.animation = `particle-animation ${duration}s ease-out forwards`;
-                
-                particlesContainer.appendChild(particle);
-                
-                // Hapus partikel setelah animasi selesai
-                setTimeout(() => {
-                    if (particle.parentNode === particlesContainer) {
-                        particlesContainer.removeChild(particle);
-                    }
-                }, duration * 1000);
-            }
-        }
+                for (let i = 0; i < 25; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    
+                    const size = Math.random() * 8 + 4;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.left = `${x}px`;
+                    particle.style.top = `${y}px`;
+                    
+                    const hue = Math.floor(Math.random() * 20) + 340;
+                    const saturation = Math.floor(Math.random() * 30) + 70;
+                    particle.style.backgroundColor = `hsl(${hue}, ${saturation}%, 50%)`;
+                    particle.style.boxShadow = `0 0 10px hsl(${hue}, ${saturation}%, 50%), 0 0 20px hsl(${hue}, ${saturation}%, 50%)`;
+                    
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = Math.random() * 120 + 60;
+                    const tx = Math.cos(angle) * distance;
+                    const ty = Math.sin(angle) * distance;
+                    
+                    particle.style.setProperty('--tx', `${tx}px`);
+                    particle.style.setProperty('--ty', `${ty}px`);
+                    
+                    const duration = Math.random() * 1 + 0.7;
+                    particle.style.animation = `particle-animation ${duration}s ease-out forwards`;
+                    
+                    particlesContainer.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        if (particle.parentNode === particlesContainer) {
+                            particlesContainer.removeChild(particle);
+                        }
+                    }, duration * 1000);
+                }
+            };
 
-        // Fungsi copy kode
-        document.getElementById('copy-btn').addEventListener('click', function() {
-            const code = document.querySelector('.code-content code').textContent;
-            navigator.clipboard.writeText(code).then(() => {
-                const originalText = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                this.style.background = 'linear-gradient(135deg, #00A300, #008000)';
-                setTimeout(() => {
-                    this.innerHTML = originalText;
-                    this.style.background = 'linear-gradient(135deg, var(--primary-red), var(--dark-red))';
-                }, 2000);
-            });
-        });
+            useEffect(() => {
+                const logo = document.getElementById('ziaan-logo');
+                const handleMouseMove = (e) => {
+                    const rect = logo.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const angleY = (x - centerX) / 25;
+                    const angleX = (centerY - y) / 25;
+                    
+                    logo.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) scale(1.05)`;
+                };
+                
+                const handleMouseLeave = () => {
+                    logo.style.transform = 'rotateX(15deg) rotateY(-5deg) scale(1)';
+                };
+                
+                logo.addEventListener('mousemove', handleMouseMove);
+                logo.addEventListener('mouseleave', handleMouseLeave);
+                
+                return () => {
+                    logo.removeEventListener('mousemove', handleMouseMove);
+                    logo.removeEventListener('mouseleave', handleMouseLeave);
+                };
+            }, []);
 
-        // Efek hover 3D pada logo
-        const logo = document.getElementById('ziaan-logo');
-        logo.addEventListener('mousemove', function(e) {
-            const rect = this.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const angleY = (x - centerX) / 25;
-            const angleX = (centerY - y) / 25;
-            
-            this.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) scale(1.05)`;
-        });
-        
-        logo.addEventListener('mouseleave', function() {
-            this.style.transform = 'rotateX(15deg) rotateY(-5deg) scale(1)';
-        });
+            return React.createElement('header', null,
+                React.createElement('div', { className: 'header-bg' }),
+                React.createElement('div', { className: 'logo-container' },
+                    React.createElement('h1', { 
+                        className: 'logo-3d', 
+                        id: 'ziaan-logo',
+                        onClick: createParticles
+                    }, 'ZiaanHub'),
+                    React.createElement('div', { className: 'logo-glow' }),
+                    React.createElement('div', { className: 'particles', id: 'particles' })
+                ),
+                React.createElement('p', { className: 'tagline blink' }, 'Solutions For Scripting Tools For Roblox Games')
+            );
+        };
 
-        // Efek kedipan pada tagline
-        const tagline = document.querySelector('.tagline');
-        setInterval(() => {
-            tagline.classList.toggle('blink');
-        }, 3000);
+        // Code Component
+        const CodeSection = () => {
+            const [isCopied, setIsCopied] = useState(false);
+
+            const handleCopy = () => {
+                const code = document.querySelector('.code-content code').textContent;
+                navigator.clipboard.writeText(code).then(() => {
+                    setIsCopied(true);
+                    setTimeout(() => setIsCopied(false), 2000);
+                });
+            };
+
+            return React.createElement('div', { className: 'code-container' },
+                React.createElement('div', { className: 'code-header' },
+                    React.createElement('div', { className: 'code-title' },
+                        React.createElement('i', { className: 'fas fa-code' }),
+                        ' Loadstring Code'
+                    ),
+                    React.createElement('button', { 
+                        className: 'copy-btn', 
+                        id: 'copy-btn',
+                        onClick: handleCopy,
+                        style: isCopied ? { background: 'linear-gradient(135deg, #00A300, #008000)' } : {}
+                    },
+                        React.createElement('i', { className: isCopied ? 'fas fa-check' : 'fas fa-copy' }),
+                        isCopied ? ' Copied!' : ' Copy Code'
+                    )
+                ),
+                React.createElement('div', { className: 'code-content' },
+                    React.createElement('code', null, 'loadstring(game:HttpGet("https://ziaanhub.github.io/ziaanhub.lua"))()')
+                )
+            );
+        };
+
+        // Footer Component
+        const Footer = () => {
+            return React.createElement('footer', null,
+                React.createElement('p', null, '\u00A9 2023 ZiaanHub. All rights reserved.'),
+                React.createElement('div', { className: 'social-links' },
+                    React.createElement('a', { 
+                        href: 'https://github.com/ZiaanHub', 
+                        className: 'social-link', 
+                        target: '_blank',
+                        rel: 'noopener noreferrer'
+                    },
+                        React.createElement('i', { className: 'fab fa-github' }),
+                        React.createElement('span', { className: 'social-tooltip' }, 'GitHub')
+                    ),
+                    React.createElement('a', { 
+                        href: 'https://youtube.com/@ZiaanHub', 
+                        className: 'social-link', 
+                        target: '_blank',
+                        rel: 'noopener noreferrer'
+                    },
+                        React.createElement('i', { className: 'fab fa-youtube' }),
+                        React.createElement('span', { className: 'social-tooltip' }, 'YouTube')
+                    ),
+                    React.createElement('a', { 
+                        href: 'https://tiktok.com/@ZiaanHub', 
+                        className: 'social-link', 
+                        target: '_blank',
+                        rel: 'noopener noreferrer'
+                    },
+                        React.createElement('i', { className: 'fab fa-tiktok' }),
+                        React.createElement('span', { className: 'social-tooltip' }, 'TikTok')
+                    ),
+                    React.createElement('a', { 
+                        href: 'https://discord.gg/ziaanhub', 
+                        className: 'social-link', 
+                        target: '_blank',
+                        rel: 'noopener noreferrer'
+                    },
+                        React.createElement('i', { className: 'fab fa-discord' }),
+                        React.createElement('span', { className: 'social-tooltip' }, 'Discord')
+                    )
+                )
+            );
+        };
+
+        // Main App Component
+        const App = () => {
+            return React.createElement('div', null,
+                React.createElement(AnimatedBackground),
+                React.createElement('div', { className: 'container' },
+                    React.createElement(Header),
+                    React.createElement('main', null,
+                        React.createElement(CodeSection)
+                    ),
+                    React.createElement(Footer)
+                )
+            );
+        };
+
+        // Render the App
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
     </script>
 </body>
 </html>
