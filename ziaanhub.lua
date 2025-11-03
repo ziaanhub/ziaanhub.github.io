@@ -7,7 +7,7 @@ local art = [[
     /  /_/__\ \  \ \  \ \  \ \  \ \  \ \  \\ \  \ \  \ \  \ \  \\\  \ \  \|\  \ 
    |\________\ \__\ \__\ \__\ \__\ \__\ \__\\ \__\ \__\ \__\ \_______\ \_______\
     \|_______|\|__|\|__|\|__|\|__|\|__|\|__| \|__|\|__|\|__|\|_______|\|_______|
-        by ziaandev • Join The Discord Server Community : www.dsc.gg/ziaanhub
+        by ziaandev - Join The Discord Server Community : www.dsc.gg/ziaanhub
 
 ]]
 
