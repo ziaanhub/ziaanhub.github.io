@@ -5,11 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Protected Script by ZiaanHub</title>
 
-  <!-- ✅ Google Fonts & Icons -->
+  <!-- ✅ Fonts & Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- ✅ CSS -->
   <style>
     * {
       box-sizing: border-box;
@@ -27,14 +26,15 @@
       align-items: center;
       color: #fff;
       overflow: hidden;
+      position: relative;
+      padding: 1rem;
     }
 
-    /* 🔥 Animated Background */
+    /* 🔥 Background Animation */
     body::before {
       content: "";
       position: absolute;
-      width: 120%;
-      height: 120%;
+      inset: 0;
       background: radial-gradient(circle, rgba(255,0,0,0.2), transparent 70%),
                   radial-gradient(circle at bottom right, rgba(255,0,0,0.2), transparent 70%);
       filter: blur(80px);
@@ -47,16 +47,35 @@
       to { opacity: 0.9; transform: scale(1.1); }
     }
 
+    /* 🔒 Access Denied Badge (Top Left) */
+    .access-denied {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: linear-gradient(90deg, #ff0000, #660000);
+      color: #fff;
+      padding: 0.5rem 1.2rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      box-shadow: 0 0 12px rgba(255, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      z-index: 10;
+    }
+
+    /* 🔘 Main Card */
     .card {
       background: rgba(20, 0, 0, 0.85);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 0, 0, 0.3);
       border-radius: 20px;
       padding: 2.5rem;
-      max-width: 500px;
-      width: 90%;
+      max-width: 480px;
+      width: 100%;
       text-align: center;
-      position: relative;
       box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
       z-index: 1;
       animation: fadeIn 1.5s ease;
@@ -65,19 +84,6 @@
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(40px); }
       to { opacity: 1; transform: translateY(0); }
-    }
-
-    .access-denied {
-      background: linear-gradient(90deg, #ff0000, #660000);
-      color: white;
-      padding: 0.5rem 1.2rem;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      letter-spacing: 1px;
-      display: inline-block;
-      margin-bottom: 1.3rem;
-      text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     }
 
     h1 {
@@ -135,7 +141,7 @@
       font-weight: 600;
     }
 
-    /* ✨ Floating Particle Effect */
+    /* ✨ Floating Particles */
     .particle {
       position: absolute;
       width: 6px;
@@ -144,12 +150,34 @@
       border-radius: 50%;
       animation: floatUp 8s linear infinite;
       opacity: 0.6;
+      z-index: 0;
     }
 
     @keyframes floatUp {
       from { transform: translateY(100vh) scale(0.5); opacity: 0.8; }
       to { transform: translateY(-10vh) scale(1.2); opacity: 0; }
     }
+
+    /* 📱 Responsive Design */
+    @media (max-width: 600px) {
+      .card {
+        padding: 1.8rem;
+      }
+
+      h1 {
+        font-size: 1.3rem;
+      }
+
+      p {
+        font-size: 0.9rem;
+      }
+
+      .access-denied {
+        font-size: 0.8rem;
+        padding: 0.4rem 1rem;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -161,8 +189,13 @@
   <div class="particle" style="left:90%; animation-delay: 3s;"></div>
   <div class="particle" style="left:30%; animation-delay: 4s;"></div>
 
+  <!-- Top Left Access Denied Label -->
+  <div class="access-denied">
+    <i class="fa-solid fa-lock"></i> ACCESS DENIED
+  </div>
+
+  <!-- Main Card -->
   <div class="card">
-    <div class="access-denied"><i class="fa-solid fa-lock"></i> ACCESS DENIED</div>
     <h1>This Lua script is protected by <span style="color:#fff;">ZiaanHub</span></h1>
     <p>
       You do not have permission to access these files.<br>
@@ -170,8 +203,12 @@
     </p>
 
     <div class="btn-container">
-      <a href="https://ziaanhub.github.io/ziaanhub.lua" class="button"><i class="fa-solid fa-code"></i> View Raw</a>
-      <a href="https://www.dsc.gg/ZiaanHub" class="button"><i class="fa-brands fa-discord"></i> Join Our Discord</a>
+      <a href="https://ziaanhub.github.io/ziaanhub.lua" class="button">
+        <i class="fa-solid fa-code"></i> View Raw
+      </a>
+      <a href="https://www.dsc.gg/ZiaanHub" class="button">
+        <i class="fa-brands fa-discord"></i> Join Our Discord
+      </a>
     </div>
   </div>
 
