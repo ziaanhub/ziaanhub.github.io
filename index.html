@@ -47,25 +47,6 @@
       to { opacity: 0.9; transform: scale(1.1); }
     }
 
-    /* 🔒 Access Denied Badge (Top Left) */
-    .access-denied {
-      position: fixed;
-      top: 1rem;
-      left: 1rem;
-      background: linear-gradient(90deg, #ff0000, #660000);
-      color: #fff;
-      padding: 0.5rem 1.2rem;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      letter-spacing: 1px;
-      box-shadow: 0 0 12px rgba(255, 0, 0, 0.4);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      z-index: 10;
-    }
-
     /* 🔘 Main Card */
     .card {
       background: rgba(20, 0, 0, 0.85);
@@ -73,12 +54,13 @@
       border: 1px solid rgba(255, 0, 0, 0.3);
       border-radius: 20px;
       padding: 2.5rem;
-      max-width: 480px;
+      max-width: 500px;
       width: 100%;
       text-align: center;
       box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
       z-index: 1;
       animation: fadeIn 1.5s ease;
+      position: relative;
     }
 
     @keyframes fadeIn {
@@ -86,7 +68,26 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* 🔒 Access Denied Badge (Inside Card, top-left) */
+    .access-denied {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: linear-gradient(90deg, #ff0000, #660000);
+      color: #fff;
+      padding: 0.4rem 1rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+    }
+
     h1 {
+      margin-top: 2rem;
       font-size: 1.6rem;
       color: #ff4d4d;
       text-shadow: 0 0 12px rgba(255, 0, 0, 0.4);
@@ -173,11 +174,10 @@
       }
 
       .access-denied {
-        font-size: 0.8rem;
-        padding: 0.4rem 1rem;
+        font-size: 0.75rem;
+        padding: 0.3rem 0.8rem;
       }
     }
-
   </style>
 </head>
 <body>
@@ -189,13 +189,10 @@
   <div class="particle" style="left:90%; animation-delay: 3s;"></div>
   <div class="particle" style="left:30%; animation-delay: 4s;"></div>
 
-  <!-- Top Left Access Denied Label -->
-  <div class="access-denied">
-    <i class="fa-solid fa-lock"></i> ACCESS DENIED
-  </div>
-
   <!-- Main Card -->
   <div class="card">
+    <div class="access-denied"><i class="fa-solid fa-lock"></i> ACCESS DENIED</div>
+
     <h1>This Lua script is protected by <span style="color:#fff;">ZiaanHub</span></h1>
     <p>
       You do not have permission to access these files.<br>
@@ -203,7 +200,7 @@
     </p>
 
     <div class="btn-container">
-      <a href="https://ziaanhub.github.io/ziaanhub.lua" class="button">
+      <a href="https://ziaanhub.github.io/src/ziaanhub.lua" class="button">
         <i class="fa-solid fa-code"></i> View Raw
       </a>
       <a href="https://www.dsc.gg/ZiaanHub" class="button">
