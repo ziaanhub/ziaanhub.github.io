@@ -1,102 +1,31 @@
 -- Enhanced Auto Skillcheck System
--- Universal version compatible with all executors
+-- Simple UI version with mobile compatibility
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
-local SoundService = game:GetService("SoundService")
 
 -- Universal service detection
 local VirtualInput
-local HttpService
-local isSupportedExecutor = true
-
--- Safe service initialization
 pcall(function()
     VirtualInput = game:GetService("VirtualInputManager")
 end)
 
-pcall(function()
-    HttpService = game:GetService("HttpService")
-end)
-
--- Fallback input methods for unsupported executors
-local function sendInput(keyCode, isPress)
-    if VirtualInput then
-        if isPress then
-            VirtualInput:SendKeyEvent(true, keyCode, false, game)
-        else
-            VirtualInput:SendKeyEvent(false, keyCode, false, game)
-        end
-    else
-        -- Alternative method for executors without VirtualInputManager
-        if isPress then
-            game:GetService("UserInputService"):SendKeyEvent(true, keyCode, false, nil)
-        else
-            game:GetService("UserInputService"):SendKeyEvent(false, keyCode, false, nil)
-        end
-    end
-end
-
 local player = Players.LocalPlayer
 local PlayerGui = player:WaitForChild("PlayerGui")
 
--- ENHANCED SETTINGS WITH PERSISTENCE
+-- SIMPLIFIED SETTINGS
 local Settings = {
-    enabled = true,
-    hitZone = 2,
+    enabled = false, -- Start disabled
+    hitZone = 8,
     anticipationOffset = 5,
     adaptiveMode = false,
-    visualFeedback = true,
-    audioFeedback = true,
-    perfectHitBonus = true,
-    autoAdjustDifficulty = false,
+    showStats = true,
     uiScale = 1,
     positionX = 0.02,
     positionY = 0.3
 }
-
--- Load settings from executor storage if available
-local function loadSettings()
-    if HttpService then
-        local success, saved = pcall(function()
-            -- Try to load from different possible storage locations
-            if readfile then
-                return readfile("auto_skillcheck_settings.json")
-            end
-        end)
-        
-        if success and saved then
-            local ok, data = pcall(function()
-                return HttpService:JSONDecode(saved)
-            end)
-            if ok and data then
-                for key, value in pairs(data) do
-                    if Settings[key] ~= nil then
-                        Settings[key] = value
-                    end
-                end
-            end
-        end
-    end
-end
-
--- Save settings to executor storage if available
-local function saveSettings()
-    if HttpService then
-        local success, err = pcall(function()
-            if writefile then
-                writefile("auto_skillcheck_settings.json", HttpService:JSONEncode(Settings))
-            end
-        end)
-        return success
-    end
-    return false
-end
-
--- Load settings on startup
-loadSettings()
 
 local State = {
     lastHitTime = 0,
@@ -108,227 +37,199 @@ local State = {
     currentDifficulty = 1,
     needleSpeedHistory = {},
     lastNeedlePositions = {},
-    isUILoaded = false
+    isUILoaded = false,
+    isDragging = false,
+    dragOffset = Vector2.new(0, 0)
 }
 
--- UNIVERSAL UI CREATION WITH ERROR HANDLING
-local function createUI()
+-- SIMPLE UI SYSTEM
+local function createSimpleUI()
     local success, gui = pcall(function()
         local gui = Instance.new("ScreenGui")
-        gui.Name = "EnhancedAutoSkillcheck"
+        gui.Name = "SimpleAutoSkillcheck"
         gui.ResetOnSpawn = false
         gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
         gui.Parent = PlayerGui
 
-        -- Main container with glassmorphism effect
+        -- Main container - simple and clean
         local mainFrame = Instance.new("Frame")
-        mainFrame.Size = UDim2.new(0, 380 * Settings.uiScale, 0, 200 * Settings.uiScale)
+        mainFrame.Size = UDim2.new(0, 220 * Settings.uiScale, 0, 150 * Settings.uiScale)
         mainFrame.Position = UDim2.new(Settings.positionX, 0, Settings.positionY, 0)
         mainFrame.AnchorPoint = Vector2.new(0, 0.5)
-        mainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
-        mainFrame.BackgroundTransparency = 0.15
+        mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+        mainFrame.BackgroundTransparency = 0.1
         mainFrame.BorderSizePixel = 0
         mainFrame.Parent = gui
 
         -- Rounded corners
         local mainCorner = Instance.new("UICorner")
-        mainCorner.CornerRadius = UDim.new(0, 16)
+        mainCorner.CornerRadius = UDim.new(0, 8)
         mainCorner.Parent = mainFrame
 
-        -- Glassmorphism stroke
+        -- Simple border
         local stroke = Instance.new("UIStroke")
-        stroke.Color = Color3.fromRGB(80, 80, 120)
-        stroke.Thickness = 1
-        stroke.Transparency = 0.5
+        stroke.Color = Color3.fromRGB(60, 60, 80)
+        stroke.Thickness = 2
         stroke.Parent = mainFrame
 
-        -- Animated gradient background
-        local gradient = Instance.new("UIGradient")
-        gradient.Color = ColorSequence.new{
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 30, 50)),
-            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(20, 20, 35)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(25, 25, 40))
-        }
-        gradient.Rotation = 45
-        gradient.Parent = mainFrame
-
-        -- Header section
+        -- Header with title and drag handle
         local headerFrame = Instance.new("Frame")
-        headerFrame.Size = UDim2.new(1, 0, 0, 50 * Settings.uiScale)
+        headerFrame.Size = UDim2.new(1, 0, 0, 25 * Settings.uiScale)
         headerFrame.Position = UDim2.new(0, 0, 0, 0)
-        headerFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 55)
-        headerFrame.BackgroundTransparency = 0.3
+        headerFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 45)
         headerFrame.BorderSizePixel = 0
         headerFrame.Parent = mainFrame
 
         local headerCorner = Instance.new("UICorner")
-        headerCorner.CornerRadius = UDim.new(0, 16)
+        headerCorner.CornerRadius = UDim.new(0, 8)
         headerCorner.Parent = headerFrame
 
-        -- Title with icon
+        -- Title
         local titleLabel = Instance.new("TextLabel")
-        titleLabel.Size = UDim2.new(1, -60 * Settings.uiScale, 1, 0)
-        titleLabel.Position = UDim2.new(0, 15 * Settings.uiScale, 0, 0)
+        titleLabel.Size = UDim2.new(1, -40 * Settings.uiScale, 1, 0)
+        titleLabel.Position = UDim2.new(0, 8 * Settings.uiScale, 0, 0)
         titleLabel.BackgroundTransparency = 1
         titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
         titleLabel.TextScaled = true
-        titleLabel.Font = Enum.Font.GothamBold
-        titleLabel.Text = "🎯 ENHANCED AUTO SKILLCHECK"
+        titleLabel.Font = Enum.Font.GothamMedium
+        titleLabel.Text = "Auto Skillcheck"
         titleLabel.TextXAlignment = Enum.TextXAlignment.Left
         titleLabel.Parent = headerFrame
 
-        -- Status indicator
-        local statusIndicator = Instance.new("Frame")
-        statusIndicator.Size = UDim2.new(0, 12 * Settings.uiScale, 0, 12 * Settings.uiScale)
-        statusIndicator.Position = UDim2.new(1, -25 * Settings.uiScale, 0.5, -6 * Settings.uiScale)
-        statusIndicator.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
-        statusIndicator.BorderSizePixel = 0
-        statusIndicator.Parent = headerFrame
+        -- Close button
+        local closeButton = Instance.new("TextButton")
+        closeButton.Size = UDim2.new(0, 20 * Settings.uiScale, 0, 20 * Settings.uiScale)
+        closeButton.Position = UDim2.new(1, -22 * Settings.uiScale, 0.5, -10 * Settings.uiScale)
+        closeButton.BackgroundColor3 = Color3.fromRGB(80, 80, 100)
+        closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        closeButton.Text = "X"
+        closeButton.Font = Enum.Font.GothamBold
+        closeButton.TextSize = 12 * Settings.uiScale
+        closeButton.Parent = headerFrame
 
-        local indicatorCorner = Instance.new("UICorner")
-        indicatorCorner.CornerRadius = UDim.new(0.5, 0)
-        indicatorCorner.Parent = statusIndicator
+        local closeCorner = Instance.new("UICorner")
+        closeCorner.CornerRadius = UDim.new(0, 4)
+        closeCorner.Parent = closeButton
 
         -- Content container
         local contentFrame = Instance.new("Frame")
-        contentFrame.Size = UDim2.new(1, -20 * Settings.uiScale, 1, -70 * Settings.uiScale)
-        contentFrame.Position = UDim2.new(0, 10 * Settings.uiScale, 0, 55 * Settings.uiScale)
+        contentFrame.Size = UDim2.new(1, -16 * Settings.uiScale, 1, -40 * Settings.uiScale)
+        contentFrame.Position = UDim2.new(0, 8 * Settings.uiScale, 0, 30 * Settings.uiScale)
         contentFrame.BackgroundTransparency = 1
         contentFrame.Parent = mainFrame
 
-        -- Status section
-        local statusFrame = Instance.new("Frame")
-        statusFrame.Size = UDim2.new(1, 0, 0, 35 * Settings.uiScale)
-        statusFrame.Position = UDim2.new(0, 0, 0, 0)
-        statusFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 60)
-        statusFrame.BackgroundTransparency = 0.4
-        statusFrame.BorderSizePixel = 0
-        statusFrame.Parent = contentFrame
+        -- Main toggle button
+        local toggleButton = Instance.new("TextButton")
+        toggleButton.Size = UDim2.new(1, 0, 0, 35 * Settings.uiScale)
+        toggleButton.Position = UDim2.new(0, 0, 0, 0)
+        toggleButton.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
+        toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        toggleButton.Text = "OFF"
+        toggleButton.Font = Enum.Font.GothamBold
+        toggleButton.TextSize = 14 * Settings.uiScale
+        toggleButton.Parent = contentFrame
 
-        local statusCorner = Instance.new("UICorner")
-        statusCorner.CornerRadius = UDim.new(0, 8)
-        statusCorner.Parent = statusFrame
+        local toggleCorner = Instance.new("UICorner")
+        toggleCorner.CornerRadius = UDim.new(0, 6)
+        toggleCorner.Parent = toggleButton
 
+        -- Status indicator
         local statusLabel = Instance.new("TextLabel")
-        statusLabel.Size = UDim2.new(1, -20 * Settings.uiScale, 1, 0)
-        statusLabel.Position = UDim2.new(0, 10 * Settings.uiScale, 0, 0)
+        statusLabel.Size = UDim2.new(1, 0, 0, 20 * Settings.uiScale)
+        statusLabel.Position = UDim2.new(0, 0, 0, 40 * Settings.uiScale)
         statusLabel.BackgroundTransparency = 1
-        statusLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-        statusLabel.TextScaled = true
-        statusLabel.Font = Enum.Font.GothamBold
-        statusLabel.Text = "🔍 SCANNING FOR SKILLCHECK..."
+        statusLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+        statusLabel.Text = "Ready"
+        statusLabel.Font = Enum.Font.Gotham
+        statusLabel.TextSize = 12 * Settings.uiScale
         statusLabel.TextXAlignment = Enum.TextXAlignment.Left
-        statusLabel.Parent = statusFrame
+        statusLabel.Parent = contentFrame
 
-        -- Info section with cards
-        local infoFrame = Instance.new("Frame")
-        infoFrame.Size = UDim2.new(1, 0, 0, 30 * Settings.uiScale)
-        infoFrame.Position = UDim2.new(0, 0, 0, 45 * Settings.uiScale)
-        infoFrame.BackgroundTransparency = 1
-        infoFrame.Parent = contentFrame
-
-        -- Distance info card
-        local distanceCard = Instance.new("Frame")
-        distanceCard.Size = UDim2.new(0.48, 0, 1, 0)
-        distanceCard.Position = UDim2.new(0, 0, 0, 0)
-        distanceCard.BackgroundColor3 = Color3.fromRGB(50, 50, 70)
-        distanceCard.BackgroundTransparency = 0.3
-        distanceCard.BorderSizePixel = 0
-        distanceCard.Parent = infoFrame
-
-        local distanceCorner = Instance.new("UICorner")
-        distanceCorner.CornerRadius = UDim.new(0, 6)
-        distanceCorner.Parent = distanceCard
-
-        local distanceLabel = Instance.new("TextLabel")
-        distanceLabel.Size = UDim2.new(1, -10 * Settings.uiScale, 1, 0)
-        distanceLabel.Position = UDim2.new(0, 5 * Settings.uiScale, 0, 0)
-        distanceLabel.BackgroundTransparency = 1
-        distanceLabel.TextColor3 = Color3.fromRGB(100, 255, 150)
-        distanceLabel.TextScaled = true
-        distanceLabel.Font = Enum.Font.Gotham
-        distanceLabel.Text = "📏 Distance: --"
-        distanceLabel.Parent = distanceCard
-
-        -- Speed info card
-        local speedCard = Instance.new("Frame")
-        speedCard.Size = UDim2.new(0.48, 0, 1, 0)
-        speedCard.Position = UDim2.new(0.52, 0, 0, 0)
-        speedCard.BackgroundColor3 = Color3.fromRGB(50, 50, 70)
-        speedCard.BackgroundTransparency = 0.3
-        speedCard.BorderSizePixel = 0
-        speedCard.Parent = infoFrame
-
-        local speedCorner = Instance.new("UICorner")
-        speedCorner.CornerRadius = UDim.new(0, 6)
-        speedCorner.Parent = speedCard
-
-        local speedLabel = Instance.new("TextLabel")
-        speedLabel.Size = UDim2.new(1, -10 * Settings.uiScale, 1, 0)
-        speedLabel.Position = UDim2.new(0, 5 * Settings.uiScale, 0, 0)
-        speedLabel.BackgroundTransparency = 1
-        speedLabel.TextColor3 = Color3.fromRGB(255, 200, 100)
-        speedLabel.TextScaled = true
-        speedLabel.Font = Enum.Font.Gotham
-        speedLabel.Text = "⚡ Speed: --"
-        speedLabel.Parent = speedCard
-
-        -- Progress visualization
-        local progressContainer = Instance.new("Frame")
-        progressContainer.Size = UDim2.new(1, 0, 0, 35 * Settings.uiScale)
-        progressContainer.Position = UDim2.new(0, 0, 0, 85 * Settings.uiScale)
-        progressContainer.BackgroundTransparency = 1
-        progressContainer.Parent = contentFrame
-
-        -- Progress bar background
-        local progressBg = Instance.new("Frame")
-        progressBg.Size = UDim2.new(1, 0, 0, 8 * Settings.uiScale)
-        progressBg.Position = UDim2.new(0, 0, 0, 0)
-        progressBg.BackgroundColor3 = Color3.fromRGB(40, 40, 60)
-        progressBg.BorderSizePixel = 0
-        progressBg.Parent = progressContainer
-
-        local progressBgCorner = Instance.new("UICorner")
-        progressBgCorner.CornerRadius = UDim.new(0, 4)
-        progressBgCorner.Parent = progressBg
-
-        -- Animated progress bar
-        local progressBar = Instance.new("Frame")
-        progressBar.Size = UDim2.new(0, 0, 1, 0)
-        progressBar.Position = UDim2.new(0, 0, 0, 0)
-        progressBar.BackgroundColor3 = Color3.fromRGB(0, 255, 150)
-        progressBar.BorderSizePixel = 0
-        progressBar.Parent = progressBg
-
-        local progressCorner = Instance.new("UICorner")
-        progressCorner.CornerRadius = UDim.new(0, 4)
-        progressCorner.Parent = progressBar
-
-        -- Progress bar glow effect
-        local progressGlow = Instance.new("UIStroke")
-        progressGlow.Color = Color3.fromRGB(0, 255, 150)
-        progressGlow.Thickness = 1
-        progressGlow.Transparency = 0.5
-        progressGlow.Parent = progressBar
-
-        -- Stats section
+        -- Stats row
         local statsFrame = Instance.new("Frame")
-        statsFrame.Size = UDim2.new(1, 0, 0, 25 * Settings.uiScale)
-        statsFrame.Position = UDim2.new(0, 0, 0, 15 * Settings.uiScale)
+        statsFrame.Size = UDim2.new(1, 0, 0, 40 * Settings.uiScale)
+        statsFrame.Position = UDim2.new(0, 0, 0, 65 * Settings.uiScale)
         statsFrame.BackgroundTransparency = 1
-        statsFrame.Parent = progressContainer
+        statsFrame.Parent = contentFrame
 
-        local statsLabel = Instance.new("TextLabel")
-        statsLabel.Size = UDim2.new(1, 0, 1, 0)
-        statsLabel.Position = UDim2.new(0, 0, 0, 0)
-        statsLabel.BackgroundTransparency = 1
-        statsLabel.TextColor3 = Color3.fromRGB(180, 180, 200)
-        statsLabel.TextScaled = true
-        statsLabel.Font = Enum.Font.Gotham
-        statsLabel.Text = "📊 Success: 0/0 (0%) | Zone: 2° | F6: Toggle"
-        statsLabel.Parent = statsFrame
+        -- Success rate
+        local successLabel = Instance.new("TextLabel")
+        successLabel.Size = UDim2.new(0.6, 0, 1, 0)
+        successLabel.Position = UDim2.new(0, 0, 0, 0)
+        successLabel.BackgroundTransparency = 1
+        successLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+        successLabel.Text = "Success: 0%"
+        successLabel.Font = Enum.Font.Gotham
+        successLabel.TextSize = 11 * Settings.uiScale
+        successLabel.TextXAlignment = Enum.TextXAlignment.Left
+        successLabel.Parent = statsFrame
 
-        return gui, statusLabel, distanceLabel, speedLabel, statsLabel, progressBar, mainFrame, statusIndicator
+        -- Hit zone
+        local zoneLabel = Instance.new("TextLabel")
+        zoneLabel.Size = UDim2.new(0.4, 0, 1, 0)
+        zoneLabel.Position = UDim2.new(0.6, 0, 0, 0)
+        zoneLabel.BackgroundTransparency = 1
+        zoneLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+        zoneLabel.Text = "Zone: " .. Settings.hitZone
+        zoneLabel.Font = Enum.Font.Gotham
+        zoneLabel.TextSize = 11 * Settings.uiScale
+        zoneLabel.TextXAlignment = Enum.TextXAlignment.Right
+        zoneLabel.Parent = statsFrame
+
+        -- Control buttons frame
+        local controlsFrame = Instance.new("Frame")
+        controlsFrame.Size = UDim2.new(1, 0, 0, 25 * Settings.uiScale)
+        controlsFrame.Position = UDim2.new(0, 0, 0, 110 * Settings.uiScale)
+        controlsFrame.BackgroundTransparency = 1
+        controlsFrame.Parent = contentFrame
+
+        -- Increase zone button
+        local increaseButton = Instance.new("TextButton")
+        increaseButton.Size = UDim2.new(0.3, 0, 1, 0)
+        increaseButton.Position = UDim2.new(0, 0, 0, 0)
+        increaseButton.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+        increaseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        increaseButton.Text = "+"
+        increaseButton.Font = Enum.Font.GothamBold
+        increaseButton.TextSize = 14 * Settings.uiScale
+        increaseButton.Parent = controlsFrame
+
+        local increaseCorner = Instance.new("UICorner")
+        increaseCorner.CornerRadius = UDim.new(0, 4)
+        increaseCorner.Parent = increaseButton
+
+        -- Decrease zone button
+        local decreaseButton = Instance.new("TextButton")
+        decreaseButton.Size = UDim2.new(0.3, 0, 1, 0)
+        decreaseButton.Position = UDim2.new(0.35, 0, 0, 0)
+        decreaseButton.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+        decreaseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        decreaseButton.Text = "-"
+        decreaseButton.Font = Enum.Font.GothamBold
+        decreaseButton.TextSize = 14 * Settings.uiScale
+        decreaseButton.Parent = controlsFrame
+
+        local decreaseCorner = Instance.new("UICorner")
+        decreaseCorner.CornerRadius = UDim.new(0, 4)
+        decreaseCorner.Parent = decreaseButton
+
+        -- Reset stats button
+        local resetButton = Instance.new("TextButton")
+        resetButton.Size = UDim2.new(0.3, 0, 1, 0)
+        resetButton.Position = UDim2.new(0.7, 0, 0, 0)
+        resetButton.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+        resetButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        resetButton.Text = "Reset"
+        resetButton.Font = Enum.Font.Gotham
+        resetButton.TextSize = 11 * Settings.uiScale
+        resetButton.Parent = controlsFrame
+
+        local resetCorner = Instance.new("UICorner")
+        resetCorner.CornerRadius = UDim.new(0, 4)
+        resetCorner.Parent = resetButton
+
+        return gui, mainFrame, toggleButton, statusLabel, successLabel, zoneLabel, 
+               increaseButton, decreaseButton, resetButton, closeButton
     end)
     
     if success then
@@ -342,27 +243,124 @@ local function createUI()
 end
 
 -- Safe UI initialization
-local gui, statusLabel, distanceLabel, speedLabel, statsLabel, progressBar, mainFrame, statusIndicator
+local gui, mainFrame, toggleButton, statusLabel, successLabel, zoneLabel, increaseButton, decreaseButton, resetButton, closeButton
 
-local uiResult = createUI()
+local uiResult = createSimpleUI()
 if uiResult then
-    gui, statusLabel, distanceLabel, speedLabel, statsLabel, progressBar, mainFrame, statusIndicator = uiResult
+    gui, mainFrame, toggleButton, statusLabel, successLabel, zoneLabel, increaseButton, decreaseButton, resetButton, closeButton = uiResult
 else
-    -- Create minimal UI as fallback
+    -- Create minimal fallback UI
     local fallbackGui = Instance.new("ScreenGui")
     fallbackGui.Name = "AutoSkillcheckFallback"
     fallbackGui.Parent = PlayerGui
     
-    local fallbackLabel = Instance.new("TextLabel")
-    fallbackLabel.Size = UDim2.new(0, 200, 0, 50)
-    fallbackLabel.Position = UDim2.new(0, 10, 0, 10)
-    fallbackLabel.BackgroundColor3 = Color3.new(0, 0, 0)
-    fallbackLabel.TextColor3 = Color3.new(1, 1, 1)
-    fallbackLabel.Text = "Auto Skillcheck: ENABLED"
-    fallbackLabel.Parent = fallbackGui
+    local fallbackButton = Instance.new("TextButton")
+    fallbackButton.Size = UDim2.new(0, 100, 0, 40)
+    fallbackButton.Position = UDim2.new(0, 10, 0, 10)
+    fallbackButton.BackgroundColor3 = Color3.new(0.5, 0, 0)
+    fallbackButton.TextColor3 = Color3.new(1, 1, 1)
+    fallbackButton.Text = "OFF"
+    fallbackButton.Parent = fallbackGui
     
-    statusLabel = fallbackLabel
+    toggleButton = fallbackButton
 end
+
+-- SIMPLE UI UPDATE FUNCTION
+local function updateUI()
+    if not State.isUILoaded then return end
+    
+    -- Update toggle button
+    if Settings.enabled then
+        toggleButton.BackgroundColor3 = Color3.fromRGB(50, 180, 50)
+        toggleButton.Text = "ON"
+        mainFrame.UIStroke.Color = Color3.fromRGB(0, 150, 0)
+    else
+        toggleButton.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
+        toggleButton.Text = "OFF"
+        mainFrame.UIStroke.Color = Color3.fromRGB(60, 60, 80)
+    end
+    
+    -- Update stats
+    local successRate = State.totalAttempts > 0 and math.floor((State.successCount / State.totalAttempts) * 100) or 0
+    successLabel.Text = "Success: " .. successRate .. "%"
+    zoneLabel.Text = "Zone: " .. Settings.hitZone
+end
+
+-- UI INTERACTION FUNCTIONS
+local function setupUIInteractions()
+    if not State.isUILoaded then return end
+    
+    -- Toggle button
+    toggleButton.MouseButton1Click:Connect(function()
+        Settings.enabled = not Settings.enabled
+        updateUI()
+    end)
+    
+    -- Increase zone button
+    increaseButton.MouseButton1Click:Connect(function()
+        Settings.hitZone = math.min(Settings.hitZone + 1, 20)
+        updateUI()
+    end)
+    
+    -- Decrease zone button
+    decreaseButton.MouseButton1Click:Connect(function()
+        Settings.hitZone = math.max(Settings.hitZone - 1, 3)
+        updateUI()
+    end)
+    
+    -- Reset stats button
+    resetButton.MouseButton1Click:Connect(function()
+        State.successCount = 0
+        State.totalAttempts = 0
+        State.lastDistances = {}
+        State.averageDistance = 0
+        updateUI()
+        statusLabel.Text = "Stats Reset"
+    end)
+    
+    -- Close button
+    closeButton.MouseButton1Click:Connect(function()
+        connection:Disconnect()
+        gui:Destroy()
+        print("Auto Skillcheck closed")
+    end)
+    
+    -- Drag functionality for PC
+    local function startDrag(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            State.isDragging = true
+            State.dragOffset = Vector2.new(input.Position.X - mainFrame.AbsolutePosition.X, 
+                                         input.Position.Y - mainFrame.AbsolutePosition.Y)
+        end
+    end
+    
+    local function stopDrag(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            State.isDragging = false
+        end
+    end
+    
+    local function updateDrag(input)
+        if State.isDragging then
+            local newPos = UDim2.new(0, input.Position.X - State.dragOffset.X, 
+                                    0, input.Position.Y - State.dragOffset.Y)
+            mainFrame.Position = newPos
+        end
+    end
+    
+    -- Connect drag events to header
+    mainFrame.Parent:WaitForChild("HeaderFrame", 1):GetPropertyChangedSignal("AbsoluteSize"):Wait()
+    local header = mainFrame:FindFirstChild("HeaderFrame")
+    if header then
+        header.InputBegan:Connect(startDrag)
+        header.InputEnded:Connect(stopDrag)
+        UserInputService.InputChanged:Connect(updateDrag)
+    end
+end
+
+-- Initialize UI interactions
+setupUIInteractions()
+updateUI()
 
 -- ENHANCED MATH FUNCTIONS
 local function getAngleDiff(angle1, angle2)
@@ -388,31 +386,24 @@ local function calculateApproachDistance(needleAngle, targetAngle)
     local normalizedNeedle = normalizeAngle(needleAngle)
     local normalizedTarget = normalizeAngle(targetAngle)
     
-    -- Calculate the clockwise distance from needle to target
     local clockwiseDistance
     if normalizedNeedle <= normalizedTarget then
         clockwiseDistance = normalizedTarget - normalizedNeedle
     else
-        -- Handle wraparound (needle ahead of target)
         clockwiseDistance = (360 - normalizedNeedle) + normalizedTarget
     end
     
-    -- The approach distance is how far the needle is behind the target
-    -- When needle is 110° behind target (clockwise), it's optimal to hit
     return clockwiseDistance
 end
 
 -- IMPROVED NEEDLE SPEED CALCULATION
 local function updateNeedleSpeed(currentAngle)
-    -- Store recent needle positions for better speed calculation
     table.insert(State.lastNeedlePositions, {angle = currentAngle, time = tick()})
     
-    -- Keep only last 5 positions for speed calculation
     if #State.lastNeedlePositions > 5 then
         table.remove(State.lastNeedlePositions, 1)
     end
     
-    -- Calculate speed based on recent positions
     if #State.lastNeedlePositions >= 2 then
         local recent = State.lastNeedlePositions[#State.lastNeedlePositions]
         local previous = State.lastNeedlePositions[#State.lastNeedlePositions - 1]
@@ -420,20 +411,17 @@ local function updateNeedleSpeed(currentAngle)
         local timeDiff = recent.time - previous.time
         local angleDiff = math.abs(recent.angle - previous.angle)
         
-        -- Handle angle wraparound
         if angleDiff > 180 then
             angleDiff = 360 - angleDiff
         end
         
         local speed = timeDiff > 0 and (angleDiff / timeDiff) or 0
         
-        -- Store in speed history for averaging
         table.insert(State.needleSpeedHistory, speed)
         if #State.needleSpeedHistory > 10 then
             table.remove(State.needleSpeedHistory, 1)
         end
         
-        -- Return averaged speed
         local totalSpeed = 0
         for _, s in pairs(State.needleSpeedHistory) do
             totalSpeed = totalSpeed + s
@@ -446,7 +434,6 @@ end
 
 -- UNIVERSAL SKILLCHECK DETECTION
 local function getSkillcheck()
-    -- Try multiple possible GUI structures with error handling
     local possibleGuis = {
         "SkillCheckPromptGui",
         "SkillCheckGui", 
@@ -493,7 +480,7 @@ local function getSkillcheck()
         end
     end
     
-    -- Alternative detection method for different game structures
+    -- Alternative detection
     pcall(function()
         for _, gui in pairs(PlayerGui:GetChildren()) do
             if gui:IsA("ScreenGui") and gui.Enabled then
@@ -502,7 +489,6 @@ local function getSkillcheck()
                     if desc:IsA("ImageLabel") or desc:IsA("Frame") then
                         if string.find(string.lower(desc.Name), "needle") or string.find(string.lower(desc.Name), "pointer") then
                             local needle = desc
-                            -- Look for target nearby
                             local parent = needle.Parent
                             if parent then
                                 local target = parent:FindFirstChild("Target") or parent:FindFirstChild("Goal") or parent:FindFirstChild("Zone")
@@ -527,20 +513,17 @@ local function updateStats(distance, wasSuccessful)
         State.successCount = State.successCount + 1
     end
     
-    -- Track recent distances for adaptive learning
     table.insert(State.lastDistances, distance)
     if #State.lastDistances > 10 then
         table.remove(State.lastDistances, 1)
     end
     
-    -- Calculate average distance
     local sum = 0
     for _, dist in pairs(State.lastDistances) do
         sum = sum + dist
     end
     State.averageDistance = sum / #State.lastDistances
     
-    -- Auto-adjust hit zone based on performance
     if Settings.adaptiveMode and State.totalAttempts > 5 then
         local successRate = State.successCount / State.totalAttempts
         if successRate > 0.9 and Settings.hitZone > 6 then
@@ -551,98 +534,73 @@ local function updateStats(distance, wasSuccessful)
     end
 end
 
--- ENHANCED HIT FUNCTION WITH UNIVERSAL COMPATIBILITY
+-- SIMPLE INPUT FUNCTION
+local function sendSpaceInput()
+    if VirtualInput then
+        VirtualInput:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
+        task.wait(0.01)
+        VirtualInput:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
+    else
+        -- Fallback method
+        pcall(function()
+            game:GetService("UserInputService"):SendKeyEvent(true, "Space", false, nil)
+            task.wait(0.01)
+            game:GetService("UserInputService"):SendKeyEvent(false, "Space", false, nil)
+        end)
+    end
+end
+
+-- SIMPLE HIT FUNCTION
 local function hitSkillcheck(distance)
     if tick() - State.lastHitTime < State.hitCooldown then
         return false
     end
     
-    -- Universal input method
-    pcall(function()
-        sendInput(Enum.KeyCode.Space, true)
-        task.wait(0.01)
-        sendInput(Enum.KeyCode.Space, false)
-    end)
-    
+    sendSpaceInput()
     State.lastHitTime = tick()
     
-    -- Determine hit quality with modern styling
-    local hitQuality = "GOOD"
-    local color = Color3.fromRGB(0, 255, 150)
-    local emoji = "✅"
-    
-    if distance <= 3 then
-        hitQuality = "PERFECT"
-        color = Color3.fromRGB(255, 215, 0)
-        emoji = "🎯"
-    elseif distance <= 6 then
-        hitQuality = "GREAT"
-        color = Color3.fromRGB(0, 255, 150)
-        emoji = "🔥"
-    elseif distance > Settings.hitZone * 0.8 then
-        hitQuality = "OK"
-        color = Color3.fromRGB(255, 165, 0)
-        emoji = "👍"
-    end
-    
-    -- Modern visual feedback (only if UI is loaded)
+    -- Update UI feedback
     if State.isUILoaded then
-        pcall(function()
-            statusLabel.Text = emoji .. " " .. hitQuality .. " HIT!"
-            statusIndicator.BackgroundColor3 = color
-            mainFrame.BackgroundColor3 = Color3.new(color.R * 0.2, color.G * 0.2, color.B * 0.2)
-            
-            -- Smooth scale animation
-            local originalSize = mainFrame.Size
-            local tween = TweenService:Create(mainFrame, 
-                TweenInfo.new(0.15, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
-                {Size = UDim2.new(0, 400 * Settings.uiScale, 0, 210 * Settings.uiScale)}
-            )
-            tween:Play()
-            
-            -- Pulse the progress bar
-            local progressPulse = TweenService:Create(progressBar,
-                TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-                {Size = UDim2.new(1, 0, 1, 0)}
-            )
-            progressPulse:Play()
-            
-            tween.Completed:Connect(function()
-                -- Return to original size
-                TweenService:Create(mainFrame,
-                    TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-                    {Size = originalSize}
-                ):Play()
-                
-                -- Fade progress bar back
-                TweenService:Create(progressBar,
-                    TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-                    {Size = UDim2.new(0, 0, 1, 0)}
-                ):Play()
-            end)
+        local hitQuality = "Good"
+        local color = Color3.fromRGB(0, 200, 0)
+        
+        if distance <= 3 then
+            hitQuality = "Perfect"
+            color = Color3.fromRGB(255, 215, 0)
+        elseif distance <= 6 then
+            hitQuality = "Great"
+            color = Color3.fromRGB(0, 200, 100)
+        end
+        
+        statusLabel.Text = hitQuality .. " Hit!"
+        statusLabel.TextColor3 = color
+        
+        -- Flash effect
+        local originalColor = mainFrame.BackgroundColor3
+        mainFrame.BackgroundColor3 = color
+        task.spawn(function()
+            task.wait(0.3)
+            if mainFrame then
+                mainFrame.BackgroundColor3 = originalColor
+            end
         end)
     end
     
     updateStats(distance, true)
+    updateUI()
     
     task.wait(0.6)
     return true
 end
 
--- MAIN LOOP WITH IMPROVED COMPATIBILITY
+-- MAIN LOOP
 local connection
 
 connection = RunService.Heartbeat:Connect(function()
     if not Settings.enabled then
         if State.isUILoaded then
-            pcall(function()
-                statusLabel.Text = "❌ SYSTEM DISABLED"
-                distanceLabel.Text = "📏 Distance: --"
-                speedLabel.Text = "⚡ Speed: --"
-                statusIndicator.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
-                mainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
-                progressBar.Size = UDim2.new(0, 0, 1, 0)
-            end)
+            statusLabel.Text = "Disabled"
+            statusLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
         end
         return
     end
@@ -651,14 +609,8 @@ connection = RunService.Heartbeat:Connect(function()
     
     if not needle or not target then
         if State.isUILoaded then
-            pcall(function()
-                statusLabel.Text = "🔍 SCANNING FOR SKILLCHECK..."
-                distanceLabel.Text = "📏 Distance: --"
-                speedLabel.Text = "⚡ Speed: --"
-                statusIndicator.BackgroundColor3 = Color3.fromRGB(255, 165, 0)
-                mainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
-                progressBar.Size = UDim2.new(0, 0, 1, 0)
-            end)
+            statusLabel.Text = "Searching..."
+            statusLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
         end
         return
     end
@@ -672,23 +624,13 @@ connection = RunService.Heartbeat:Connect(function()
         return
     end
     
-    -- Calculate approach distance using improved method
+    -- Calculate approach distance
     local approachDistance = calculateApproachDistance(needleAngle, targetAngle)
-    
-    -- Update needle speed calculation
     local needleSpeed = updateNeedleSpeed(needleAngle)
     
-    -- Dynamic optimal hit distance based on speed
-    local baseOptimalDistance = 110 -- Base optimal distance
-    local speedAdjustment = 0
-    
-    -- Adjust optimal distance based on needle speed
-    if needleSpeed > 0 then
-        -- Faster needle = hit earlier (larger distance)
-        -- Slower needle = hit later (smaller distance)
-        speedAdjustment = math.min(needleSpeed * 0.5, 15) -- Cap at 15° adjustment
-    end
-    
+    -- Dynamic optimal hit distance
+    local baseOptimalDistance = 110
+    local speedAdjustment = math.min(needleSpeed * 0.5, 15)
     local optimalDistance = baseOptimalDistance + speedAdjustment
     
     -- Calculate how close we are to optimal
@@ -700,121 +642,40 @@ connection = RunService.Heartbeat:Connect(function()
         effectiveHitZone = effectiveHitZone + Settings.anticipationOffset
     end
     
-    -- Update UI with improved information
+    -- Update UI
     if State.isUILoaded then
-        pcall(function()
-            statusLabel.Text = "🎯 TRACKING TARGET"
-            distanceLabel.Text = string.format("📏 %.1f° / %.1f°", approachDistance, optimalDistance)
-            speedLabel.Text = string.format("⚡ %.1f°/s", needleSpeed)
-            statusIndicator.BackgroundColor3 = Color3.fromRGB(0, 255, 150)
-            
-            local successRate = State.totalAttempts > 0 and (State.successCount / State.totalAttempts * 100) or 0
-            statsLabel.Text = string.format("📊 Success: %d/%d (%.1f%%) | Zone: %d° | F6: Toggle", 
-                State.successCount, State.totalAttempts, successRate, effectiveHitZone)
-            
-            -- Progress bar showing proximity to optimal hit zone
-            local proximityRatio = math.max(0, 1 - (distanceFromOptimal / 30))
-            progressBar.Size = UDim2.new(proximityRatio, 0, 1, 0)
-            
-            -- Dynamic progress bar color based on proximity
-            local progressColor
-            if proximityRatio > 0.8 then
-                progressColor = Color3.fromRGB(255, 215, 0) -- Gold for perfect
-            elseif proximityRatio > 0.6 then
-                progressColor = Color3.fromRGB(0, 255, 150) -- Green for great
-            elseif proximityRatio > 0.4 then
-                progressColor = Color3.fromRGB(255, 165, 0) -- Orange for good
-            else
-                progressColor = Color3.fromRGB(255, 100, 100) -- Red for poor
-            end
-            
-            progressBar.BackgroundColor3 = progressColor
-            progressBar.UIStroke.Color = progressColor
-            
-            -- Hit detection with improved logic
-            if distanceFromOptimal <= effectiveHitZone then
-                mainFrame.BackgroundColor3 = Color3.fromRGB(0, 50, 100)
-                statusLabel.Text = "🎯 FIRING!"
-                statusIndicator.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
-                hitSkillcheck(distanceFromOptimal)
-            elseif distanceFromOptimal <= effectiveHitZone * 1.5 then
-                mainFrame.BackgroundColor3 = Color3.fromRGB(50, 25, 0)
-                statusLabel.Text = "⚠️ READY..."
-                statusIndicator.BackgroundColor3 = Color3.fromRGB(255, 165, 0)
-            else
-                mainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
-                statusLabel.Text = "🎯 TRACKING TARGET"
-                statusIndicator.BackgroundColor3 = Color3.fromRGB(0, 255, 150)
-            end
-        end)
-    else
-        -- Minimal UI fallback behavior
-        if distanceFromOptimal <= effectiveHitZone then
-            hitSkillcheck(distanceFromOptimal)
+        statusLabel.Text = "Tracking"
+        statusLabel.TextColor3 = Color3.fromRGB(100, 200, 255)
+        updateUI()
+    end
+    
+    -- Hit detection
+    if distanceFromOptimal <= effectiveHitZone then
+        if State.isUILoaded then
+            statusLabel.Text = "Hitting!"
+            statusLabel.TextColor3 = Color3.fromRGB(255, 255, 100)
         end
+        hitSkillcheck(distanceFromOptimal)
     end
 end)
 
--- ENHANCED CONTROLS WITH SETTINGS PERSISTENCE
+-- KEYBOARD CONTROLS (optional for PC users)
 UserInputService.InputBegan:Connect(function(input, processed)
     if processed then return end
     
     if input.KeyCode == Enum.KeyCode.F6 then
         Settings.enabled = not Settings.enabled
-        if State.isUILoaded then
-            statusLabel.Text = Settings.enabled and "✅ ENABLED" or "❌ DISABLED"
-            mainFrame.BackgroundColor3 = Settings.enabled and Color3.fromRGB(0, 200, 0) or Color3.fromRGB(200, 0, 0)
-        end
-        saveSettings()
-        task.wait(1.5)
-        
-    elseif input.KeyCode == Enum.KeyCode.Equals then
-        Settings.hitZone = math.min(Settings.hitZone + 2, 35)
-        if State.isUILoaded then
-            statusLabel.Text = "Hit Zone: " .. Settings.hitZone .. "°"
-            mainFrame.BackgroundColor3 = Color3.fromRGB(0, 150, 200)
-        end
-        saveSettings()
-        task.wait(1)
-        
-    elseif input.KeyCode == Enum.KeyCode.Minus then
-        Settings.hitZone = math.max(Settings.hitZone - 2, 3)
-        if State.isUILoaded then
-            statusLabel.Text = "Hit Zone: " .. Settings.hitZone .. "°"
-            mainFrame.BackgroundColor3 = Color3.fromRGB(0, 150, 200)
-        end
-        saveSettings()
-        task.wait(1)
-        
-    elseif input.KeyCode == Enum.KeyCode.F9 then
-        Settings.adaptiveMode = not Settings.adaptiveMode
-        if State.isUILoaded then
-            statusLabel.Text = "Adaptive: " .. (Settings.adaptiveMode and "ON" or "OFF")
-        end
-        saveSettings()
-        task.wait(1)
-        
-    elseif input.KeyCode == Enum.KeyCode.F10 then
-        -- Reset stats
-        State.successCount = 0
-        State.totalAttempts = 0
-        State.lastDistances = {}
-        State.averageDistance = 0
-        State.needleSpeedHistory = {}
-        State.lastNeedlePositions = {}
-        if State.isUILoaded then
-            statusLabel.Text = "Stats Reset"
-        end
-        task.wait(1)
+        updateUI()
         
     elseif input.KeyCode == Enum.KeyCode.P then
         connection:Disconnect()
         if gui then
             gui:Destroy()
         end
-        print("Enhanced Auto Skillcheck terminated")
+        print("Auto Skillcheck terminated")
         
     elseif input.KeyCode == Enum.KeyCode.F7 then
+        -- Debug info
         local needle, target = getSkillcheck()
         if needle and target then
             local needleAngle, targetAngle
@@ -824,69 +685,27 @@ UserInputService.InputBegan:Connect(function(input, processed)
             if needleAngle and targetAngle then
                 local approachDistance = calculateApproachDistance(needleAngle, targetAngle)
                 local speed = updateNeedleSpeed(needleAngle)
-                print("=== ENHANCED SKILLCHECK DEBUG ===")
+                print("=== AUTO SKILLCHECK DEBUG ===")
                 print("Needle angle:", needleAngle)
                 print("Target angle:", targetAngle)
                 print("Approach distance:", approachDistance)
                 print("Optimal distance:", 110 + (speed * 0.5))
-                print("Needle speed:", speed, "°/s")
+                print("Needle speed:", speed)
                 print("Hit zone:", Settings.hitZone)
                 print("Success rate:", State.totalAttempts > 0 and (State.successCount / State.totalAttempts * 100) or 0, "%")
-                print("Average distance:", State.averageDistance)
-                print("Adaptive mode:", Settings.adaptiveMode)
-                print("VirtualInput available:", VirtualInput ~= nil)
-                print("HttpService available:", HttpService ~= nil)
-                print("UI Loaded:", State.isUILoaded)
-                print("=================================")
+                print("=============================")
             end
         else
             print("No skillcheck found")
         end
-        
-    elseif input.KeyCode == Enum.KeyCode.F8 then
-        -- Manual test
-        local needle, target = getSkillcheck()
-        if needle and target then
-            local needleAngle, targetAngle
-            pcall(function() needleAngle = needle.Rotation end)
-            pcall(function() targetAngle = target.Rotation end)
-            
-            if needleAngle and targetAngle then
-                local approachDistance = calculateApproachDistance(needleAngle, targetAngle)
-                local optimalDistance = 110 + (updateNeedleSpeed(needleAngle) * 0.5)
-                local distance = math.abs(approachDistance - optimalDistance)
-                hitSkillcheck(distance)
-            end
-        end
-        
-    elseif input.KeyCode == Enum.KeyCode.RightBracket then
-        Settings.uiScale = math.min(Settings.uiScale + 0.1, 2.0)
-        saveSettings()
-        if gui then
-            gui:Destroy()
-            createUI()
-        end
-        
-    elseif input.KeyCode == Enum.KeyCode.LeftBracket then
-        Settings.uiScale = math.max(Settings.uiScale - 0.1, 0.5)
-        saveSettings()
-        if gui then
-            gui:Destroy()
-            createUI()
-        end
     end
 end)
 
-print("=== ENHANCED AUTO SKILLCHECK LOADED ===")
-print("F6 - Toggle On/Off")
-print("F7 - Debug Info") 
-print("F8 - Manual Test")
-print("F9 - Toggle Adaptive Mode")
-print("F10 - Reset Stats")
-print("+/- - Adjust Hit Zone")
-print("[ ] - Adjust UI Scale")
-print("P - Quit")
-print("VirtualInput:", VirtualInput and "Available" or "Not Available")
-print("HttpService:", HttpService and "Available" or "Not Available")
-print("UI Status:", State.isUILoaded and "Loaded" or "Fallback Mode")
-print("=========================================")
+print("=== SIMPLE AUTO SKILLCHECK LOADED ===")
+print("Click the ON/OFF button to start")
+print("Use + and - buttons to adjust hit zone")
+print("F6 - Toggle On/Off (PC)")
+print("F7 - Debug Info (PC)")
+print("P - Quit (PC)")
+print("Drag the header to move the UI")
+print("=====================================")
