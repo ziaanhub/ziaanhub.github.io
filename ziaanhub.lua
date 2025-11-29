@@ -15,7 +15,7 @@ local Games = loadstring(data)()
 local URL = Games[game.PlaceId]
 if not URL then return end
 
--- Skid, Your mama is better
+-- Skid, Your mama is Suck my dick
 local scriptContent = SafeGet(URL)
 if not scriptContent then return end
 
