@@ -1,4 +1,4 @@
-local Games = loadstring(game:HttpGet("https://ziaaanbase.github.io/core/ziaanhub.lua"))()
+local Games = loadstring(game:HttpGet("https://ziaanbase.github.io/core/ziaanhub.lua"))()
 
 local URL = Games[game.GameId]
 
