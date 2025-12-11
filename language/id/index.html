@@ -1,144 +1,427 @@
-<!DOCTYPE html><html lang="id">
+<!DOCTYPE html>
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZiaanHub</title>
-  <link rel="icon" href="https://files.catbox.moe/p9hqi4.png" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }body {
-  background: #000;
-  color: #fff;
-  height: 100vh;
-  overflow: hidden;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZiaanHub</title>
+    <link rel="icon" type="image/x-icon" href="https://files.catbox.moe/p9hqi4.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
 
-video.bgvid {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1;
-}
+        body {
+            color: #fff;
+            overflow-x: hidden;
+            background-color: #110000;
+        }
 
-header {
-  text-align: center;
-  padding: 40px 20px;
-}
+        /* Background video */
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            object-fit: cover;
+            opacity: 0.7;
+        }
 
-header img {
-  width: 90px;
-  margin-bottom: 10px;
-}
+        /* Overlay untuk meningkatkan keterbacaan */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(80, 0, 0, 0.3), rgba(30, 0, 0, 0.8));
+            z-index: -1;
+        }
 
-header h1 {
-  font-size: 32px;
-  letter-spacing: 1px;
-  color: #ff3b3b;
-}
+        /* Container utama */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
 
-.container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-}
+        /* Header dengan animasi fade-in */
+        header {
+            padding: 40px 0 20px;
+            text-align: center;
+            animation: fadeInDown 1s ease-out;
+        }
 
-.card {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-  border-radius: 14px;
-  padding: 20px;
-  width: 90%;
-  max-width: 500px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
 
-.code-box {
-  background: rgba(0, 0, 0, 0.6);
-  border-radius: 10px;
-  padding: 15px;
-  font-family: monospace;
-  font-size: 14px;
-  word-wrap: break-word;
-  color: #ff6868;
-}
+        .logo-icon {
+            font-size: 2.5rem;
+            color: #ff2a2a;
+            margin-right: 15px;
+        }
 
-.copy-btn {
-  margin-top: 10px;
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  background: #ff3b3b;
-  color: white;
-  font-size: 15px;
-  transition: 0.2s;
-}
+        h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+            margin-bottom: 10px;
+            position: relative;
+        }
 
-.copy-btn:hover {
-  background: #ff5555;
-}
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ff2a2a, transparent);
+        }
 
-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  padding: 15px 0;
-  background: rgba(0,0,0,0.6);
-  font-size: 14px;
-  color: #fff;
-}
+        .subtitle {
+            font-size: 1.2rem;
+            color: #ffaaaa;
+            margin-top: 30px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
 
-.links {
-  margin-top: 10px;
-}
+        /* Konten utama */
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            padding: 40px 0;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
 
-.links img {
-  width: 32px;
-  margin: 0 10px;
-  cursor: pointer;
-  transition: 0.2s;
-}
+        /* Card dengan placeholder kode */
+        .code-card {
+            background: rgba(20, 0, 0, 0.7);
+            border-radius: 12px;
+            padding: 30px;
+            width: 100%;
+            max-width: 800px;
+            border: 1px solid rgba(255, 50, 50, 0.3);
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-.links img:hover {
-  transform: scale(1.15);
-}
+        .code-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 0, 0, 0.3);
+        }
 
-  </style>
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 50, 50, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            color: #ff4a4a;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-title i {
+            margin-right: 10px;
+        }
+
+        .code-container {
+            background-color: rgba(10, 0, 0, 0.9);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 50, 50, 0.2);
+            overflow-x: auto;
+        }
+
+        .code-text {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            color: #ff8888;
+            white-space: nowrap;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #ff2a2a, #cc0000);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+        }
+
+        .copy-btn:hover {
+            background: linear-gradient(135deg, #ff4040, #e60000);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4);
+        }
+
+        .copy-btn i {
+            margin-right: 8px;
+        }
+
+        .copy-btn.copied {
+            background: linear-gradient(135deg, #00cc00, #009900);
+            box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 25px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 50, 50, 0.3);
+            margin-top: 50px;
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            font-size: 1rem;
+            color: #ffaaaa;
+        }
+
+        /* Animasi */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.7);
+            }
+        }
+
+        /* Responsif */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3.2rem;
+            }
+            
+            .code-card {
+                padding: 20px;
+            }
+            
+            .card-title {
+                font-size: 1.5rem;
+            }
+            
+            .code-text {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .code-card {
+                padding: 15px;
+            }
+        }
+    </style>
 </head>
-<body>  <video class="bgvid" autoplay muted loop>
-    <source src="https://files.catbox.moe/ohi7qm.mp4" type="video/mp4" />
-  </video>  <header>
-    <img src="https://files.catbox.moe/p9hqi4.png" alt="Logo" />
-    <h1>Selamat Datang di ZiaanHub</h1>
-  </header>  <div class="container">
-    <div class="card">
-      <div class="code-box" id="codeText">loadstring(game:HttpGet("https://ziaanhub.github.io/main"))()</div>
-      <button class="copy-btn" onclick="copyText()">Copy</button>
-      <div class="links">
-        <a href="https://github.com/ziaanhub" target="_blank">
-          <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub" />
-        </a>
-        <a href="https://ziaanhub.github.io/discord" target="_blank">
-          <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord" />
-        </a>
-      </div>
+<body>
+    <!-- Background video -->
+    <video autoplay muted loop id="bg-video">
+        <source src="https://files.catbox.moe/ohi7qm.mp4" type="video/mp4">
+        Browser Anda tidak mendukung tag video.
+    </video>
+    
+    <!-- Overlay untuk meningkatkan keterbacaan -->
+    <div class="overlay"></div>
+    
+    <!-- Container utama -->
+    <div class="container">
+        <!-- Header dengan logo dan judul -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-cube logo-icon"></i>
+            </div>
+            <h1>ZiaanHub</h1>
+            <p class="subtitle">Scripting Platform | Roblox Executor</p>
+        </header>
+        
+        <!-- Konten utama dengan card -->
+        <main class="main-content">
+            <div class="code-card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-code"></i> Loadstring Script
+                    </h2>
+                    <div class="card-badge">
+                        <span style="color: #ff9999; font-size: 0.9rem;">
+                            <i class="fas fa-shield-alt"></i> Secure Connection
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="code-container">
+                    <pre class="code-text">loadstring(game:HttpGet("https://ziaanhub.github.io/main"))()</pre>
+                </div>
+                
+                <button class="copy-btn" id="copyButton">
+                    <i class="far fa-copy"></i> Copy to Clipboard
+                </button>
+                
+                <div style="text-align: center; margin-top: 20px; color: #ffaaaa; font-size: 0.9rem;">
+                    <i class="fas fa-info-circle"></i> Paste script into your executor to run
+                </div>
+            </div>
+        </main>
     </div>
-  </div>  <footer>
-    © 2025 ZiaanHub • Dilindungi Undang-Undang
-  </footer>  <script>
-    function copyText() {
-      const text = document.getElementById("codeText").innerText;
-      navigator.clipboard.writeText(text);
-    }
-  </script></body>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            © 2025 ZiaanHub Dilindungi Undang-undang
+        </div>
+    </footer>
+    
+    <script>
+        // Fungsi untuk menyalin teks ke clipboard
+        document.getElementById('copyButton').addEventListener('click', function() {
+            const codeText = 'loadstring(game:HttpGet("https://ziaanhub.github.io/main"))()';
+            
+            // Menggunakan Clipboard API
+            navigator.clipboard.writeText(codeText).then(() => {
+                // Ubah tampilan tombol untuk menunjukkan berhasil disalin
+                const button = document.getElementById('copyButton');
+                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                button.classList.add('copied');
+                
+                // Kembalikan ke keadaan semula setelah 2 detik
+                setTimeout(() => {
+                    button.innerHTML = '<i class="far fa-copy"></i> Copy to Clipboard';
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Gagal menyalin teks: ', err);
+                alert('Gagal menyalin teks. Silakan coba lagi.');
+            });
+        });
+        
+        // Animasi untuk judul (glow effect)
+        const title = document.querySelector('h1');
+        setInterval(() => {
+            title.style.animation = 'glow 2s ease-in-out';
+            setTimeout(() => {
+                title.style.animation = '';
+            }, 2000);
+        }, 5000);
+        
+        // Kontrol video untuk memastikan autoplay berjalan
+        const bgVideo = document.getElementById('bg-video');
+        
+        // Pastikan video selalu diputar (untuk beberapa browser yang membatasi autoplay)
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                bgVideo.play().catch(e => console.log("Autoplay dicegah oleh browser: ", e));
+            }
+        });
+        
+        // Cek dan mulai ulang video jika berhenti (untuk berjaga-jaga)
+        setInterval(() => {
+            if (bgVideo.paused) {
+                bgVideo.play().catch(e => console.log("Video dijeda: ", e));
+            }
+        }, 1000);
+        
+        // Animasi tambahan saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animasi untuk setiap elemen card
+            const card = document.querySelector('.code-card');
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                card.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 300);
+        });
+    </script>
+</body>
 </html>
