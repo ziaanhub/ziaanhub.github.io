@@ -18,6 +18,9 @@
             color: #fff;
             overflow-x: hidden;
             background-color: #110000;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Background video */
@@ -52,11 +55,12 @@
             padding: 0 20px;
             position: relative;
             z-index: 1;
+            flex: 1;
         }
 
         /* Header dengan animasi fade-in */
         header {
-            padding: 40px 0 20px;
+            padding: 30px 0 10px;
             text-align: center;
             animation: fadeInDown 1s ease-out;
         }
@@ -64,14 +68,22 @@
         .logo {
             display: inline-flex;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             animation: pulse 2s infinite;
         }
 
-        .logo-icon {
-            font-size: 2.5rem;
-            color: #ff2a2a;
-            margin-right: 15px;
+        .logo-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ff2a2a;
+            box-shadow: 0 0 20px rgba(255, 42, 42, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.05);
         }
 
         h1 {
@@ -80,7 +92,7 @@
             letter-spacing: 2px;
             color: #fff;
             text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             position: relative;
         }
 
@@ -98,18 +110,18 @@
         .subtitle {
             font-size: 1.2rem;
             color: #ffaaaa;
-            margin-top: 30px;
+            margin-top: 15px;
             font-weight: 300;
             letter-spacing: 1px;
         }
 
-        /* Konten utama */
+        /* Konten utama - Jarak didekatkan */
         .main-content {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 60vh;
-            padding: 40px 0;
+            min-height: 50vh;
+            padding: 20px 0 40px;
             animation: fadeInUp 1s ease-out 0.3s both;
         }
 
@@ -204,8 +216,9 @@
             padding: 25px 0;
             text-align: center;
             border-top: 1px solid rgba(255, 50, 50, 0.3);
-            margin-top: 50px;
+            margin-top: auto;
             animation: fadeIn 1s ease-out 0.6s both;
+            width: 100%;
         }
 
         .footer-content {
@@ -214,6 +227,44 @@
             padding: 0 20px;
             font-size: 1rem;
             color: #ffaaaa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .copyright {
+            margin-bottom: 10px;
+        }
+
+        /* Discord Link */
+        .discord-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: rgba(88, 101, 242, 0.2);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border: 1px solid rgba(88, 101, 242, 0.3);
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .discord-link:hover {
+            background: rgba(88, 101, 242, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(88, 101, 242, 0.4);
+            border-color: rgba(88, 101, 242, 0.5);
+        }
+
+        .discord-icon {
+            font-size: 1.3rem;
+            color: #7289da;
         }
 
         /* Animasi */
@@ -275,6 +326,11 @@
                 font-size: 3.2rem;
             }
             
+            .logo-img {
+                width: 70px;
+                height: 70px;
+            }
+            
             .code-card {
                 padding: 20px;
             }
@@ -286,11 +342,21 @@
             .code-text {
                 font-size: 0.9rem;
             }
+            
+            .discord-link {
+                font-size: 1rem;
+                padding: 8px 16px;
+            }
         }
 
         @media (max-width: 480px) {
             h1 {
                 font-size: 2.5rem;
+            }
+            
+            .logo-img {
+                width: 60px;
+                height: 60px;
             }
             
             .subtitle {
@@ -299,6 +365,11 @@
             
             .code-card {
                 padding: 15px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
             }
         }
     </style>
@@ -318,13 +389,13 @@
         <!-- Header dengan logo dan judul -->
         <header>
             <div class="logo">
-                <i class="fas fa-cube logo-icon"></i>
+                <img src="https://files.catbox.moe/p9hqi4.png" alt="ZiaanHub Logo" class="logo-img">
             </div>
             <h1>ZiaanHub</h1>
             <p class="subtitle">Scripting Platform | Roblox Executor</p>
         </header>
         
-        <!-- Konten utama dengan card -->
+        <!-- Konten utama dengan card - Jarak didekatkan -->
         <main class="main-content">
             <div class="code-card">
                 <div class="card-header">
@@ -356,7 +427,15 @@
     <!-- Footer -->
     <footer>
         <div class="footer-content">
-            © 2025 ZiaanHub Dilindungi Undang-undang
+            <div class="copyright">
+                © 2025 ZiaanHub Dilindungi Undang-undang
+            </div>
+            
+            <!-- Discord Link -->
+            <a href="https://ziaanhub.github.io/discord" target="_blank" class="discord-link">
+                <i class="fab fa-discord discord-icon"></i>
+                Discord
+            </a>
         </div>
     </footer>
     
@@ -421,6 +500,30 @@
                 card.style.opacity = '1';
                 card.style.transform = 'translateY(0)';
             }, 300);
+            
+            // Animasi untuk logo
+            const logoImg = document.querySelector('.logo-img');
+            logoImg.style.opacity = '0';
+            logoImg.style.transform = 'scale(0.8)';
+            
+            setTimeout(() => {
+                logoImg.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                logoImg.style.opacity = '1';
+                logoImg.style.transform = 'scale(1)';
+            }, 200);
+        });
+        
+        // Efek hover untuk Discord link
+        const discordLink = document.querySelector('.discord-link');
+        discordLink.addEventListener('mouseenter', function() {
+            const icon = this.querySelector('.discord-icon');
+            icon.style.transform = 'rotate(10deg)';
+            icon.style.transition = 'transform 0.3s ease';
+        });
+        
+        discordLink.addEventListener('mouseleave', function() {
+            const icon = this.querySelector('.discord-icon');
+            icon.style.transform = 'rotate(0deg)';
         });
     </script>
 </body>
