@@ -5,12 +5,12 @@
   <script>
     const lang = navigator.language || navigator.userLanguage;
 
-    if (lang.startsWith("id")) {
-      window.location.replace("/id/");
-    } else if (lang.startsWith("en") || lang.startsWith("gb")) {
-      window.location.replace("/en/");
+    if (lang.toLowerCase().startsWith("id")) {
+
+      window.location.href = "https://ziaanhub.github.io/id/";
     } else {
-      window.location.replace("/en/");
+
+      window.location.href = "https://ziaanhub.github.io/en/";
     }
   </script>
 </head>
