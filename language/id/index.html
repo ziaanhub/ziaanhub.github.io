@@ -23,7 +23,6 @@
             flex-direction: column;
         }
 
-        /* Background video */
         #bg-video {
             position: fixed;
             top: 0;
@@ -37,7 +36,6 @@
             opacity: 0.7;
         }
 
-        /* Overlay untuk meningkatkan keterbacaan */
         .overlay {
             position: fixed;
             top: 0;
@@ -48,7 +46,6 @@
             z-index: -1;
         }
 
-        /* Container utama */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -58,7 +55,6 @@
             flex: 1;
         }
 
-        /* Header dengan animasi fade-in */
         header {
             padding: 40px 0 15px;
             text-align: center;
@@ -95,7 +91,6 @@
             letter-spacing: 1px;
         }
 
-        /* Konten utama - Jarak didekatkan */
         .main-content {
             display: flex;
             justify-content: center;
@@ -105,7 +100,6 @@
             animation: fadeInUp 1s ease-out 0.3s both;
         }
 
-        /* Card dengan placeholder kode */
         .code-card {
             background: rgba(20, 0, 0, 0.7);
             border-radius: 12px;
@@ -190,7 +184,6 @@
             box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
         }
 
-        /* Footer */
         footer {
             background-color: rgba(0, 0, 0, 0.7);
             padding: 25px 0;
@@ -217,7 +210,6 @@
             margin-bottom: 10px;
         }
 
-        /* Container untuk tombol Discord dan YouTube */
         .footer-buttons {
             display: flex;
             gap: 20px;
@@ -227,7 +219,6 @@
             margin-top: 10px;
         }
 
-        /* Discord Link */
         .discord-link {
             display: inline-flex;
             align-items: center;
@@ -256,7 +247,6 @@
             color: #7289da;
         }
 
-        /* YouTube Link */
         .youtube-link {
             display: inline-flex;
             align-items: center;
@@ -285,7 +275,6 @@
             color: #FF0000;
         }
 
-        /* Animasi */
         @keyframes fadeInDown {
             from {
                 opacity: 0;
@@ -329,7 +318,6 @@
             }
         }
 
-        /* Responsif */
         @media (max-width: 768px) {
             h1 {
                 font-size: 3.2rem;
@@ -389,24 +377,19 @@
     </style>
 </head>
 <body>
-    <!-- Background video -->
     <video autoplay muted loop id="bg-video">
         <source src="https://files.catbox.moe/ohi7qm.mp4" type="video/mp4">
         Browser Anda tidak mendukung tag video.
     </video>
     
-    <!-- Overlay untuk meningkatkan keterbacaan -->
     <div class="overlay"></div>
     
-    <!-- Container utama -->
     <div class="container">
-        <!-- Header dengan judul saja (tanpa icon) -->
         <header>
             <h1>ZiaanHub</h1>
             <p class="subtitle">Platform Scripting | Eksekutor Roblox</p>
         </header>
         
-        <!-- Konten utama dengan card - Jarak didekatkan -->
         <main class="main-content">
             <div class="code-card">
                 <div class="card-header">
@@ -435,22 +418,18 @@
         </main>
     </div>
     
-    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="copyright">
                 © 2025 ZiaanHub Dilindungi Undang-undang
             </div>
             
-            <!-- Container untuk tombol Discord dan YouTube -->
             <div class="footer-buttons">
-                <!-- Discord Link -->
                 <a href="https://ziaanhub.github.io/discord" target="_blank" class="discord-link">
                     <i class="fab fa-discord discord-icon"></i>
                     Discord
                 </a>
                 
-                <!-- YouTube Link -->
                 <a href="https://youtube.com/@ZiaanHub" target="_blank" class="youtube-link">
                     <i class="fab fa-youtube youtube-icon"></i>
                     YouTube
@@ -460,18 +439,14 @@
     </footer>
     
     <script>
-        // Fungsi untuk menyalin teks ke clipboard
         document.getElementById('copyButton').addEventListener('click', function() {
             const codeText = 'loadstring(game:HttpGet("https://ziaanhub.github.io/main"))()';
             
-            // Menggunakan Clipboard API
             navigator.clipboard.writeText(codeText).then(() => {
-                // Ubah tampilan tombol untuk menunjukkan berhasil disalin
                 const button = document.getElementById('copyButton');
                 button.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
                 button.classList.add('copied');
                 
-                // Kembalikan ke keadaan semula setelah 2 detik
                 setTimeout(() => {
                     button.innerHTML = '<i class="far fa-copy"></i> Salin ke Clipboard';
                     button.classList.remove('copied');
@@ -482,26 +457,21 @@
             });
         });
         
-        // Kontrol video untuk memastikan autoplay berjalan
         const bgVideo = document.getElementById('bg-video');
         
-        // Pastikan video selalu diputar (untuk beberapa browser yang membatasi autoplay)
         document.addEventListener('visibilitychange', function() {
             if (!document.hidden) {
                 bgVideo.play().catch(e => console.log("Autoplay dicegah oleh browser: ", e));
             }
         });
         
-        // Cek dan mulai ulang video jika berhenti (untuk berjaga-jaga)
         setInterval(() => {
             if (bgVideo.paused) {
                 bgVideo.play().catch(e => console.log("Video dijeda: ", e));
             }
         }, 1000);
         
-        // Animasi tambahan saat halaman dimuat
         document.addEventListener('DOMContentLoaded', function() {
-            // Animasi untuk setiap elemen card
             const card = document.querySelector('.code-card');
             card.style.opacity = '0';
             card.style.transform = 'translateY(20px)';
@@ -513,7 +483,6 @@
             }, 300);
         });
         
-        // Efek hover untuk Discord link
         const discordLink = document.querySelector('.discord-link');
         discordLink.addEventListener('mouseenter', function() {
             const icon = this.querySelector('.discord-icon');
@@ -526,7 +495,6 @@
             icon.style.transform = 'rotate(0deg)';
         });
         
-        // Efek hover untuk YouTube link
         const youtubeLink = document.querySelector('.youtube-link');
         youtubeLink.addEventListener('mouseenter', function() {
             const icon = this.querySelector('.youtube-icon');
@@ -539,7 +507,6 @@
             icon.style.transform = 'scale(1)';
         });
         
-        // Efek ketik untuk judul
         const title = document.querySelector('h1');
         const originalText = title.textContent;
         title.textContent = '';
@@ -553,7 +520,6 @@
             }
         }
         
-        // Mulai efek ketik setelah halaman dimuat
         setTimeout(typeWriter, 500);
     </script>
 </body>
