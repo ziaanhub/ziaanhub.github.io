@@ -1,10 +1,18 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8" />
   <script>
-    window.location.replace("https://ziaanhub.github.io/discord");
+    const lang = navigator.language || navigator.userLanguage;
+
+    if (lang.startsWith("id")) {
+      window.location.replace("/id/");
+    } else if (lang.startsWith("en") || lang.startsWith("gb")) {
+      window.location.replace("/en/");
+    } else {
+      window.location.replace("/en/");
+    }
   </script>
 </head>
 <body></body>
 </html>
-
