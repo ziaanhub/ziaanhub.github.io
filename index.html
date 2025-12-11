@@ -3,14 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <script>
-    const lang = navigator.language || navigator.userLanguage;
+    const lang = (navigator.language || navigator.userLanguage).toLowerCase();
 
-    if (lang.toLowerCase().startsWith("id")) {
-
-      window.location.href = "https://ziaanhub.github.io/id/";
+    if (lang.startsWith("id")) {
+      window.location.replace("/id/");
     } else {
-
-      window.location.href = "https://ziaanhub.github.io/en/";
+      window.location.replace("/en/");
     }
   </script>
 </head>
