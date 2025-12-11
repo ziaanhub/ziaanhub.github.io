@@ -60,30 +60,9 @@
 
         /* Header dengan animasi fade-in */
         header {
-            padding: 30px 0 10px;
+            padding: 40px 0 15px;
             text-align: center;
             animation: fadeInDown 1s ease-out;
-        }
-
-        .logo {
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: 10px;
-            animation: pulse 2s infinite;
-        }
-
-        .logo-img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #ff2a2a;
-            box-shadow: 0 0 20px rgba(255, 42, 42, 0.5);
-            transition: transform 0.3s ease;
-        }
-
-        .logo-img:hover {
-            transform: scale(1.05);
         }
 
         h1 {
@@ -94,6 +73,7 @@
             text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
             margin-bottom: 5px;
             position: relative;
+            animation: glow 3s infinite alternate;
         }
 
         h1::after {
@@ -237,6 +217,16 @@
             margin-bottom: 10px;
         }
 
+        /* Container untuk tombol Discord dan YouTube */
+        .footer-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+
         /* Discord Link */
         .discord-link {
             display: inline-flex;
@@ -252,7 +242,6 @@
             font-weight: 500;
             border: 1px solid rgba(88, 101, 242, 0.3);
             transition: all 0.3s ease;
-            margin-top: 10px;
         }
 
         .discord-link:hover {
@@ -265,6 +254,35 @@
         .discord-icon {
             font-size: 1.3rem;
             color: #7289da;
+        }
+
+        /* YouTube Link */
+        .youtube-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: rgba(255, 0, 0, 0.2);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .youtube-link:hover {
+            background: rgba(255, 0, 0, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+            border-color: rgba(255, 0, 0, 0.5);
+        }
+
+        .youtube-icon {
+            font-size: 1.3rem;
+            color: #FF0000;
         }
 
         /* Animasi */
@@ -299,24 +317,15 @@
             }
         }
 
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-
         @keyframes glow {
-            0%, 100% {
+            0% {
                 text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
             }
             50% {
                 text-shadow: 0 0 20px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.7);
+            }
+            100% {
+                text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
             }
         }
 
@@ -324,11 +333,6 @@
         @media (max-width: 768px) {
             h1 {
                 font-size: 3.2rem;
-            }
-            
-            .logo-img {
-                width: 70px;
-                height: 70px;
             }
             
             .code-card {
@@ -343,20 +347,19 @@
                 font-size: 0.9rem;
             }
             
-            .discord-link {
+            .discord-link, .youtube-link {
                 font-size: 1rem;
                 padding: 8px 16px;
+            }
+            
+            .footer-buttons {
+                gap: 15px;
             }
         }
 
         @media (max-width: 480px) {
             h1 {
                 font-size: 2.5rem;
-            }
-            
-            .logo-img {
-                width: 60px;
-                height: 60px;
             }
             
             .subtitle {
@@ -370,6 +373,17 @@
             .footer-content {
                 flex-direction: column;
                 gap: 10px;
+            }
+            
+            .footer-buttons {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+            }
+            
+            .discord-link, .youtube-link {
+                width: 100%;
+                max-width: 250px;
             }
         }
     </style>
@@ -386,13 +400,10 @@
     
     <!-- Container utama -->
     <div class="container">
-        <!-- Header dengan logo dan judul -->
+        <!-- Header dengan judul saja (tanpa icon) -->
         <header>
-            <div class="logo">
-                <img src="https://files.catbox.moe/p9hqi4.png" alt="ZiaanHub Logo" class="logo-img">
-            </div>
             <h1>ZiaanHub</h1>
-            <p class="subtitle">Scripting Platform | Roblox Executor</p>
+            <p class="subtitle">Platform Scripting | Eksekutor Roblox</p>
         </header>
         
         <!-- Konten utama dengan card - Jarak didekatkan -->
@@ -400,11 +411,11 @@
             <div class="code-card">
                 <div class="card-header">
                     <h2 class="card-title">
-                        <i class="fas fa-code"></i> Loadstring Script
+                        <i class="fas fa-code"></i> Skrip Loadstring
                     </h2>
                     <div class="card-badge">
                         <span style="color: #ff9999; font-size: 0.9rem;">
-                            <i class="fas fa-shield-alt"></i> Secure Connection
+                            <i class="fas fa-shield-alt"></i> Koneksi Aman
                         </span>
                     </div>
                 </div>
@@ -414,11 +425,11 @@
                 </div>
                 
                 <button class="copy-btn" id="copyButton">
-                    <i class="far fa-copy"></i> Copy to Clipboard
+                    <i class="far fa-copy"></i> Salin ke Clipboard
                 </button>
                 
                 <div style="text-align: center; margin-top: 20px; color: #ffaaaa; font-size: 0.9rem;">
-                    <i class="fas fa-info-circle"></i> Paste script into your executor to run
+                    <i class="fas fa-info-circle"></i> Tempel skrip ini ke eksekutor Anda untuk menjalankan
                 </div>
             </div>
         </main>
@@ -431,11 +442,20 @@
                 © 2025 ZiaanHub Dilindungi Undang-undang
             </div>
             
-            <!-- Discord Link -->
-            <a href="https://ziaanhub.github.io/discord" target="_blank" class="discord-link">
-                <i class="fab fa-discord discord-icon"></i>
-                Discord
-            </a>
+            <!-- Container untuk tombol Discord dan YouTube -->
+            <div class="footer-buttons">
+                <!-- Discord Link -->
+                <a href="https://ziaanhub.github.io/discord" target="_blank" class="discord-link">
+                    <i class="fab fa-discord discord-icon"></i>
+                    Discord
+                </a>
+                
+                <!-- YouTube Link -->
+                <a href="https://youtube.com/@ZiaanHub" target="_blank" class="youtube-link">
+                    <i class="fab fa-youtube youtube-icon"></i>
+                    YouTube
+                </a>
+            </div>
         </div>
     </footer>
     
@@ -448,12 +468,12 @@
             navigator.clipboard.writeText(codeText).then(() => {
                 // Ubah tampilan tombol untuk menunjukkan berhasil disalin
                 const button = document.getElementById('copyButton');
-                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                button.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
                 button.classList.add('copied');
                 
                 // Kembalikan ke keadaan semula setelah 2 detik
                 setTimeout(() => {
-                    button.innerHTML = '<i class="far fa-copy"></i> Copy to Clipboard';
+                    button.innerHTML = '<i class="far fa-copy"></i> Salin ke Clipboard';
                     button.classList.remove('copied');
                 }, 2000);
             }).catch(err => {
@@ -461,15 +481,6 @@
                 alert('Gagal menyalin teks. Silakan coba lagi.');
             });
         });
-        
-        // Animasi untuk judul (glow effect)
-        const title = document.querySelector('h1');
-        setInterval(() => {
-            title.style.animation = 'glow 2s ease-in-out';
-            setTimeout(() => {
-                title.style.animation = '';
-            }, 2000);
-        }, 5000);
         
         // Kontrol video untuk memastikan autoplay berjalan
         const bgVideo = document.getElementById('bg-video');
@@ -500,17 +511,6 @@
                 card.style.opacity = '1';
                 card.style.transform = 'translateY(0)';
             }, 300);
-            
-            // Animasi untuk logo
-            const logoImg = document.querySelector('.logo-img');
-            logoImg.style.opacity = '0';
-            logoImg.style.transform = 'scale(0.8)';
-            
-            setTimeout(() => {
-                logoImg.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-                logoImg.style.opacity = '1';
-                logoImg.style.transform = 'scale(1)';
-            }, 200);
         });
         
         // Efek hover untuk Discord link
@@ -525,6 +525,36 @@
             const icon = this.querySelector('.discord-icon');
             icon.style.transform = 'rotate(0deg)';
         });
+        
+        // Efek hover untuk YouTube link
+        const youtubeLink = document.querySelector('.youtube-link');
+        youtubeLink.addEventListener('mouseenter', function() {
+            const icon = this.querySelector('.youtube-icon');
+            icon.style.transform = 'scale(1.2)';
+            icon.style.transition = 'transform 0.3s ease';
+        });
+        
+        youtubeLink.addEventListener('mouseleave', function() {
+            const icon = this.querySelector('.youtube-icon');
+            icon.style.transform = 'scale(1)';
+        });
+        
+        // Efek ketik untuk judul
+        const title = document.querySelector('h1');
+        const originalText = title.textContent;
+        title.textContent = '';
+        
+        let i = 0;
+        function typeWriter() {
+            if (i < originalText.length) {
+                title.textContent += originalText.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+        
+        // Mulai efek ketik setelah halaman dimuat
+        setTimeout(typeWriter, 500);
     </script>
 </body>
 </html>
