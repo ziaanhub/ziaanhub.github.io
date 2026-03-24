@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZiaanHub Security</title>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            padding: 20px;
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        pre {
+            margin: 0;
+            font-family: inherit;
+            font-size: inherit;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .copy-btn {
+            background-color: #0f0;
+            color: #0a0a0a;
+            border: none;
+            padding: 8px 16px;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .copy-btn:hover {
+            background-color: #0c0;
+        }
+        .status-msg {
+            color: #ff0;
+        }
+        a {
+            color: #0f0;
+        }
+    </style>
+</head>
+<body>
+    <pre id="output">Memuat...</pre>
+
+    <script>
+        // ===== KONFIGURASI =====
+        const SECRET_TOKEN = 'kuvet2026'; // Ganti dengan token Anda
+        // =======================
+
+        // Ambil parameter token dari URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const userToken = urlParams.get('token');
+
+        // Ambil user-agent dan deteksi executor
+        const ua = navigator.userAgent.toLowerCase();
+        const executorKeywords = [
+            'roblox', 'delta', 'volt', 'potassium', 'volcano', 'wave',
+            'isaeva', 'velocity', 'xeno', 'seliware', 'arceus', 'solara',
+            'hydrogen', 'cryptic', 'codex'
+        ];
+        const isExecutor = executorKeywords.some(keyword => ua.includes(keyword));
+
+        // Fungsi untuk mendapatkan zona waktu dari parameter atau browser
+        const getUserTimezone = () => {
+            const tzParam = urlParams.get('tz');
+            if (tzParam && Intl.supportedValuesOf('timeZone').includes(tzParam)) {
+                return tzParam;
+            }
+            // Default: zona waktu lokal browser
+            return Intl.DateTimeFormat().resolvedOptions().timeZone;
+        };
+
+        const userTimezone = getUserTimezone();
+
+        // Waktu mulai (ping)
+        const startTime = performance.now();
+
+        // Fungsi untuk mendapatkan informasi region dari IP
+        async function fetchRegion() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                let region = data.country_name || 'Unknown';
+                if (data.city) region += `, ${data.city}`;
+                else if (data.region) region += `, ${data.region}`;
+                return region;
+            } catch (error) {
+                console.warn('Gagal mengambil region:', error);
+                return 'Unknown';
+            }
+        }
+
+        // Fungsi untuk membuat teks informasi (non-executor)
+        async function generateInfoText() {
+            const region = await fetchRegion();
+            const pingMs = performance.now() - startTime;
+            const pingDisplay = pingMs < 1 ? '<1 ms' : `${Math.round(pingMs)} ms`;
+
+            const now = new Date();
+            const formatter = new Intl.DateTimeFormat('id-ID', {
+                timeZone: userTimezone,
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            const formattedTime = formatter.format(now);
+
+            const asciiArt = `
+                                             
+          __                                 
+ ____    /\\_\\      __        __       ___    
+/\\_ ,\`\\  \\/\\ \\   /'__\`\\    /'__\`\\   /' _ \`\\  
+\\/_/  /_  \\ \\ \\ /\\ \\L\\.\\_ /\\ \\L\\.\\_ /\\ \\/\\ \\ 
+  /\\____\\  \\ \\_\\\\ \\__/.\\_\\\\ \\__/.\\_\\\\ \\_\\ \\_\\
+  \\/____/   \\/_/ \\/__/\\/_/ \\/__/\\/_/ \\/_/\\/_/                                                                                         
+  
+ Made by ZiaanHub. ( discord.gg/5z4se9C758 )
+ Modification of this script, including attempts to bypass
+ or crack it for any reason, is not allowed.
+
+ [ status ] online
+ [ Region ] ${region}
+ [ info   ] access denied
+ [ ping   ] ${pingDisplay}
+ [ time   ] ${formattedTime} (${userTimezone})
+
+ copyright © 2026 ZiaanHub. all rights reserved.
+`;
+            return asciiArt;
+        }
+
+        // Fungsi untuk menampilkan loadstring
+        function showLoadstring() {
+            const loadstringCode = 'loadstring(game:HttpGet("https://ziaanhub.github.io/main"))()';
+            const outputDiv = document.getElementById('output');
+            outputDiv.textContent = loadstringCode;
+            // Tambahkan tombol copy
+            const copyBtn = document.createElement('button');
+            copyBtn.textContent = 'Salin Loadstring';
+            copyBtn.className = 'copy-btn';
+            copyBtn.onclick = () => {
+                navigator.clipboard.writeText(loadstringCode).then(() => {
+                    copyBtn.textContent = 'Tersalin!';
+                    setTimeout(() => { copyBtn.textContent = 'Salin Loadstring'; }, 2000);
+                }).catch(err => {
+                    alert('Gagal menyalin: ' + err);
+                });
+            };
+            outputDiv.insertAdjacentElement('afterend', copyBtn);
+        }
+
+        // Logika utama
+        async function main() {
+            if (isExecutor && userToken === SECRET_TOKEN) {
+                showLoadstring();
+            } else {
+                const infoText = await generateInfoText();
+                const outputDiv = document.getElementById('output');
+                outputDiv.textContent = infoText;
+            }
+        }
+
+        main();
+    </script>
+</body>
+</html>
