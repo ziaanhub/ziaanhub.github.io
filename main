@@ -1,1 +1,2 @@
-loadstring(game:HttpGet("https://api.jnkie.com/api/v1/luascripts/public/0d85b2da66864c35bffc906fb45c9d40b4233607c48378832e33af2b5bcf9cc2/download"))()
+loadstring(game:HttpGet("https://ziaanscripts.vercel.app/secret/layer."))() 
+
