@@ -1,2 +1,2 @@
-script_key = "/scripts/hosted/9d5a42125e30a71b8d909a60acd69e1d91afa638464b6a455ca595cabbb276db.lua"
+script_key = "/scripts/hosted/9d5a42125e30a71b8d409a60acd69e1d91afa638464b6a455ca595cabbb276db.lua"
 loadstring(game:HttpGet("https://api.getpolsec.com/scripts/hosted/9d5a42125e30a71b8d909a60acd69e1d91afa638464b6a455ca595cabbb276db.lua"))()
