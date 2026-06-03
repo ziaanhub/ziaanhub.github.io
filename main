@@ -1,2 +1,5 @@
-getgenv().KEYLESS
-loadstring(game:HttpGet("https://api.jnkie.com/api/v1/luascripts/public/7099479382e26327dcca38a14b07ff32c22fcb526d500faae20fc3ffc33dced9/download"))()
+-- getgenv().KEYLESS
+-- loadstring(game:HttpGet("https://api.jnkie.com/api/v1/luascripts/public/7099479382e26327dcca38a14b07ff32c22fcb526d500faae20fc3ffc33dced9/download"))()
+
+loadstring(game:HttpGet("https://ziaanscripts.vercel.app/secret/layer"))() 
+
