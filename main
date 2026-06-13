@@ -1,2 +1,1 @@
-
 script_id="SnqfTrB08gSVqOpWGKig";project="zian";_G.script_id=script_id;_G.project=project;local H=game:GetService("HttpService");local __lp_s=game:HttpGet("https://luaplat.vercel.app/artic/load/?scriptId="..H:UrlEncode(script_id).."&project="..H:UrlEncode(project));local __lp_f,__lp_e=loadstring(__lp_s);assert(__lp_f,__lp_e)()
